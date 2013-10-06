@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131006182632) do
+ActiveRecord::Schema.define(:version => 20131006215055) do
+
+  create_table "closer_tos", :force => true do |t|
+    t.integer  "distance",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "closest_hotels", :force => true do |t|
+    t.integer  "distance",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "districts", :force => true do |t|
     t.string   "districtName", :null => false
@@ -44,6 +56,12 @@ ActiveRecord::Schema.define(:version => 20131006182632) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "in_proximity_ofs", :force => true do |t|
+    t.integer  "distance",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "local_transport_stands", :force => true do |t|
     t.float    "lattitude",     :null => false
     t.float    "longitude",     :null => false
@@ -62,6 +80,12 @@ ActiveRecord::Schema.define(:version => 20131006182632) do
     t.string   "stateName",    :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "near_bies", :force => true do |t|
+    t.integer  "distance",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "states", :force => true do |t|
@@ -84,5 +108,22 @@ ActiveRecord::Schema.define(:version => 20131006182632) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
+
+  create_table "trips", :force => true do |t|
+    t.integer  "dayNumber",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "username",              :null => false
+    t.string   "password",              :null => false
+    t.string   "role"
+    t.string   "password_confirmation"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "users", ["username"], :name => "index_users_on_username"
 
 end
