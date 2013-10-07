@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131007080113) do
+ActiveRecord::Schema.define(:version => 20131007082815) do
 
   create_table "closer_tos", :force => true do |t|
     t.integer  "local_transport_stand_id"
@@ -103,6 +103,14 @@ ActiveRecord::Schema.define(:version => 20131007080113) do
   end
 
   add_index "near_bies", ["hotel_id", "local_transport_stand_id"], :name => "index_near_bies_on_hotel_id_and_local_transport_stand_id"
+
+  create_table "reviews", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "tourist_spot_id"
+    t.text     "review",          :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "states", :force => true do |t|
     t.datetime "created_at", :null => false

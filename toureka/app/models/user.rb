@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   attr_accessor :password
   has_many :trips , :dependent => :destroy
 
+  has_many :reviews
 
   before_save :encrypt_password
   validates_confirmation_of :password
