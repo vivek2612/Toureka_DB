@@ -5,5 +5,7 @@ class ClosestHotel < ActiveRecord::Base
   belongs_to :hotel
 
   validates_presence_of :distance
-  validates :rating, :numericality => { :greater_than => 0 , :allow_nil => true}
+  validates :distance, :numericality => { :greater_than => 0 , :allow_nil => true}
+  validates :entry_point_id, :uniqueness => {:scope => :hotel_id}
+
 end

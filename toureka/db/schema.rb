@@ -11,28 +11,36 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131006215055) do
+ActiveRecord::Schema.define(:version => 20131007080113) do
 
   create_table "closer_tos", :force => true do |t|
-    t.integer  "distance",   :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "local_transport_stand_id"
+    t.integer  "tourist_spot_id"
+    t.integer  "distance",                 :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
+
+  add_index "closer_tos", ["local_transport_stand_id", "tourist_spot_id"], :name => "closer_tos_index"
 
   create_table "closest_hotels", :force => true do |t|
-    t.integer  "distance",   :null => false
+    t.integer  "entry_point_id"
+    t.integer  "hotel_id"
+    t.integer  "distance",       :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "closest_hotels", ["entry_point_id", "hotel_id"], :name => "closest_hotels_index"
+
+  create_table "districts", :force => true do |t|
+    t.integer  "state_id"
+    t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "districts", :force => true do |t|
-    t.string   "districtName", :null => false
-    t.string   "stateName",    :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "districts", ["stateName", "districtName"], :name => "index_districts_on_stateName_and_districtName", :unique => true
+  add_index "districts", ["state_id", "name"], :name => "index_districts_on_state_id_and_name"
 
   create_table "entry_points", :force => true do |t|
     t.float    "lattitude",    :null => false
@@ -57,10 +65,14 @@ ActiveRecord::Schema.define(:version => 20131006215055) do
   end
 
   create_table "in_proximity_ofs", :force => true do |t|
-    t.integer  "distance",   :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "hotel_id"
+    t.integer  "tourist_spot_id"
+    t.integer  "distance",        :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
+
+  add_index "in_proximity_ofs", ["hotel_id", "tourist_spot_id"], :name => "index_in_proximity_ofs_on_hotel_id_and_tourist_spot_id"
 
   create_table "local_transport_stands", :force => true do |t|
     t.float    "lattitude",     :null => false
@@ -83,10 +95,14 @@ ActiveRecord::Schema.define(:version => 20131006215055) do
   end
 
   create_table "near_bies", :force => true do |t|
-    t.integer  "distance",   :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "hotel_id"
+    t.integer  "local_transport_stand_id"
+    t.integer  "distance",                 :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
+
+  add_index "near_bies", ["hotel_id", "local_transport_stand_id"], :name => "index_near_bies_on_hotel_id_and_local_transport_stand_id"
 
   create_table "states", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -110,10 +126,15 @@ ActiveRecord::Schema.define(:version => 20131006215055) do
   end
 
   create_table "trips", :force => true do |t|
-    t.integer  "dayNumber",  :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+    t.integer  "tourist_spot_id"
+    t.date     "startDate",       :null => false
+    t.integer  "dayNumber",       :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
+
+  add_index "trips", ["user_id", "startDate"], :name => "index_trips_on_user_id_and_startDate"
 
   create_table "users", :force => true do |t|
     t.string   "username",              :null => false

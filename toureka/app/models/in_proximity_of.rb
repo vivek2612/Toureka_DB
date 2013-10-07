@@ -5,5 +5,6 @@ class InProximityOf < ActiveRecord::Base
 
 
   validates_presence_of :distance
-  validates :rating, :numericality => { :greater_than => 0 , :allow_nil => true}
+  validates :distance, :numericality => { :greater_than => 0 , :allow_nil => true}
+  validates :hotel_id, :uniqueness => {:scope => :tourist_spot_id}
 end
