@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015122853) do
+ActiveRecord::Schema.define(:version => 20131015133054) do
 
   create_table "closer_tos", :force => true do |t|
     t.integer  "local_transport_stand_id"
@@ -46,11 +46,11 @@ ActiveRecord::Schema.define(:version => 20131015122853) do
     t.float    "lattitude",    :null => false
     t.float    "longitude",    :null => false
     t.string   "name",         :null => false
-    t.string   "entryType"
     t.string   "districtName", :null => false
     t.string   "stateName",    :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "entryType"
   end
 
   create_table "hotels", :force => true do |t|
@@ -112,18 +112,8 @@ ActiveRecord::Schema.define(:version => 20131015122853) do
 
   add_index "states", ["name"], :name => "index_states_on_name"
 
-  create_table "tourist_spots", :force => true do |t|
-    t.float    "lattitude",    :null => false
-    t.float    "longitude",    :null => false
-    t.string   "name",         :null => false
-    t.float    "rating"
-    t.string   "category",     :null => false
-    t.text     "description"
-    t.string   "districtName", :null => false
-    t.string   "stateName",    :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
+# Could not dump table "tourist_spots" because of following StandardError
+#   Unknown type 'category_type' for column 'category'
 
   create_table "trips", :force => true do |t|
     t.integer  "user_id"
@@ -136,15 +126,7 @@ ActiveRecord::Schema.define(:version => 20131015122853) do
 
   add_index "trips", ["user_id", "startDate"], :name => "index_trips_on_user_id_and_startDate"
 
-  create_table "users", :force => true do |t|
-    t.string   "username",              :null => false
-    t.string   "password",              :null => false
-    t.string   "role"
-    t.string   "password_confirmation"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
-  end
-
-  add_index "users", ["username"], :name => "index_users_on_username"
+# Could not dump table "users" because of following StandardError
+#   Unknown type 'role_type' for column 'role'
 
 end
