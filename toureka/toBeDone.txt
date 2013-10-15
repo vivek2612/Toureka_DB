@@ -1,1 +1,0 @@
-Add Numerical inequality constraints and enum constraints later through a seperate sql migration
