@@ -10,11 +10,13 @@ class SessionsController < ApplicationController
       redirect_to user
     else
       flash[:error] = 'Invalid username/password combination'
-      render '/'
+      redirect_to '/'
     end
   end
 
 	def destroy
+    params.delete(:session);
+    redirect_to '/'
 	end
 
 end

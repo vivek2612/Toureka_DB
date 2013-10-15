@@ -3,6 +3,7 @@ Toureka::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   match '/',  to: 'welcome#index'
   match '/signup', to: 'users#new'
+  match '/signout', to: 'sessions#destroy'
 
 
   # The priority is based upon order of creation:

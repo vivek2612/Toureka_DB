@@ -6,7 +6,6 @@ class UsersController < ApplicationController
 
   def create
   	@user = User.new(params[:user])  
-    puts params[:user]	
   	@user.role = "reader"
   	if @user.save
   		puts "Signup successfull"
