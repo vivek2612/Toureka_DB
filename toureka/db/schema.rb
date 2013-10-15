@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015133054) do
+ActiveRecord::Schema.define(:version => 20131015152917) do
 
   create_table "closer_tos", :force => true do |t|
     t.integer  "local_transport_stand_id"
@@ -74,8 +74,16 @@ ActiveRecord::Schema.define(:version => 20131015133054) do
 
   add_index "in_proximity_ofs", ["hotel_id", "tourist_spot_id"], :name => "index_in_proximity_ofs_on_hotel_id_and_tourist_spot_id"
 
-# Could not dump table "local_transport_stands" because of following StandardError
-#   Unknown type 'local_transport_type' for column 'localTransport'
+  create_table "local_transport_stands", :force => true do |t|
+    t.float    "lattitude",     :null => false
+    t.float    "longitude",     :null => false
+    t.string   "name",          :null => false
+    t.string   "transportType"
+    t.string   "districtName",  :null => false
+    t.string   "stateName",     :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "map_points", :force => true do |t|
     t.float    "lattitude",    :null => false
@@ -112,8 +120,18 @@ ActiveRecord::Schema.define(:version => 20131015133054) do
 
   add_index "states", ["name"], :name => "index_states_on_name"
 
-# Could not dump table "tourist_spots" because of following StandardError
-#   Unknown type 'category_type' for column 'category'
+  create_table "tourist_spots", :force => true do |t|
+    t.float    "lattitude",    :null => false
+    t.float    "longitude",    :null => false
+    t.string   "name",         :null => false
+    t.float    "rating"
+    t.string   "category",     :null => false
+    t.text     "description"
+    t.string   "districtName", :null => false
+    t.string   "stateName",    :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "trips", :force => true do |t|
     t.integer  "user_id"
@@ -126,7 +144,15 @@ ActiveRecord::Schema.define(:version => 20131015133054) do
 
   add_index "trips", ["user_id", "startDate"], :name => "index_trips_on_user_id_and_startDate"
 
-# Could not dump table "users" because of following StandardError
-#   Unknown type 'role_type' for column 'role'
+  create_table "users", :force => true do |t|
+    t.string   "username",      :null => false
+    t.string   "role"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "password_hash"
+    t.string   "password_salt"
+  end
+
+  add_index "users", ["username"], :name => "index_users_on_username"
 
 end
