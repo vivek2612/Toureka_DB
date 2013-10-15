@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131007082815) do
+ActiveRecord::Schema.define(:version => 20131015122853) do
 
   create_table "closer_tos", :force => true do |t|
     t.integer  "local_transport_stand_id"
@@ -74,16 +74,8 @@ ActiveRecord::Schema.define(:version => 20131007082815) do
 
   add_index "in_proximity_ofs", ["hotel_id", "tourist_spot_id"], :name => "index_in_proximity_ofs_on_hotel_id_and_tourist_spot_id"
 
-  create_table "local_transport_stands", :force => true do |t|
-    t.float    "lattitude",     :null => false
-    t.float    "longitude",     :null => false
-    t.string   "name",          :null => false
-    t.string   "transportType"
-    t.string   "districtName",  :null => false
-    t.string   "stateName",     :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
+# Could not dump table "local_transport_stands" because of following StandardError
+#   Unknown type 'local_transport_type' for column 'localTransport'
 
   create_table "map_points", :force => true do |t|
     t.float    "lattitude",    :null => false

@@ -6,26 +6,26 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: toureka
+  database: newdatabase
   pool: 5
-  username: vedratn
-  password: truestory
+  username: shubham
+  password:
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
+development:
   adapter: postgresql
   encoding: unicode
-  database: toureka
+  database: newdatabase
   pool: 5
-  username: vedratn
-  password: truestory
+  username: shubham
+  password:
 
-production:
+development:
   adapter: postgresql
   encoding: unicode
-  database: toureka
+  database: newdatabase
   pool: 5
-  username: vedratn
-  password: truestory
+  username: shubham
+  password:
