@@ -15,4 +15,4 @@
 ./toureka/tmp
 
 #Ignoring database.yml 
-./toureka/config/database.yml 
+/toureka/config/database.yml 
