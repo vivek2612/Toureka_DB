@@ -23,7 +23,20 @@ class UsersController < ApplicationController
     if @user.role=="writer"
       render 'writer_show.html.erb'
     else
-      render 'show.html.erb'
+      @touristSpots = TouristSpot.all
+      @json = TouristSpot.all.to_gmaps4rails #do |touristSpot, marker|
+      #   # marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :character => character})
+      #   marker.picture({:picture => "assets/marker.png",
+      #                   :width => 32,
+      #                   :height => 32})
+      #   marker.title "#{touristSpot.name}"
+      #   #   marker.json({ :population => character.address})
+      # end
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @touristSpots }
+      end
+      # render 'show.html.erb'
     end
   end
 

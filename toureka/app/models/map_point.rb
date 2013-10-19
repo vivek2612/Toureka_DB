@@ -5,4 +5,6 @@ class MapPoint < ActiveRecord::Base
   validates_presence_of :stateName
   validates_presence_of :lattitude
   validates_presence_of :longitude
+
+  
 end
