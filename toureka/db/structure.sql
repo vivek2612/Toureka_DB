@@ -78,6 +78,38 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: buddies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE buddies (
+    id integer NOT NULL,
+    friend_id integer,
+    tourist_spot_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: buddies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE buddies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: buddies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE buddies_id_seq OWNED BY buddies.id;
+
+
+--
 -- Name: closer_tos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -644,6 +676,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY buddies ALTER COLUMN id SET DEFAULT nextval('buddies_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY closer_tos ALTER COLUMN id SET DEFAULT nextval('closer_tos_id_seq'::regclass);
 
 
@@ -750,6 +789,14 @@ ALTER TABLE ONLY trips ALTER COLUMN id SET DEFAULT nextval('trips_id_seq'::regcl
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: buddies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY buddies
+    ADD CONSTRAINT buddies_pkey PRIMARY KEY (id);
 
 
 --
@@ -1038,3 +1085,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131019153008');
 INSERT INTO schema_migrations (version) VALUES ('20131019164433');
 
 INSERT INTO schema_migrations (version) VALUES ('20131019213839');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019215403');
