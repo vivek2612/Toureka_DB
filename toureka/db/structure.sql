@@ -87,7 +87,8 @@ CREATE TABLE closer_tos (
     tourist_spot_id integer,
     distance integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT distancecheck2 CHECK ((distance >= 0))
 );
 
 
@@ -120,7 +121,8 @@ CREATE TABLE closest_hotels (
     hotel_id integer,
     distance integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT distancecheck4 CHECK ((distance >= 0))
 );
 
 
@@ -259,7 +261,8 @@ CREATE TABLE in_proximity_ofs (
     tourist_spot_id integer,
     distance integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT distancecheck1 CHECK ((distance >= 0))
 );
 
 
@@ -363,7 +366,8 @@ CREATE TABLE near_bies (
     local_transport_stand_id integer,
     distance integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT distancecheck3 CHECK ((distance >= 0))
 );
 
 
@@ -396,7 +400,9 @@ CREATE TABLE reviews (
     tourist_spot_id integer,
     review text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    rating double precision,
+    CONSTRAINT reviewratingchk CHECK (((rating >= (0)::double precision) AND (rating <= (10)::double precision)))
 );
 
 
@@ -475,7 +481,8 @@ CREATE TABLE tourist_spots (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     category category_type,
-    gmaps boolean
+    gmaps boolean,
+    CONSTRAINT ratingchk CHECK (((rating >= (0)::double precision) AND (rating <= (10)::double precision)))
 );
 
 
@@ -924,3 +931,9 @@ INSERT INTO schema_migrations (version) VALUES ('20131019133854');
 INSERT INTO schema_migrations (version) VALUES ('20131019134135');
 
 INSERT INTO schema_migrations (version) VALUES ('20131019134221');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019143239');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019145807');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019153008');
