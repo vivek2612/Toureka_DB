@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20131015152917) do
   add_index "districts", ["state_id", "name"], :name => "index_districts_on_state_id_and_name"
 
   create_table "entry_points", :force => true do |t|
-    t.float    "lattitude",    :null => false
+    t.float    "latitude",     :null => false
     t.float    "longitude",    :null => false
     t.string   "name",         :null => false
     t.string   "districtName", :null => false
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20131015152917) do
   end
 
   create_table "hotels", :force => true do |t|
-    t.float    "lattitude",    :null => false
+    t.float    "latitude",     :null => false
     t.float    "longitude",    :null => false
     t.string   "name",         :null => false
     t.text     "description"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(:version => 20131015152917) do
 #   Unknown type 'local_transport_type' for column 'localTransport'
 
   create_table "map_points", :force => true do |t|
-    t.float    "lattitude",    :null => false
+    t.float    "latitude",     :null => false
     t.float    "longitude",    :null => false
     t.string   "districtName", :null => false
     t.string   "stateName",    :null => false

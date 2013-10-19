@@ -1,7 +1,7 @@
 class CreateTouristSpots < ActiveRecord::Migration
   def change
     create_table :tourist_spots do |t|
-      t.float :lattitude
+      t.float :latitude
       t.float :longitude
       t.string :name
       t.float :rating

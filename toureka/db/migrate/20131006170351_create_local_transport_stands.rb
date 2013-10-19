@@ -1,7 +1,7 @@
 class CreateLocalTransportStands < ActiveRecord::Migration
   def change
     create_table :local_transport_stands do |t|
-      t.float :lattitude
+      t.float :latitude
       t.float :longitude
       t.string :name
       t.string :transportType

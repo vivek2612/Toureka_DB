@@ -1,7 +1,7 @@
 class CreateEntryPoints < ActiveRecord::Migration
   def change
     create_table :entry_points do |t|
-      t.float :lattitude
+      t.float :latitude
       t.float :longitude
       t.string :name
       t.string :entryType

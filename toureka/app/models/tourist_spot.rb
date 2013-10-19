@@ -1,6 +1,6 @@
 class TouristSpot < ActiveRecord::Base
   acts_as_gmappable
-  attr_accessible :category, :description, :districtName, :lattitude, :longitude, :name, :rating, :stateName
+  attr_accessible :category, :description, :districtName, :latitude, :longitude, :name, :rating, :stateName
 
   has_many :in_proximity_ofs
   has_many :hotels, through: :in_proximity_ofs
@@ -12,7 +12,7 @@ class TouristSpot < ActiveRecord::Base
 
   validates_presence_of :category
   validates_presence_of :districtName
-  validates_presence_of :lattitude
+  validates_presence_of :latitude
   validates_presence_of :longitude
   validates_presence_of :name
   validates_presence_of :stateName

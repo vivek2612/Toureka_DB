@@ -1,5 +1,5 @@
 class Hotel < ActiveRecord::Base
-  attr_accessible :description, :districtName, :lattitude, :longitude, :name, :stateName
+  attr_accessible :description, :districtName, :latitude, :longitude, :name, :stateName
 
   has_many :near_bies
   has_many :local_transport_stands, through: :near_bies
@@ -9,7 +9,7 @@ class Hotel < ActiveRecord::Base
 
   validates_presence_of :districtName
   validates_presence_of :stateName
-  validates_presence_of :lattitude
+  validates_presence_of :latitude
   validates_presence_of :longitude
   validates_presence_of :name
 end

@@ -1,5 +1,5 @@
 class LocalTransportStand < ActiveRecord::Base
-  attr_accessible :districtName, :lattitude, :longitude, :name, :stateName, :transportType
+  attr_accessible :districtName, :latitude, :longitude, :name, :stateName, :transportType
 
   has_many :near_bies
   has_many :hotels, through: :near_bies
@@ -9,7 +9,7 @@ class LocalTransportStand < ActiveRecord::Base
 
   validates_presence_of :districtName
   validates_presence_of :stateName
-  validates_presence_of :lattitude
+  validates_presence_of :latitude
   validates_presence_of :longitude
   validates_presence_of :name
   validates :transportType, :inclusion => { :in => ["metro", "bus"] }

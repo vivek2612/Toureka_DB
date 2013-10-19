@@ -181,7 +181,7 @@ ALTER SEQUENCE districts_id_seq OWNED BY districts.id;
 
 CREATE TABLE entry_points (
     id integer NOT NULL,
-    lattitude double precision NOT NULL,
+    latitude double precision NOT NULL,
     longitude double precision NOT NULL,
     name character varying(255) NOT NULL,
     "districtName" character varying(255) NOT NULL,
@@ -217,7 +217,7 @@ ALTER SEQUENCE entry_points_id_seq OWNED BY entry_points.id;
 
 CREATE TABLE hotels (
     id integer NOT NULL,
-    lattitude double precision NOT NULL,
+    latitude double precision NOT NULL,
     longitude double precision NOT NULL,
     name character varying(255) NOT NULL,
     description text,
@@ -286,7 +286,7 @@ ALTER SEQUENCE in_proximity_ofs_id_seq OWNED BY in_proximity_ofs.id;
 
 CREATE TABLE local_transport_stands (
     id integer NOT NULL,
-    lattitude double precision NOT NULL,
+    latitude double precision NOT NULL,
     longitude double precision NOT NULL,
     name character varying(255) NOT NULL,
     "districtName" character varying(255) NOT NULL,
@@ -322,7 +322,7 @@ ALTER SEQUENCE local_transport_stands_id_seq OWNED BY local_transport_stands.id;
 
 CREATE TABLE map_points (
     id integer NOT NULL,
-    lattitude double precision NOT NULL,
+    latitude double precision NOT NULL,
     longitude double precision NOT NULL,
     "districtName" character varying(255) NOT NULL,
     "stateName" character varying(255) NOT NULL,
@@ -462,7 +462,7 @@ ALTER SEQUENCE states_id_seq OWNED BY states.id;
 
 CREATE TABLE tourist_spots (
     id integer NOT NULL,
-    lattitude double precision NOT NULL,
+    latitude double precision NOT NULL,
     longitude double precision NOT NULL,
     name character varying(255) NOT NULL,
     rating double precision,

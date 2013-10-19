@@ -1,7 +1,7 @@
 class CreateHotels < ActiveRecord::Migration
   def change
     create_table :hotels do |t|
-      t.float :lattitude
+      t.float :latitude
       t.float :longitude
       t.string :name
       t.text :description

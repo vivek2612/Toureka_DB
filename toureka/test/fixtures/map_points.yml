@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  lattitude: 1.5
+  latitude: 1.5
   longitude: 1.5
   districtName: MyString
   stateName: MyString
 
 two:
-  lattitude: 1.5
+  latitude: 1.5
   longitude: 1.5
   districtName: MyString
   stateName: MyString
