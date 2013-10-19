@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015152917) do
+ActiveRecord::Schema.define(:version => 20131019130301) do
 
   create_table "closer_tos", :force => true do |t|
     t.integer  "local_transport_stand_id"

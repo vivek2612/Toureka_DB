@@ -1,6 +1,6 @@
 class TouristSpot < ActiveRecord::Base
   acts_as_gmappable
-  attr_accessible :category, :description, :districtName, :latitude, :longitude, :name, :rating, :stateName
+  attr_accessible :category, :description, :districtName, :latitude, :longitude, :name, :rating, :stateName, :gmaps
 
   has_many :in_proximity_ofs
   has_many :hotels, through: :in_proximity_ofs
@@ -19,7 +19,7 @@ class TouristSpot < ActiveRecord::Base
 
   validates :rating, :numericality => { :greater_than => 0, :less_than_or_equal_to => 10 }, :allow_nil => true
 
-  def gmap4rails_address
+  def gmaps4rails_address
     '#{id}'
   end
   def gmaps4rails_infowindow

@@ -1,5 +1,5 @@
 class LocalTransportStand < ActiveRecord::Base
-  attr_accessible :districtName, :latitude, :longitude, :name, :stateName, :transportType
+  attr_accessible :districtName, :latitude, :longitude, :name, :stateName, :transportType, :gmaps
 
   has_many :near_bies
   has_many :hotels, through: :near_bies

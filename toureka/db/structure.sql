@@ -188,7 +188,8 @@ CREATE TABLE entry_points (
     "stateName" character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    "entryType" entry_point_type
+    "entryType" entry_point_type,
+    gmaps boolean
 );
 
 
@@ -224,7 +225,8 @@ CREATE TABLE hotels (
     "districtName" character varying(255) NOT NULL,
     "stateName" character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    gmaps boolean
 );
 
 
@@ -293,7 +295,8 @@ CREATE TABLE local_transport_stands (
     "stateName" character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    "localTransport" local_transport_type
+    "localTransport" local_transport_type,
+    gmaps boolean
 );
 
 
@@ -471,7 +474,8 @@ CREATE TABLE tourist_spots (
     "stateName" character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    category category_type
+    category category_type,
+    gmaps boolean
 );
 
 
@@ -912,3 +916,11 @@ INSERT INTO schema_migrations (version) VALUES ('20131015144100');
 INSERT INTO schema_migrations (version) VALUES ('20131015150007');
 
 INSERT INTO schema_migrations (version) VALUES ('20131015152917');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019130301');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019133854');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019134135');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019134221');
