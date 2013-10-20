@@ -6,7 +6,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: newdb
+  database: toureka
   pool: 5
   username: 
   password:
@@ -17,7 +17,7 @@ development:
 development:
   adapter: postgresql
   encoding: unicode
-  database: newdb
+  database: toureka
   pool: 5
   username: 
   password:
@@ -25,7 +25,7 @@ development:
 development:
   adapter: postgresql
   encoding: unicode
-  database: newdb
+  database: toureka
   pool: 5
   username: 
   password:
