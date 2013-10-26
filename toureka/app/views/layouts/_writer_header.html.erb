@@ -1,4 +1,12 @@
-<div style="background-color:grey; height: 40px; width:100%; padding:5px">
-	<h2 align="left" style="font-size:40px; display:inline-block; color:white; width:95%; margin-top:10px ">TOUREKA</h2>
-	<a class="whitebutton" href="/signout" style="margin-top:9px; position:absolute;">signout</a>
-</div>
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to "Toureka", '#', id: "logo" %>
+      <nav>
+        <ul class="nav pull-right">
+          <li><%= link_to "Sign out", 'signout_path' %></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
