@@ -11,6 +11,20 @@
     <![endif]-->
   </head>
   <body>
+    <header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <h3><%= link_to "Toureka", '#', id: "logo" %></h3>
+          <nav>
+            <ul class="nav pull-right">
+              <li><%= link_to "Home",    '#' %></li>
+              <li><%= link_to "Help",    '#' %></li>
+              <li><%= link_to "Sign in", '#' %></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
     <div class="container">
       <%= yield %>
     </div>

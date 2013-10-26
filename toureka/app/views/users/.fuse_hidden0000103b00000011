@@ -1,4 +1,5 @@
 
 <%= render 'layouts/header2' %>
-<br>
+<h4> Signin Successfull <%=@user.username%> </h4>
+
 <div align="right"><%= gmaps4rails(@json) %></div>

@@ -1,9 +1,15 @@
 <div class="center hero-unit">
   <h1>Welcome to Toureka</h1>
+
+  <h2>
+    This is the home page for
+     <%= link_to "Toureka", '/' %>
+  </h2>
+
 </div>
 <br>
 
-<%= render 'layouts/header1' %>
+
 <h1>Sign in</h1>
 <div class="row">
     <%= form_for(:session, url: sessions_path) do |f| %>

@@ -3,13 +3,13 @@
 </div>
 <br>
 
-<%= render 'layouts/header1' %>
+
 <h1>Sign in</h1>
 <div class="row">
     <%= form_for(:session, url: sessions_path) do |f| %>
 
-      <%= f.label :username %>
-      <%= f.text_field :username %>
+      <%= f.label :username 
+       f.text_field :username %>
 
       <%= f.label :password %>
       <%= f.password_field :password %>

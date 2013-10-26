@@ -40,3 +40,4 @@ gem 'gmaps4rails'
 
 # To use debugger
 # gem 'debugger'
+gem 'bootstrap-sass', '2.3.2.0'
