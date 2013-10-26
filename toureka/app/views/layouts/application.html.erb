@@ -27,9 +27,43 @@
   };     
 
   $('#addEntryPoint').click(function(){
-      div1='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Latitude"><input type="text" class="input-medium search-query" placeholder="Longitude"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)"" id="deleteEntryPoint" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
-      $('.addEntryPoint').prepend(div1);   
-      EntryPointCount++;                     
+      div1='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Latitude"><input type="text" class="input-medium search-query" placeholder="Longitude"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.addEntryPoint').prepend(div1);                         
   });
+
+  $('#deleteEntryPoint').click(function(){
+      div2='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.deleteEntryPoint').prepend(div2);                         
+  });
+
+   $('#addTouristSpot').click(function(){
+      div3='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-small search-query" placeholder="Name"><input type="text" class="input-small search-query" placeholder="Latitude"><input type="text" class="input-small search-query" placeholder="Longitude"><input type="text" class="input-small search-query" placeholder="Discription"><input type="text" class="input-small search-query" placeholder="Category"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.addTouristSpot').prepend(div3);                         
+  });
+
+  $('#deleteTouristSpot').click(function(){
+      div4='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Category"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.deleteTouristSpot').prepend(div4);                         
+  });
+
+  $('#addHotel').click(function(){
+      div5='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Latitude"><input type="text" class="input-medium search-query" placeholder="Longitude"><input type="text" class="input-medium search-query" placeholder="Discription"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.addHotel').prepend(div5);                         
+  });
+
+  $('#deleteHotel').click(function(){
+      div6='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-large search-query" placeholder="Name"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.deleteHotel').prepend(div6);                         
+  });
+
+   $('#addTransportStand').click(function(){
+      div7='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Latitude"><input type="text" class="input-medium search-query" placeholder="Longitude"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.addTransportStand').prepend(div7);                         
+  });
+
+  $('#deleteTransportStand').click(function(){
+      div8='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.deleteTransportStand').prepend(div8);   
+  });  
 
 </script>
