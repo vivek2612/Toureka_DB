@@ -73,9 +73,64 @@ CREATE TYPE role_type AS ENUM (
 );
 
 
+--
+-- Name: my_trigger_function(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION my_trigger_function() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+		BEGIN
+		IF NOT EXISTS(
+			  	select count(*) from map_points as m1,map_points as m2,state_bounded_bies as s  					
+	  			where  					
+	  			(m1.id=NEW.top_left_corner_id and NEW.state_id=s.id and m2.id=s.top_left_corner_id and m1.latitude>m2.latitude and m1.longitude < m2.longitude)
+	  			and  					
+	  			(m1.id=NEW.right_bottom_corner_id and NEW.state_id=s.id and m2.id=s.right_bottom_corner_id and m1.latitude<m2.latitude and m1.longitude > m2.longitude)
+			  ) 
+		THEN RETURN NULL;
+		  END IF;
+
+		
+		  RETURN NEW;
+		END$$;
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: buddies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE buddies (
+    id integer NOT NULL,
+    friend_id integer,
+    tourist_spot_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: buddies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE buddies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: buddies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE buddies_id_seq OWNED BY buddies.id;
+
 
 --
 -- Name: closer_tos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -143,6 +198,40 @@ CREATE SEQUENCE closest_hotels_id_seq
 --
 
 ALTER SEQUENCE closest_hotels_id_seq OWNED BY closest_hotels.id;
+
+
+--
+-- Name: district_bounded_bies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE district_bounded_bies (
+    id integer NOT NULL,
+    state_id integer,
+    district_id integer,
+    top_left_corner_id integer,
+    bottom_right_corner_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: district_bounded_bies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE district_bounded_bies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: district_bounded_bies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE district_bounded_bies_id_seq OWNED BY district_bounded_bies.id;
 
 
 --
@@ -330,8 +419,8 @@ CREATE TABLE map_points (
     id integer NOT NULL,
     latitude double precision NOT NULL,
     longitude double precision NOT NULL,
-    "districtName" character varying(255) NOT NULL,
-    "stateName" character varying(255) NOT NULL,
+    "districtName" character varying(255),
+    "stateName" character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -432,6 +521,39 @@ ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
 );
+
+
+--
+-- Name: state_bounded_bies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE state_bounded_bies (
+    id integer NOT NULL,
+    state_id integer,
+    top_left_corner_id integer,
+    bottom_right_corner_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: state_bounded_bies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE state_bounded_bies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: state_bounded_bies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE state_bounded_bies_id_seq OWNED BY state_bounded_bies.id;
 
 
 --
@@ -577,6 +699,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY buddies ALTER COLUMN id SET DEFAULT nextval('buddies_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY closer_tos ALTER COLUMN id SET DEFAULT nextval('closer_tos_id_seq'::regclass);
 
 
@@ -585,6 +714,13 @@ ALTER TABLE ONLY closer_tos ALTER COLUMN id SET DEFAULT nextval('closer_tos_id_s
 --
 
 ALTER TABLE ONLY closest_hotels ALTER COLUMN id SET DEFAULT nextval('closest_hotels_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY district_bounded_bies ALTER COLUMN id SET DEFAULT nextval('district_bounded_bies_id_seq'::regclass);
 
 
 --
@@ -647,6 +783,13 @@ ALTER TABLE ONLY reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY state_bounded_bies ALTER COLUMN id SET DEFAULT nextval('state_bounded_bies_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
 
 
@@ -672,6 +815,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: buddies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY buddies
+    ADD CONSTRAINT buddies_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: closer_tos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -685,6 +836,14 @@ ALTER TABLE ONLY closer_tos
 
 ALTER TABLE ONLY closest_hotels
     ADD CONSTRAINT closest_hotels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: district_bounded_bies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY district_bounded_bies
+    ADD CONSTRAINT district_bounded_bies_pkey PRIMARY KEY (id);
 
 
 --
@@ -749,6 +908,14 @@ ALTER TABLE ONLY near_bies
 
 ALTER TABLE ONLY reviews
     ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: state_bounded_bies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY state_bounded_bies
+    ADD CONSTRAINT state_bounded_bies_pkey PRIMARY KEY (id);
 
 
 --
@@ -937,3 +1104,11 @@ INSERT INTO schema_migrations (version) VALUES ('20131019143239');
 INSERT INTO schema_migrations (version) VALUES ('20131019145807');
 
 INSERT INTO schema_migrations (version) VALUES ('20131019153008');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019164433');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019212422');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019213839');
+
+INSERT INTO schema_migrations (version) VALUES ('20131019215403');

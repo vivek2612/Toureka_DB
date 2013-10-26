@@ -4,7 +4,12 @@ Toureka::Application.routes.draw do
   match '/',  to: 'welcome#index'
   match '/signup', to: 'users#new'
   match '/signout', to: 'sessions#destroy'
-
+  resources :users do
+    member do
+      get 'writer_district'
+      get 'writer_final'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
