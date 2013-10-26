@@ -40,6 +40,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def writer_district
+    @user = User.find(params[:id])
+  end
 
+  def writer_final
+    @user = User.find(params[:id])
+  end
 
 end

@@ -6,10 +6,10 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: newdb
+  database: toureka
   pool: 5
-  username: 
-  password:
+  username: vedratn
+  password: truestory
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,15 +17,15 @@ development:
 development:
   adapter: postgresql
   encoding: unicode
-  database: newdb
+  database: toureka
   pool: 5
-  username: 
-  password:
-
+  username: vedratn
+  password: truestory
+  
 development:
   adapter: postgresql
   encoding: unicode
-  database: newdb
+  database: toureka
   pool: 5
-  username: 
-  password:
+  username: vedratn
+  password: truestory
