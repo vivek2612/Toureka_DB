@@ -1,3 +1,7 @@
-<div style="background-color:#F2F2F2; height: 40px; width:100%; padding:5px">
-	<h2 align="center" style="font-size:40px; color:white; margin-top:10px "><%= link_to "I'M DONE", user_path(@user) %></h2>
-</div>
+<header class="navbar navbar-fixed-top navbar-inverse secondnavbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to "I'M DONE", user_path(@user), id: "logo", class: "centerHeading" %>
+    </div>
+  </div>
+</header>
