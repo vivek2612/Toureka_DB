@@ -80,9 +80,12 @@ p {
   width : 40%;
 }
 
-.secondnavbar
-{
+.secondnavbar{
   top:  40px;
+  .navbar-inner {
+    background-color: #666666;
+    background-image: none;
+  }
 }
 
 .thirdnavbar
