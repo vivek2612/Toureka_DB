@@ -1,4 +1,4 @@
-<% provide(:title, "StateAddition")	%>
+<% provide(:title, "DistrictAddition")	%>
 	
 <%= render 'layouts/writer_header' %>
 
@@ -11,7 +11,7 @@
   <div class="row-fluid">
 
     <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="State Name">
+      <input type="text" class="input-small search-query" placeholder="District Name">
     </div>
 
  
@@ -36,7 +36,7 @@
       </div>
 
        <div class="span3">
-        <button class="btn" type="button" style="width:200px">Add New State</button>
+        <button class="btn" type="button" style="width:200px">Add New District</button>
       </div>
     </div>              
   </div>
@@ -49,12 +49,12 @@
   <div class="row-fluid">
 
     <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="State Name">
+      <input type="text" class="input-small search-query" placeholder="District Name">
     </div>
 
    
      <div class="span3" style="margin-left:660px">
-      <button class="btn" type="button" style="width:200px" >Add New State</button>
+      <button class="btn" type="button" style="width:200px" >Add To Existing District</button>
     </div>
              
   </div>
@@ -67,7 +67,7 @@
   <div class="row-fluid">
 
     <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="State Name">
+      <input type="text" class="input-small search-query" placeholder="District Name">
     </div>
 
  
@@ -92,12 +92,12 @@
       </div>
 
        <div class="span3">
-        <button class="btn" type="button" style="width:200px">Modify Existing State</button>
+        <button class="btn" type="button" style="width:200px">Modify Existing District</button>
       </div>
     </div>              
   </div>
 </div>
 </div>
 
-
+<%= link_to "entity", "/users/#{@user.id}/writer_final"%>
 

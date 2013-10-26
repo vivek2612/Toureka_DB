@@ -9,6 +9,8 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+   
   </head>
   <body>
     <div class="container">
@@ -17,3 +19,17 @@
     </div>
   </body>
 </html>
+<script>
+  var EntryPointCount=0;
+
+  function deleteFunc(param){
+    $(param).parent().remove(); 
+  };     
+
+  $('#addEntryPoint').click(function(){
+      div1='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Latitude"><input type="text" class="input-medium search-query" placeholder="Longitude"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)"" id="deleteEntryPoint" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+      $('.addEntryPoint').prepend(div1);   
+      EntryPointCount++;                     
+  });
+
+</script>
