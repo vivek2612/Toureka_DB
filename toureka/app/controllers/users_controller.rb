@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     if @user.role=="writer"
+      @stateName = State.pluck(:name);
       render 'writer_show.html.erb'
     else
       @touristSpots = TouristSpot.all
@@ -41,10 +42,15 @@ class UsersController < ApplicationController
   end
 
   def writer_district
+    @districtName = District.pluck(:name);
     @user = User.find(params[:id])
   end
 
   def writer_final
+    @TSName = TouristSpot.pluck(:name);
+    @EPName = EntryPoint.pluck(:name);
+    @LTSName = LocalTransportStand.pluck(:name);
+    @HName = Hotel.pluck(:name);
     @user = User.find(params[:id])
   end
 

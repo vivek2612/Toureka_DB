@@ -47,7 +47,7 @@
   <div class="row-fluid">
 
     <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="State Name">
+      <input type="text" class="input-small search-query" id="state1" placeholder="State Name">
     </div>
 
    
@@ -65,7 +65,7 @@
   <div class="row-fluid">
 
     <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="State Name">
+      <input type="text" class="input-small search-query" id="state2" placeholder="State Name">
     </div>
 
  
@@ -99,3 +99,16 @@
 
 
 <%= link_to "District", "/users/#{@user.id}/writer_district"%>
+
+
+
+<script>
+  $(function(){
+    $("#state1").autocomplete({
+      source: <%= raw @stateName %>
+    });
+    $("#state2").autocomplete({
+      source: <%= raw @stateName %>
+    });
+  });
+</script>
