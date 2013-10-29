@@ -1,55 +1,63 @@
-<% provide(:title, "StateAddition")	%>
-	
+<% provide(:title, "EntityAddition")	%>
+
 <%= render 'layouts/writer_header' %>
 
 <%= render 'layouts/writer_header2' %>
 
-<div class="container" >
 
-	<div  style="background-color:#777777;border-radius:20px;margin:20px;margin-top:40px">
+<form role="form" action=<%="/users/#{@user.id}/writer_done"%> method="get">
+	<div class="container" >
 
-		<div class="addEntryPoint" >
-			<button id="addEntryPoint" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px;">ADD/MODIFY ENTRY POINTS</button>
+		<div  style="background-color:#777777;border-radius:20px;margin:20px;margin-top:40px">
+
+			<div class="addEntryPoint" >
+				<button id="addEntryPoint" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px;">ADD/MODIFY ENTRY POINTS</button>
+			</div>
+
+			<div class="deleteEntryPoint" >
+				<button id="deleteEntryPoint" class="btn" type="button" style="width:300px;height:30px;margin:10px;margin-left:300px;">DELETE ENTRY POINTS</button>
+			</div>
 		</div>
-		
-		<div class="deleteEntryPoint" >
-			<button id="deleteEntryPoint" class="btn" type="button" style="width:300px;height:30px;margin:10px;margin-left:300px;">DELETE ENTRY POINTS</button>
+
+		<div  style="background-color:#777777;border-radius:20px;margin:20px;margin-top:30px">
+
+			<div class="addTouristSpot" >
+				<button id="addTouristSpot" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">ADD/MODIFY TOURIST SPOTS</button>
+			</div>
+
+			<div class="deleteTouristSpot" >
+				<button id="deleteTouristSpot"  class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">DELETE TOURIST SPOTS</button>
+			</div>
+
+
+		</div>
+
+		<div   style="background-color:#777777;border-radius:20px;margin:20px;margin-top:30px">
+
+			<div class="addHotel" >
+				<button id="addHotel" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">ADD/MODIFY HOTELS</button>
+			</div>	
+
+			<div class="deleteHotel" >
+				<button id="deleteHotel" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">DELETE HOTELS</button>
+			</div>
+		</div>
+
+		<div style="background-color:#777777;border-radius:20px;margin:20px;margin-top:30px">
+
+			<div class="addTransportStand" >
+				<button id="addTransportStand" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">ADD/MODIFY TRANSPORT STANDS</button>
+			</div>
+
+			<div class="deleteTransportStand" >
+				<button id="deleteTransportStand" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">DELETE TRANSPORT STANDS</button>
+			</div>
+		</div>
+		<div class="span3">
+		<button class="btn" type="submit" style="width:200px">SUBMIT</button>
 		</div>
 	</div>
+</form>
 
-	<div  style="background-color:#777777;border-radius:20px;margin:20px;margin-top:30px">
 
-		<div class="addTouristSpot" >
-			<button id="addTouristSpot" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">ADD/MODIFY TOURIST SPOTS</button>
-		</div>
-
-		<div class="deleteTouristSpot" >
-			<button id="deleteTouristSpot"  class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">DELETE TOURIST SPOTS</button>
-		</div>
-
-		
-	</div>
-
-	<div   style="background-color:#777777;border-radius:20px;margin:20px;margin-top:30px">
-
-		<div class="addHotel" >
-			<button id="addHotel" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">ADD/MODIFY HOTELS</button>
-		</div>	
-
-		<div class="deleteHotel" >
-			<button id="deleteHotel" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">DELETE HOTELS</button>
-		</div>
-	</div>
-
-	<div style="background-color:#777777;border-radius:20px;margin:20px;margin-top:30px">
-
-		<div class="addTransportStand" >
-			<button id="addTransportStand" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">ADD/MODIFY TRANSPORT STANDS</button>
-		</div>
-
-		<div class="deleteTransportStand" >
-			<button id="deleteTransportStand" class="btn" type="button" style="width:300px;margin:10px;margin-left:300px;height:30px">DELETE TRANSPORT STANDS</button>
-		</div>
-	</div>
-
-</div>
+<%= link_to "entity", "/users/#{@user.id}/writer_done"%>

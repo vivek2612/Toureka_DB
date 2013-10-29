@@ -6,8 +6,9 @@ Toureka::Application.routes.draw do
   match '/signout', to: 'sessions#destroy'
   resources :users do
     member do
-      get 'writer_district'
+      get 'writer_district' 
       get 'writer_final'
+      get 'writer_done'
     end
   end
 

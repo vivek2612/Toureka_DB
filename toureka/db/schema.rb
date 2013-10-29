@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131019130301) do
+ActiveRecord::Schema.define(:version => 20131019215403) do
+
+  create_table "buddies", :force => true do |t|
+    t.integer  "friend_id"
+    t.integer  "tourist_spot_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "closer_tos", :force => true do |t|
     t.integer  "local_transport_stand_id"
@@ -33,6 +40,15 @@ ActiveRecord::Schema.define(:version => 20131019130301) do
 
   add_index "closest_hotels", ["entry_point_id", "hotel_id"], :name => "closest_hotels_index"
 
+  create_table "district_bounded_bies", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "district_id"
+    t.integer  "top_left_corner_id"
+    t.integer  "bottom_right_corner_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+  end
+
   create_table "districts", :force => true do |t|
     t.integer  "state_id"
     t.string   "name",       :null => false
@@ -51,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20131019130301) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.integer  "entryType"
+    t.boolean  "gmaps"
   end
 
   create_table "hotels", :force => true do |t|
@@ -62,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20131019130301) do
     t.string   "stateName",    :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.boolean  "gmaps"
   end
 
   create_table "in_proximity_ofs", :force => true do |t|
@@ -80,8 +98,8 @@ ActiveRecord::Schema.define(:version => 20131019130301) do
   create_table "map_points", :force => true do |t|
     t.float    "latitude",     :null => false
     t.float    "longitude",    :null => false
-    t.string   "districtName", :null => false
-    t.string   "stateName",    :null => false
+    t.string   "districtName"
+    t.string   "stateName"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
@@ -102,6 +120,15 @@ ActiveRecord::Schema.define(:version => 20131019130301) do
     t.text     "review",          :null => false
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.float    "rating"
+  end
+
+  create_table "state_bounded_bies", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "top_left_corner_id"
+    t.integer  "bottom_right_corner_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
   create_table "states", :force => true do |t|

@@ -1,103 +1,110 @@
 <% provide(:title, "DistrictAddition")	%>
-	
+
 <%= render 'layouts/writer_header' %>
 
 <%= render 'layouts/writer_header2' %>
 
 <%= render 'layouts/writer_header3', whatToAdd: "District" %>
 
+<form role="form1" action=<%="/users/#{@user.id}/writer_final"%> method="get">
 <div class="row-fluid"style="background:#444444;border-radius:10px;margin-top: 110px;">
-<div class="span12" style="margin:20px;margin-left:40px">
-  <div class="row-fluid">
+  <div class="span12" style="margin:20px;margin-left:40px">
+    <div class="row-fluid">
 
-    <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="District Name">
-    </div>
-
- 
-    <div class="row-fluid offset2" style="">
-      <div class="span3">
-        <input type="text" class="input-medium search-query" placeholder="Top Left Latitude">
+      <div class="span2">
+        <input type="text" class="input-small search-query" name="DN1" placeholder="District Name">
       </div>
 
-      <div class="span3" style="margin-left=0px">
-        <input type="text" class="input-medium search-query" placeholder="Top Left Longitude">
-      </div>
+
+      <div class="row-fluid offset2" style="">
+        <div class="span3">
+          <input type="text" class="input-medium search-query" name="TLLat1" placeholder="Top Left Latitude">
+        </div>
+
+        <div class="span3" style="margin-left=0px">
+          <input type="text" class="input-medium search-query" name="TLLong1" placeholder="Top Left Longitude">
+        </div>
       </br>
     </div>
 
     <div class="row-fluid offset2" style="margin-top:20px">
       <div class="span3">
-        <input type="text" class="input-medium search-query" placeholder="Right Bottom Latitude">
+        <input type="text" class="input-medium search-query" name="BRLat1" placeholder="Right Bottom Latitude">
       </div>
 
       <div class="span3">
-        <input type="text" class="input-medium search-query" placeholder="Right Bottom Longitude">
+        <input type="text" class="input-medium search-query" name="BRLong1" placeholder="Right Bottom Longitude">
       </div>
 
-       <div class="span3">
-        <button class="btn" type="button" style="width:200px">Add New District</button>
+      <div class="span3">
+        <button class="btn" type="submit" style="width:200px">Add New District</button>
       </div>
     </div>              
   </div>
 </div>
 </div>
+</form>
 
 </br>
+
+<form role="form2" action=<%="/users/#{@user.id}/writer_final"%> method="get">
 <div class="row-fluid"style="background:#444444;border-radius:10px">
-<div class="span12" style="margin:20px;margin-left:40px">
-  <div class="row-fluid">
+  <div class="span12" style="margin:20px;margin-left:40px">
+    <div class="row-fluid">
 
-    <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="District Name">
-    </div>
+      <div class="span2">
+        <input type="text" class="input-small search-query" name="DN2" placeholder="District Name">
+      </div>
 
-   
-     <div class="span3" style="margin-left:660px">
-      <button class="btn" type="button" style="width:200px" >Add To Existing District</button>
+
+      <div class="span3" style="margin-left:660px">
+        <button class="btn" type="button" style="width:200px" >Add To Existing District</button>
+      </div>
+
     </div>
-             
   </div>
 </div>
-</div>
+</form>
 
 </br>
+<form role="form3" action=<%="/users/#{@user.id}/writer_final"%> method="get">
 <div class="row-fluid"style="background:#444444;border-radius:10px">
-<div class="span12" style="margin:20px;margin-left:40px">
-  <div class="row-fluid">
+  <div class="span12" style="margin:20px;margin-left:40px">
+    <div class="row-fluid">
 
-    <div class="span2">
-      <input type="text" class="input-small search-query" placeholder="District Name">
-    </div>
-
- 
-    <div class="row-fluid offset2" style="">
-      <div class="span3">
-        <input type="text" class="input-medium search-query" placeholder="Top Left Latitude">
+      <div class="span2">
+        <input type="text" class="input-small search-query" name="DN3" placeholder="District Name">
       </div>
 
-      <div class="span3" style="margin-left=0px">
-        <input type="text" class="input-medium search-query" placeholder="Top Left Longitude">
-      </div>
+
+      <div class="row-fluid offset2" style="">
+        <div class="span3">
+          <input type="text" class="input-medium search-query" name="TLLat3" placeholder="Top Left Latitude">
+        </div>
+
+        <div class="span3" style="margin-left=0px">
+          <input type="text" class="input-medium search-query" name="TLLong3" placeholder="Top Left Longitude">
+        </div>
       </br>
     </div>
 
     <div class="row-fluid offset2" style="margin-top:20px">
       <div class="span3">
-        <input type="text" class="input-medium search-query" placeholder="Right Bottom Latitude">
+        <input type="text" class="input-medium search-query" name="BRLat3" placeholder="Right Bottom Latitude">
       </div>
 
       <div class="span3">
-        <input type="text" class="input-medium search-query" placeholder="Right Bottom Longitude">
+        <input type="text" class="input-medium search-query" name="BRLong3" placeholder="Right Bottom Longitude">
       </div>
 
-       <div class="span3">
-        <button class="btn" type="button" style="width:200px">Modify Existing District</button>
+      <div class="span3">
+        <button class="btn" type="submit" style="width:200px">Modify Existing District</button>
       </div>
     </div>              
   </div>
 </div>
 </div>
+</form>
 
 <%= link_to "entity", "/users/#{@user.id}/writer_final"%>
 
