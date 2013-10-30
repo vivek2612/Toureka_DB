@@ -52,38 +52,38 @@ class UsersController < ApplicationController
         m2=MapPoint.create(:latitude=>params[:BRLat1], :longitude=>params[:BRLong1])
         StateBoundedBy.create(:state_id=>s.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
       end
-      @stateName = State.find(:name=>params[:SN1]).name
+      @stateName = State.where(:name=>params[:SN1])[0].name
       session[:stateName]=@stateName
     elsif params[:SN2] # ADD TO EXISTING STATE
       unless State.exists?(:name=>params[:SN2])
         flash[:error] = "State didn't already exist ! Add a new state"
-        @stateName = State.pluck(:name);
-        render 'writer_show.html.erb'
+        redirect_to "/users/#{params[:id]}"
+      else
+        @stateName = State.where(:name=>params[:SN2])[0].name
+        session[:stateName]=@stateName
       end
-      @stateName = State.where(:name=>params[:SN2])[0].name
-      session[:stateName]=@stateName
     elsif params[:SN3] # MODIFY EXISTING AND ADD TO IT
       if State.exists?(:name=>params[:SN3])
-        s = State.find(:name=>params[:SN3])
-        sbb=StateBoundedBy.find(:state_id=>State.find(:name=>params[:SN3]).id)
-        sbb.top_left_corner.delete
-        sbb.bottom_right_corner.delete
-        sbb.delete
+        s = State.where(:name=>params[:SN3])[0]
+        sbb=StateBoundedBy.where(:state_id=>State.where(:name=>params[:SN3])[0].id)[0]
+        if !sbb.nil?
+          sbb.destroy
+        end
         m1=MapPoint.create(:latitude=>params[:TLLat3], :longitude=>params[:TLLong3])
         m2=MapPoint.create(:latitude=>params[:BRLat3], :longitude=>params[:BRLong3])
         StateBoundedBy.create(:state_id=>s.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
-        @stateName = State.find(:name=>params[:SN3]).name
+        @stateName = s.name
         session[:stateName]=@stateName
       else
         flash[:error]="State doesn't exist"
-        @stateName = State.pluck(:name);
-        render 'writer_show.html.erb'
+        redirect_to "/users/#{params[:id]}"
       end
     end
     @districtName = District.where(:state_id=>State.where(:name=>session[:stateName])[0].id).pluck(:name);
   end
 
   def writer_final
+    @user = User.find(params[:id])
     stateIdNow = State.where(:name=>session[:stateName])[0].id
     if params[:DN1] # ADD NEW DISTRICT
       if District.exists?(:name=>params[:DN1], :state_id=>stateIdNow)
@@ -98,10 +98,10 @@ class UsersController < ApplicationController
     elsif params[:DN2] # ADD TO EXISTING STATE
       unless District.exists?(:name=>params[:DN2], :state_id=>stateIdNow)
         flash[:error] = "district didn't already exist !Get its location info Add a new district"
-        @districtName = District.where(:state_id=>stateIdNow).map{|x| x.name};
-        render 'writer_district.html.erb'
+        redirect_to "/users/#{@user.id}/writer_district"
+      else
+        session[:districtName]=params[:DN2]
       end
-      session[:districtName]=params[:DN2]
     elsif params[:DN3] # MODIFY EXISTING AND ADD TO IT
       if District.exists?(:name=>params[:DN3], :state_id=>stateIdNow)
         d = District.where(:name=>params[:DN3], :state_id=>stateIdNow)[0]
@@ -123,7 +123,6 @@ class UsersController < ApplicationController
     @EP=EntryPoint.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name)
     @LTS = LocalTransportStand.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name);
     @H = Hotel.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name);
-    @user = User.find(params[:id])
   end
 
   def writer_done
@@ -367,7 +366,7 @@ class UsersController < ApplicationController
       end
       i+=2
     end
-    
+
     flash[:notice]="DONE!"
     redirect_to "/users/#{params[:id]}"
   end

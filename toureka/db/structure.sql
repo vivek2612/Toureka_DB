@@ -206,7 +206,6 @@ ALTER SEQUENCE closest_hotels_id_seq OWNED BY closest_hotels.id;
 
 CREATE TABLE district_bounded_bies (
     id integer NOT NULL,
-    state_id integer,
     district_id integer,
     top_left_corner_id integer,
     bottom_right_corner_id integer,
