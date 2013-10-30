@@ -14,6 +14,20 @@
    
   </head>
   <body>
+    <% if !flash[:notice].nil? %>
+    <div class="row">
+        <div class="flash notice col-xs-12">
+            <%= flash[:notice] %>
+        </div>
+    </div>
+    <% end %>
+    <% if !flash[:error].nil? %>
+    <div class="row">
+        <div class="flash error col-xs-12">
+            <%= flash[:error] %>
+        </div>
+    </div>
+    <% end %>
     <div class="container">
       <%= yield %>
       <%= yield :scripts%>
