@@ -1,4 +1,35 @@
 
 <%= render 'layouts/header2' %>
 <br>
-<div align="right"><%= gmaps4rails(@json) %></div>
+<div id="mapWalaContainer" align="right"><%= gmaps4rails(@json1) %></div>
+<script>
+
+	$(document).ready(function() {
+		$('#hotelTab').click(function (event) {
+		 //  	Gmaps.map.callback = function() {
+   //    		_.each(Gmaps.map.markers, function(marker) {
+   //      		Gmaps.map.hideMarker(marker);
+   //    		})
+   //    	}
+		 //  // alert('chu chu!');
+			// // console.log(Gmaps.map.markers);
+			// _.each(Gmaps.map.markers, function(marker) {
+   //      		Gmaps.map.hideMarker(marker);
+   //    })
+			// $('#mapWalaContainer').contents().remove();
+			// $('#mapWalaContainer').html();
+			markers = <%=raw(@json2)%>
+			Gmaps.map.replaceMarkers(markers)
+		  event.preventDefault(); // Prevent link from following its href
+		});
+		
+		$('#epTab').click(function (event) {
+		  alert('chu chu!');
+		  event.preventDefault(); // Prevent link from following its href
+		});
+
+
+    
+  });
+
+</script>

@@ -21,18 +21,29 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     if @user.role=="writer"
-      @stateName = State.pluck(:name);
+      @stateName = State.pluck(:name);  
       render 'writer_show.html.erb'
     else
       @touristSpots = TouristSpot.all
-      @json = TouristSpot.all.to_gmaps4rails #do |touristSpot, marker|
-      #   # marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :character => character})
-      #   marker.picture({:picture => "assets/marker.png",
-      #                   :width => 32,
-      #                   :height => 32})
-      #   marker.title "#{touristSpot.name}"
-      #   #   marker.json({ :population => character.address})
-      # end
+      @hotels = Hotel.all
+      @json1 = TouristSpot.all.to_gmaps4rails do |touristSpot, marker|
+        marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
+        marker.picture({:picture => "../../assets/marker.png",
+                        :width => 32,
+                        :height => 32})
+        marker.title "#{touristSpot.name}"
+        #   marker.json({ :population => character.address})
+      end
+
+      @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
+        marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        # marker.picture({:picture => "../../assets/marker2.png",
+        #                 :width => 32,
+        #                 :height => 32})
+        marker.title "#{hotel.name}"
+        #   marker.json({ :population => character.address})
+      end
+
       respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @touristSpots }
