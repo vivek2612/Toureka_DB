@@ -16,15 +16,15 @@
   </head>
   <body>
     <% if !flash[:notice].nil? %>
-    <div class="row">
-        <div class="flash notice col-xs-12">
+    <div class="row container">
+        <div class="flash notice alert">
             <%= flash[:notice] %>
         </div>
     </div>
     <% end %>
     <% if !flash[:error].nil? %>
-    <div class="row">
-        <div class="flash error col-xs-12">
+    <div class="row container">
+        <div class="flash error alert">
             <%= flash[:error] %>
         </div>
     </div>
