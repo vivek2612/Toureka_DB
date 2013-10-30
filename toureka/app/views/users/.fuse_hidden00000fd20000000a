@@ -1,3 +1,0 @@
-<h4> Signin Successfull <%=@user.username%> </h4>
-<%= gmaps4rails(@json) %>
-<%= link_to "Signout!", signout_path %>

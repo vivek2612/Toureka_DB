@@ -1,4 +1,0 @@
-
-<%= render 'layouts/header2' %>
-<br>
-<div align="right" style='width:20px'><%= gmaps4rails(@json) %></div>

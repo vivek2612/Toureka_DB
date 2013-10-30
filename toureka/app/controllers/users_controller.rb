@@ -36,7 +36,7 @@ class UsersController < ApplicationController
       end
 
       @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
-        marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        # marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
         # marker.picture({:picture => "../../assets/marker2.png",
         #                 :width => 32,
         #                 :height => 32})
