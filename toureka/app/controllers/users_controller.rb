@@ -26,6 +26,8 @@ class UsersController < ApplicationController
     else
       @touristSpots = TouristSpot.all
       @hotels = Hotel.all
+      @entryPoints = EntryPoint.all
+
       @json1 = TouristSpot.all.to_gmaps4rails do |touristSpot, marker|
         marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
         marker.picture({:picture => "../../assets/marker.png",
@@ -36,11 +38,20 @@ class UsersController < ApplicationController
       end
 
       @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
-        # marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
-        # marker.picture({:picture => "../../assets/marker2.png",
-        #                 :width => 32,
-        #                 :height => 32})
+          marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        marker.picture({:picture => "../../assets/hotel.png",
+                        :width => 32,
+                        :height => 32})
         marker.title "#{hotel.name}"
+        #   marker.json({ :population => character.address})
+      end
+
+      @json3 = EntryPoint.all.to_gmaps4rails do |entryPoint, marker|
+          marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
+        marker.picture({:picture => "../../assets/airplane.png",
+                        :width => 32,
+                        :height => 32})
+        marker.title "#{entryPoint.name}"
         #   marker.json({ :population => character.address})
       end
 

@@ -5,6 +5,13 @@
 <script>
 
 	$(document).ready(function() {
+
+		$('#touristSpotTab').click(function (event) {
+		  markers = <%=raw(@json1)%>
+			Gmaps.map.replaceMarkers(markers)
+		  event.preventDefault(); // Prevent link from following its href
+		});
+
 		$('#hotelTab').click(function (event) {
 		 //  	Gmaps.map.callback = function() {
    //    		_.each(Gmaps.map.markers, function(marker) {
@@ -24,7 +31,8 @@
 		});
 		
 		$('#epTab').click(function (event) {
-		  alert('chu chu!');
+		  markers = <%=raw(@json3)%>
+			Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
 		});
 
