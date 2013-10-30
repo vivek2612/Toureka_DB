@@ -53,12 +53,12 @@
     <div class="row-fluid">
 
       <div class="span2">
-        <input type="text" class="input-small search-query" name="DN2" placeholder="District Name">
+        <input type="text" class="input-small search-query" id="DN2" name="DN2" placeholder="District Name">
       </div>
 
 
       <div class="span3" style="margin-left:660px">
-        <button class="btn" type="button" style="width:200px" >Add To Existing District</button>
+        <button class="btn" type="submit" style="width:200px" >Add To Existing District</button>
       </div>
 
     </div>
@@ -73,7 +73,7 @@
     <div class="row-fluid">
 
       <div class="span2">
-        <input type="text" class="input-small search-query" name="DN3" placeholder="District Name">
+        <input type="text" class="input-small search-query" id="DN3" name="DN3" placeholder="District Name">
       </div>
 
 
@@ -107,4 +107,15 @@
 </form>
 
 <%= link_to "entity", "/users/#{@user.id}/writer_final"%>
+
+<script>
+  $(function(){
+    $("#DN2").autocomplete({
+      source: <%= raw @districtName %>
+    });
+    $("#DN3").autocomplete({
+      source: <%= raw @districtName %>
+    });
+  });
+</script>
 

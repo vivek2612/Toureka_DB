@@ -11,7 +11,7 @@
       <div class="row-fluid">
 
         <div class="span2">
-          <input type="text" class="input-small search-query" name="SN1" id="SN1" placeholder="State Name">
+          <input type="text" class="input-small search-query" id="SN1" name="SN1" id="SN1" placeholder="State Name">
         </div>
 
 
@@ -51,7 +51,7 @@
       <div class="row-fluid">
 
         <div class="span2">
-          <input type="text" class="input-small search-query" name="SN2" placeholder="State Name">
+          <input type="text" class="input-small search-query" id="SN2" name="SN2" placeholder="State Name">
         </div>
 
 
@@ -73,7 +73,7 @@
       <div class="row-fluid">
 
         <div class="span2">
-          <input type="text" class="input-small search-query" name="SN3" placeholder="State Name">
+          <input type="text" class="input-small search-query" id="SN3" name="SN3" placeholder="State Name">
         </div>
 
 
@@ -113,6 +113,7 @@
 
 <script>
   $(function(){
+    console.log("AAYA!")
     $("#SN2").autocomplete({
       source: <%= raw @stateName %>
     });

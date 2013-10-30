@@ -54,10 +54,85 @@
 			</div>
 		</div>
 		<div class="span3">
-		<button class="btn" type="submit" style="width:200px">SUBMIT</button>
+			<button class="btn" type="submit" style="width:200px">SUBMIT</button>
 		</div>
 	</div>
 </form>
 
 
 <%= link_to "entity", "/users/#{@user.id}/writer_done"%>
+
+<script>
+	var EntryPointCount=0;
+	var EPD=0;
+	var TS=0;
+	var TSD=0;
+	var LTS=0;
+	var LTSD=0;
+	var H=0;
+	var HD=0;
+
+	function deleteFunc(param){
+		$(param).parent().remove(); 
+	};     
+
+	$('#addEntryPoint').click(function(){
+		EntryPointCount= EntryPointCount+1;
+		div1='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="EPname'+EntryPointCount+'" placeholder="Name"><input type="text" class="input-medium search-query" name="EPLat'+EntryPointCount+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="EPLong'+EntryPointCount+'" placeholder="Longitude"><input type="text" class="input-medium search-query" name="EPType'+EntryPointCount+'" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.addEntryPoint').prepend(div1);                         
+	});
+
+	$('#deleteEntryPoint').click(function(){
+		EPD=EPD+1;
+		div2='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="EP" name="EPNameD'+EPD+'" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.deleteEntryPoint').prepend(div2);   
+		$("#EP").autocomplete({
+			source: <%= raw @EP %>
+		});                        
+	});
+
+	$('#addTouristSpot').click(function(){
+		TS=TS+1;
+		div3='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-small search-query" name="TSName'+TS+'" placeholder="Name"><input type="text" class="input-small search-query" name="TSLat'+TS+'" placeholder="Latitude"><input type="text" class="input-small search-query" name="TSLong'+TS+'" placeholder="Longitude"><input type="text" class="input-small search-query" name="TSDesc'+TS+'" placeholder="Discription"><input type="text" class="input-small search-query" name="TSCat'+TS+'" placeholder="Category"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.addTouristSpot').prepend(div3);                         
+	});
+
+	$('#deleteTouristSpot').click(function(){
+		TSD=TSD+1;
+		div4='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="TS" name="TSNameD'+TSD+'" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Category"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.deleteTouristSpot').prepend(div4);  
+		$("#TS").autocomplete({
+			source: <%= raw @TS %>
+		});                       
+	});
+
+	$('#addHotel').click(function(){
+		H=H+1;
+		div5='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="HName'+H+'" placeholder="Name"><input type="text" class="input-medium search-query" name="HLat'+H+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="HLong'+H+'" placeholder="Longitude"><input type="text" class="input-medium search-query" name="HDesc'+H+'" placeholder="Discription"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.addHotel').prepend(div5);                       
+	});
+
+	$('#deleteHotel').click(function(){
+		HD=HD+1;
+		div6='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-large search-query" id="H" name="HNameD'+HD+'" placeholder="Name"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.deleteHotel').prepend(div6); 
+		$("#H").autocomplete({
+			source: <%= raw @H %>
+		});                        
+	});
+
+	$('#addTransportStand').click(function(){
+		LTS=LTS+1;
+		div7='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="LTSName'+LTS+'" placeholder="Name"><input type="text" class="input-medium search-query" name="LTSLat'+LTS+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="LTSLong'+LTS+'" placeholder="Longitude"><input type="text" class="input-medium search-query" name="LTSType'+LTS+'" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.addTransportStand').prepend(div7);                         
+	});
+
+	$('#deleteTransportStand').click(function(){
+		LTSD=LTSD+1;
+		div8='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="LTS" name="LTSNameD'+LTSD+'" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		$('.deleteTransportStand').prepend(div8);   
+		$("#LTS").autocomplete({
+			source: <%= raw @LTS %>
+		});
+	});  
+</script>
