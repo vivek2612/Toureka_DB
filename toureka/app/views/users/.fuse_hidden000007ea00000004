@@ -21,14 +21,15 @@
 </ol>
 </div>
 <br>
-<div class="sideMenu">
+<div class="sidemenu">
+<div class="span3 offset1">
 <h3>Info</h3>
 <ol>
 	<li>awesomeness</li>
 	<li>awesomeness</li>
 	<li>awesomeness</li>
 </ol>
-</div>
+</div></div>
 
 
 

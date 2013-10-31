@@ -74,10 +74,7 @@ p {
 }
 
 .mapBox{
-  position:relative;
-  left:80px;
-  height : 50%;
-  width : 40%;
+  float : right
 }
 
 .secondnavbar{
@@ -100,4 +97,11 @@ p {
     left: 0;
     text-align: center;
     margin: auto;
+}
+
+.sideMenu{
+  padding : 1px;
+  border : black solid 1px;
+  width : 23%;
+  height : 100%;
 }

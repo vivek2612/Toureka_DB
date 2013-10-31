@@ -419,8 +419,8 @@ CREATE TABLE map_points (
     id integer NOT NULL,
     latitude double precision NOT NULL,
     longitude double precision NOT NULL,
-    "districtName" character varying(255),
-    "stateName" character varying(255),
+    "districtName" character varying(255) NOT NULL,
+    "stateName" character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
