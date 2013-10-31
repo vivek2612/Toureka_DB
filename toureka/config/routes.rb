@@ -9,6 +9,7 @@ Toureka::Application.routes.draw do
       get 'writer_district' 
       get 'writer_final'
       get 'writer_done'
+      get 'show_closer_to'
     end
   end
 

@@ -1,4 +1,6 @@
 class Hotel < ActiveRecord::Base
+  acts_as_gmappable
+
   attr_accessible :description, :districtName, :latitude, :longitude, :name, :stateName, :gmaps
 
   has_many :near_bies
@@ -12,4 +14,11 @@ class Hotel < ActiveRecord::Base
   validates_presence_of :latitude
   validates_presence_of :longitude
   validates_presence_of :name
+
+  def gmaps4rails_address
+    '#{id}'
+  end
+  def gmaps4rails_infowindow
+    "<h1>#{name}</h1>"
+  end  
 end

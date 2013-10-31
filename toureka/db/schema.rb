@@ -41,7 +41,6 @@ ActiveRecord::Schema.define(:version => 20131019215403) do
   add_index "closest_hotels", ["entry_point_id", "hotel_id"], :name => "closest_hotels_index"
 
   create_table "district_bounded_bies", :force => true do |t|
-    t.integer  "state_id"
     t.integer  "district_id"
     t.integer  "top_left_corner_id"
     t.integer  "bottom_right_corner_id"

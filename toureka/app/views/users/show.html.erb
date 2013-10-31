@@ -1,35 +1,48 @@
 
 <%= render 'layouts/header2' %>
 <br>
-<div align="right" class="mapBox" ><%= gmaps4rails(@json) %></div>
+<div id="mapWalaContainer" align="right"><%= gmaps4rails(@json1) %></div>
+<script>
 
-<div class="sideMenu">
-<h3>Info</h3>
-<ol>
-	<li>awesomeness</li>
-	<li>awesomeness</li>
-	<li>awesomeness</li>
-</ol>
-</div>
-<br>
-<div class="sideMenu">
-<h3>Info</h3>
-<ol>
-	<li>awesomeness</li>
-	<li>awesomeness</li>
-	<li>awesomeness</li>
-</ol>
-</div>
-<br>
-<div class="sideMenu">
-<h3>Info</h3>
-<ol>
-	<li>awesomeness</li>
-	<li>awesomeness</li>
-	<li>awesomeness</li>
-</ol>
-</div>
+	$(document).ready(function() {
 
+		Gmaps.map.callback = function() {
+		  for (var i = 0; i <  this.markers.length; ++i) {
+		    google.maps.event.addListener(
+		     Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
+		        return function() {
+		            var id = Gmaps.map.markers[i].id;
+								    (function(_str) {
+								        $.ajax({'type': 'GET','dataType': 'json', 'url': '/users/'+ <%=@user.id%> + '/show_closer_to'})
+								         .done(function(data) {
+								            processData(data, id);
+								         });
+								    }(id)); 
+		        }
+		    })(i));
+		  }
+		 };
+		function processData(data, id) {
+		  console.log(data, id);
+		}  
+		$('#touristSpotTab').click(function (event) {
+		  markers = <%=raw(@json1)%>
+			Gmaps.map.replaceMarkers(markers)
 
+		  event.preventDefault(); // Prevent link from following its href
+		});
 
-
+		$('#hotelTab').click(function (event) {
+			markers = <%=raw(@json2)%>
+			Gmaps.map.replaceMarkers(markers)
+		  
+		  event.preventDefault(); // Prevent link from following its href
+		});
+		
+		$('#epTab').click(function (event) {
+		  markers = <%=raw(@json3)%>
+			Gmaps.map.replaceMarkers(markers)
+		  event.preventDefault(); // Prevent link from following its href
+		});
+  });
+</script>
