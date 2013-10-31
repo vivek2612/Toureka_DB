@@ -31,30 +31,30 @@ class UsersController < ApplicationController
       @json1 = TouristSpot.all.to_gmaps4rails do |touristSpot, marker|
         marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
         marker.picture({:picture => "../../assets/marker.png",
-                        :width => 32,
-                        :height => 32})
+          :width => 32,
+          :height => 32})
         marker.title "#{touristSpot.name}"
         marker.json({ :id => touristSpot.id,:type => 'parent'})
       end
 
       @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
-          marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
         marker.picture({:picture => "../../assets/hotel.png",
-                        :width => 32,
-                        :height => 32})
+          :width => 32,
+          :height => 32})
         marker.title "#{hotel.name}"
         marker.json({ :id => hotel.id, :type => 'parent'})
       end
 
       @json3 = EntryPoint.all.to_gmaps4rails do |entryPoint, marker|
-          marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
-          mode = "airplane"
-          if entryPoint.entryType==1
-            mode="railway"
-          end
+        marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
+        mode = "airplane"
+        if entryPoint.entryType==1
+          mode="railway"
+        end
         marker.picture({:picture => "../../assets/" + mode + ".png",
-                        :width => 32,
-                        :height => 32})
+          :width => 32,
+          :height => 32})
         marker.title "#{entryPoint.name}"
         marker.json({ :id => entryPoint.id, :type => 'parent'})
 
@@ -69,20 +69,21 @@ class UsersController < ApplicationController
   end
 
   def show_closer_to
-  @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
-    marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :localTransportStand => localTransportStand})
-    
-    marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
-                    :width => 32,
-                    :height => 32})
-    marker.title "#{localTransportStand.name}"
-    marker.json({ :id => entryPoint.id, :type => 'child'})
+    @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
+      marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :localTransportStand => localTransportStand})
+
+      marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
+        :width => 32,
+        :height => 32})
+      marker.title "#{localTransportStand.name}"
+      marker.json({ :id => entryPoint.id, :type => 'child'})
 
 
-    respond_to do |format|
+      respond_to do |format|
         format.html
         format.json { render :json => @ltsCloserTo }
-    end    
+      end    
+    end
   end
   def writer_district
     @user = User.find(params[:id])
