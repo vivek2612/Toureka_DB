@@ -34,7 +34,7 @@ class UsersController < ApplicationController
                         :width => 32,
                         :height => 32})
         marker.title "#{touristSpot.name}"
-        #   marker.json({ :population => character.address})
+        marker.json({ :id => touristSpot.id,:type => 'parent'})
       end
 
       @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
@@ -43,16 +43,21 @@ class UsersController < ApplicationController
                         :width => 32,
                         :height => 32})
         marker.title "#{hotel.name}"
-        #   marker.json({ :population => character.address})
+        marker.json({ :id => hotel.id, :type => 'parent'})
       end
 
       @json3 = EntryPoint.all.to_gmaps4rails do |entryPoint, marker|
           marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
-        marker.picture({:picture => "../../assets/airplane.png",
+          mode = "airplane"
+          if entryPoint.entryType==1
+            mode="railway"
+          end
+        marker.picture({:picture => "../../assets/" + mode + ".png",
                         :width => 32,
                         :height => 32})
         marker.title "#{entryPoint.name}"
-        #   marker.json({ :population => character.address})
+        marker.json({ :id => entryPoint.id, :type => 'parent'})
+
       end
 
       respond_to do |format|
@@ -63,6 +68,22 @@ class UsersController < ApplicationController
     end
   end
 
+  def show_closer_to
+  @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
+    marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :localTransportStand => localTransportStand})
+    
+    marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
+                    :width => 32,
+                    :height => 32})
+    marker.title "#{localTransportStand.name}"
+    marker.json({ :id => entryPoint.id, :type => 'child'})
+
+
+    respond_to do |format|
+        format.html
+        format.json { render :json => @ltsCloserTo }
+    end    
+  end
   def writer_district
     @user = User.find(params[:id])
     if params[:SN1] # ADD NEW STATE

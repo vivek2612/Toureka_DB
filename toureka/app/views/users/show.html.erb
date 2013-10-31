@@ -6,27 +6,36 @@
 
 	$(document).ready(function() {
 
+		Gmaps.map.callback = function() {
+		  for (var i = 0; i <  this.markers.length; ++i) {
+		    google.maps.event.addListener(
+		     Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
+		        return function() {
+		            var id = Gmaps.map.markers[i].id;
+								    (function(_str) {
+								        $.ajax({'type': 'GET','dataType': 'json', 'url': '/users/'+ <%=@user.id%> + '/show_closer_to'})
+								         .done(function(data) {
+								            processData(data, id);
+								         });
+								    }(id)); 
+		        }
+		    })(i));
+		  }
+		 };
+		function processData(data, id) {
+		  console.log(data, id);
+		}  
 		$('#touristSpotTab').click(function (event) {
 		  markers = <%=raw(@json1)%>
 			Gmaps.map.replaceMarkers(markers)
+
 		  event.preventDefault(); // Prevent link from following its href
 		});
 
 		$('#hotelTab').click(function (event) {
-		 //  	Gmaps.map.callback = function() {
-   //    		_.each(Gmaps.map.markers, function(marker) {
-   //      		Gmaps.map.hideMarker(marker);
-   //    		})
-   //    	}
-		 //  // alert('chu chu!');
-			// // console.log(Gmaps.map.markers);
-			// _.each(Gmaps.map.markers, function(marker) {
-   //      		Gmaps.map.hideMarker(marker);
-   //    })
-			// $('#mapWalaContainer').contents().remove();
-			// $('#mapWalaContainer').html();
 			markers = <%=raw(@json2)%>
 			Gmaps.map.replaceMarkers(markers)
+		  
 		  event.preventDefault(); // Prevent link from following its href
 		});
 		
@@ -35,9 +44,5 @@
 			Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
 		});
-
-
-    
   });
-
 </script>
