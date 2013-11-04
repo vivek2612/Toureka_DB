@@ -11,7 +11,7 @@ class EntryPoint < ActiveRecord::Base
   validates_presence_of :longitude
   validates_presence_of :name
 
-  validates :entryType, :inclusion => { :in => ["airport", "railway"] }
+  # validates :entryType, :inclusion => { :in => ["airport", "railway"] }
 
   def gmaps4rails_address
     '#{id}'

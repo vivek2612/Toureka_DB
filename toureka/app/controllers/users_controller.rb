@@ -137,7 +137,7 @@ class UsersController < ApplicationController
         d=District.create(:name=>params[:DN1], :state_id=>stateIdNow)
         m1=MapPoint.create(:latitude=>params[:TLLat1], :longitude=>params[:TLLong1])
         m2=MapPoint.create(:latitude=>params[:BRLat1], :longitude=>params[:BRLong1])
-        DistrictBoundedBy.create(:state_id=>stateIdNow, :district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
+        DistrictBoundedBy.create(:district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
       end
       session[:districtName]=params[:DN1]
     elsif params[:DN2] # ADD TO EXISTING STATE
@@ -150,14 +150,14 @@ class UsersController < ApplicationController
     elsif params[:DN3] # MODIFY EXISTING AND ADD TO IT
       if District.exists?(:name=>params[:DN3], :state_id=>stateIdNow)
         d = District.where(:name=>params[:DN3], :state_id=>stateIdNow)[0]
-        dbb=DistrictBoundedBy.find(:district_id=>d.id, :state_id=>stateIdNow)
-        dbb.top_left_corner.delete
-        dbb.bottom_right_corner.delete
-        dbb.delete
+        dbb=DistrictBoundedBy.where(:district_id=>d.id)[0]
+        if !dbb.nil?
+          dbb.destroy
+        end
         m1=MapPoint.create(:latitude=>params[:TLLat3], :longitude=>params[:TLLong3])
         m2=MapPoint.create(:latitude=>params[:BRLat3], :longitude=>params[:BRLong3])
-        DistrictBoundedBy.create(:district_id=>d.id, :state_id=>stateIdNow, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
-        session[:districtName]=@params[:DN3]
+        DistrictBoundedBy.create(:district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
+        session[:districtName]=params[:DN3]
       else
         flash[:error] = "district didn't already exist !Get its location info Add a new district"
         @districtName = District.where(:state_id=>stateIdNow).map{|x| x.name};
@@ -183,7 +183,7 @@ class UsersController < ApplicationController
     hdkeys = keys.select{|x| x[1]=='D'}
     hkeys = hkeys - hdkeys
     ltskeys = keys.select{|x| x[0]=='L'}
-    ltsDkeys = keys.select {|x| x[3]=='D' }
+    ltsdkeys = keys.select {|x| x[3]=='D' }
     ltskeys = ltskeys - ltsdkeys
     i = 0
     while i < tskeys.size do
@@ -306,6 +306,9 @@ class UsersController < ApplicationController
       lat = params[epkeys[i+1]]
       long = params[epkeys[i+2]]
       type = params[epkeys[i+3]]
+      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      puts type
+      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       if(EntryPoint.exists?(:name=>name, :entryType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = EntryPoint.where(:name=>name, :entryType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName])
         unless t.update_attributes(:latitude=>lat,:longitude=>long)

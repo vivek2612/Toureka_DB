@@ -5,5 +5,6 @@ class AddEntryPointConstraints < ActiveRecord::Migration
   	change_column :entry_points, :longitude, :float, :null => false
   	change_column :entry_points, :districtName, :string, :null => false
   	change_column :entry_points, :stateName, :string, :null => false
+  	change_column :entry_points, :entryType, :string, :null => false
   end
 end
