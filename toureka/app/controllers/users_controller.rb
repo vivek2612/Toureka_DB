@@ -31,30 +31,30 @@ class UsersController < ApplicationController
       @json1 = TouristSpot.all.to_gmaps4rails do |touristSpot, marker|
         marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
         marker.picture({:picture => "../../assets/marker.png",
-                        :width => 32,
-                        :height => 32})
+          :width => 32,
+          :height => 32})
         marker.title "#{touristSpot.name}"
         marker.json({ :id => touristSpot.id,:type => 'parent'})
       end
 
       @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
-          marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
         marker.picture({:picture => "../../assets/hotel.png",
-                        :width => 32,
-                        :height => 32})
+          :width => 32,
+          :height => 32})
         marker.title "#{hotel.name}"
         marker.json({ :id => hotel.id, :type => 'parent'})
       end
 
       @json3 = EntryPoint.all.to_gmaps4rails do |entryPoint, marker|
-          marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
-          mode = "airplane"
-          if entryPoint.entryType==1
-            mode="railway"
-          end
+        marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
+        mode = "airplane"
+        if entryPoint.entryType==1
+          mode="railway"
+        end
         marker.picture({:picture => "../../assets/" + mode + ".png",
-                        :width => 32,
-                        :height => 32})
+          :width => 32,
+          :height => 32})
         marker.title "#{entryPoint.name}"
         marker.json({ :id => entryPoint.id, :type => 'parent'})
 
@@ -69,21 +69,23 @@ class UsersController < ApplicationController
   end
 
   def show_closer_to
-  @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
-    marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :localTransportStand => localTransportStand})
-    
-    marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
-                    :width => 32,
-                    :height => 32})
-    marker.title "#{localTransportStand.name}"
-    marker.json({ :id => entryPoint.id, :type => 'child'})
+    @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
+      marker.infowindow render_to_string(:partial => "/localTransportStand/infowindow", :locals => { :localTransportStand => localTransportStand})
+
+      marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
+        :width => 32,
+        :height => 32})
+      marker.title "#{localTransportStand.name}"
+      marker.json({ :id => entryPoint.id, :type => 'child'})
 
 
-    respond_to do |format|
+      respond_to do |format|
         format.html
         format.json { render :json => @ltsCloserTo }
-    end    
+      end    
+    end
   end
+
   def writer_district
     @user = User.find(params[:id])
     if params[:SN1] # ADD NEW STATE
@@ -124,6 +126,7 @@ class UsersController < ApplicationController
     end
     @districtName = District.where(:state_id=>State.where(:name=>session[:stateName])[0].id).pluck(:name);
   end
+
 
   def writer_final
     @user = User.find(params[:id])
@@ -168,6 +171,7 @@ class UsersController < ApplicationController
     @H = Hotel.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name);
   end
 
+
   def writer_done
     keys = params.keys
     tskeys = keys.select{|x| x[0]=='T'}
@@ -183,7 +187,7 @@ class UsersController < ApplicationController
     ltsDkeys = keys.select {|x| x[3]=='D' }
     ltskeys = ltskeys - ltsdkeys
     i = 0
-    while i < tskeys.size
+    while i < tskeys.size do
       name = params[tskeys[i]]
       lat = params[tskeys[i+1]]
       long = params[tskeys[i+2]]
@@ -222,7 +226,7 @@ class UsersController < ApplicationController
       i+=5
     end
     i = 0
-    while i < tsdkeys.size
+    while i < tsdkeys.size do
       name=params[tsdkeys[i]]
       cat=params[tsdkeys[i+1]]
       if(TouristSpot.exists?(:name=>name, :category=>cat))
@@ -242,7 +246,7 @@ class UsersController < ApplicationController
 
     # Now lets modify hotels
     i = 0
-    while i < hkeys.size
+    while i < hkeys.size do
       name = params[hkeys[i]]
       lat = params[hkeys[i+1]]
       long = params[hkeys[i+2]]
@@ -279,7 +283,7 @@ class UsersController < ApplicationController
       i+=4
     end
     i = 0
-    while i < hdkeys.size
+    while i < hdkeys.size do
       name=params[hdkeys[i]]
       if(Hotel.exists?(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = Hotel.where(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
@@ -298,7 +302,7 @@ class UsersController < ApplicationController
 
     # Now lets modify EntryPoint
     i = 0
-    while i < epkeys.size
+    while i < epkeys.size do
       name = params[epkeys[i]]
       lat = params[epkeys[i+1]]
       long = params[epkeys[i+2]]
@@ -335,7 +339,7 @@ class UsersController < ApplicationController
       i+=4
     end
     i = 0
-    while i < epdkeys.size
+    while i < epdkeys.size do
       name=params[epdkeys[i]]
       type=params[epdkeys[i+1]]
       if(EntryPoint.exists?(:name=>name, :entryType=>type))
@@ -355,7 +359,7 @@ class UsersController < ApplicationController
 
     # Now lets modify LocalTransportStands
     i = 0
-    while i < ltskeys.size
+    while i < ltskeys.size do
       name = params[ltskeys[i]]
       lat = params[ltskeys[i+1]]
       long = params[ltskeys[i+2]]
@@ -391,8 +395,9 @@ class UsersController < ApplicationController
       end
       i+=4
     end
+
     i = 0
-    while i < ltsdkeys.size
+    while i < ltsdkeys.size do
       name=params[tsdkeys[i]]
       type=params[tsdkeys[i+1]]
       if(LocalTransportStand.exists?(:name=>name, :transportType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName]))
@@ -409,9 +414,7 @@ class UsersController < ApplicationController
       end
       i+=2
     end
-
     flash[:notice]="DONE!"
     redirect_to "/users/#{params[:id]}"
   end
-
 end
