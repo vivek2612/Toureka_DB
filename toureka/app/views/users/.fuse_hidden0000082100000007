@@ -1,0 +1,31 @@
+
+<%= render 'layouts/header2' %>
+<br>
+<div align="right" class="mapBox" ><%= gmaps4rails(@json) %></div>
+
+<br>
+<div class="span7 offset1">
+<div class="sideMenu">
+<h3>Info</h3>
+<ol>
+	<li>awesomeness</li>
+	<li>awesomeness</li>
+	<li>awesomeness</li>
+</ol>
+</div>
+</div>
+<br>
+<div class="span7 offset1">
+<div class="sideMenu">
+<h3>Info</h3>
+<ol>
+	<li>awesomeness</li>
+	<li>awesomeness</li>
+	<li>awesomeness</li>
+</ol>
+</div>
+</div>
+
+
+
+

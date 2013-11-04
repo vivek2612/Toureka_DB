@@ -70,7 +70,11 @@ class UsersController < ApplicationController
 
   def show_closer_to
     @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
+<<<<<<< HEAD
       marker.infowindow render_to_string(:partial => "/localTransportStand/infowindow", :locals => { :localTransportStand => localTransportStand})
+=======
+      marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :localTransportStand => localTransportStand})
+>>>>>>> 275fc86c4784032a2755338a610eb1f00ca51347
 
       marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
         :width => 32,
