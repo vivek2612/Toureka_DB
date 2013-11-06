@@ -235,6 +235,7 @@ class @Gmaps4RailsGoogle extends Gmaps4Rails
       # infoWindow.open(currentMap.serviceObject, marker)
       # currentMap.visibleInfoWindow = infoWindow
 
+
   #////////////////////////////////////////////////////
   #/////////////////        KML      //////////////////
   #////////////////////////////////////////////////////
