@@ -88,7 +88,7 @@ class UsersController < ApplicationController
   end
   
 
-    def writer_district
+  def writer_district
     @user = User.find(params[:id])
     if params[:SN1] # ADD NEW STATE
       if State.exists?(:name=>params[:SN1])
@@ -177,18 +177,23 @@ class UsersController < ApplicationController
   def writer_done
     keys = params.keys
     tskeys = keys.select{|x| x[0]=='T'}
-    tsdkeys = tskeys.select{|x| x[x.length-1]=='D'}
+    tsdkeys = tskeys.select{|x| x[2]=='d'}
     tskeys = tskeys - tsdkeys
     epkeys = keys.select{|x| x[0]=='E'}
-    epdkeys = keys.select{|x| x[x.length-1]=='D'}
+    epdkeys = epkeys.select{|x| x[2]=='d'}
     epkeys = epkeys - epdkeys
     hkeys = keys.select{|x| x[0]=='H'}
-    hdkeys = keys.select{|x| x[x.length-1]=='D'}
+    hdkeys = hkeys.select{|x| x[1]=='d'}
     hkeys = hkeys - hdkeys
     ltskeys = keys.select{|x| x[0]=='L'}
-    ltsdkeys = keys.select {|x| x[x.length-1]=='D' }
+    ltsdkeys = ltskeys.select {|x| x[3]=='d' }
     ltskeys = ltskeys - ltsdkeys
     @user = User.find(params[:id])
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    puts hkeys.size
+    puts hdkeys.size
+    puts keys
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     i = 0
     while i < tskeys.size do
       name = params[tskeys[i]]
@@ -199,7 +204,7 @@ class UsersController < ApplicationController
       if(TouristSpot.exists?(:name=>name, :category=>cat))
         t = TouristSpot.where(:name=>name, :category=>cat)[0]
         unless t.update_attributes(:latitude=>lat,:longitude=>long,:description=>desc)
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of TouristSpot 1 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         end
@@ -222,7 +227,7 @@ class UsersController < ApplicationController
           puts t.longitude
           puts t.description
           puts "NOT VALID"
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of TouristSpot 2 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         else
@@ -256,7 +261,7 @@ class UsersController < ApplicationController
       if(Hotel.exists?(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = Hotel.where(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
         unless t.update_attributes(:latitude=>lat,:longitude=>long,:description=>desc)
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of Hotel 1 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         end
@@ -269,7 +274,7 @@ class UsersController < ApplicationController
         t.stateName = session[:stateName]
         t.districtName = session[:districtName]
         if !t.valid?
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of Hotel 2 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         else
@@ -285,7 +290,7 @@ class UsersController < ApplicationController
         t = Hotel.where(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
         t.destroy
       else
-        flash[:error]="Invalid attributes of TouristSpot #{name}"
+        flash[:error]=" Hotel doesn't exist #{name}"
         redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
         return
       end
@@ -299,13 +304,10 @@ class UsersController < ApplicationController
       lat = params[epkeys[i+1]]
       long = params[epkeys[i+2]]
       type = params[epkeys[i+3]]
-      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-      puts type
-      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       if(EntryPoint.exists?(:name=>name, :entryType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = EntryPoint.where(:name=>name, :entryType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName])
         unless t.update_attributes(:latitude=>lat,:longitude=>long)
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of EntryPoint 1 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         end
@@ -318,7 +320,7 @@ class UsersController < ApplicationController
         t.stateName = session[:stateName]
         t.districtName = session[:districtName]
         if !t.valid?
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of EntryPoint 2 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         else
@@ -335,7 +337,7 @@ class UsersController < ApplicationController
         t = EntryPoint.where(:name=>name, :entryType=>type)[0]
         t.destroy
       else
-        flash[:error]="Hotel does not exist"
+        flash[:error]="EntryPoint does not exist"
         redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
         return
       end
@@ -352,7 +354,7 @@ class UsersController < ApplicationController
       if(LocalTransportStand.exists?(:name=>name, :localTransport=>type, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = LocalTransportStand.where(:name=>name, :localTransport=>type, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
         unless t.update_attributes(:latitude=>lat,:longitude=>long)
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of LTS1 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         end
@@ -365,7 +367,7 @@ class UsersController < ApplicationController
         t.stateName = session[:stateName]
         t.districtName = session[:districtName]
         if !t.valid?
-          flash[:error]="Invalid attributes of TouristSpot #{name}"
+          flash[:error]="Invalid attributes of LTS2 #{name}"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
         else
@@ -383,7 +385,7 @@ class UsersController < ApplicationController
         t = LocalTransportStand.where(:name=>name, :localTransport=>type, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
         t.destroy
       else
-        flash[:error]="Invalid attributes of TouristSpot #{name}"
+        flash[:error]="LTS Does not exist #{name}"
         redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
         return
       end
