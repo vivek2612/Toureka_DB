@@ -4,6 +4,8 @@
 <br>
 
 <%= render 'layouts/header1' %>
+
+<div class="span4 offset6">
 <h1>Sign in</h1>
 <div class="row">
     <%= form_for(:session, url: sessions_path) do |f| %>
@@ -18,5 +20,6 @@
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+</div>
 </div>
 </center>
