@@ -5,22 +5,11 @@
 			<div class="span3">
 				<div class="scroll-pane">
 					<div class="well sidebar-nav">
-						<ol class="nav nav-list ">
-							<li class="nav-header"><font size="4">Hotels</font></li>
-							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
-							<li class="nav-header"><font size="4">Hotels</font></li>
-							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
-							<li class="nav-header"><font size="4">Hotels</font></li>
-							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
+						<ol class=" nav nav-list ">
+							<li>
+								<div class="listData">
+								</div>
+							</li>
 						</ol>
 					</div>
 				</div>
@@ -67,7 +56,14 @@
 			}  
 			$('#touristSpotTab').click(function (event) {
 				markers = <%=raw(@json1)%>
-				Gmaps.map.replaceMarkers(markers)
+				Gmaps.map.replaceMarkers(markers);
+				for( var l=0;l<markers.length;l++){
+					console.log(markers[l]);	
+					$(".listData")[0].innerHTML+=markers[l].title;
+					$(".listData")[0].innerHTML+="<br>"
+				}
+				
+				
 
 		  event.preventDefault(); // Prevent link from following its href
 		});
@@ -102,6 +98,9 @@
 		z-index: 1;
 		position:absolute;
 	}
+	.listData{
+
+	}
 
 </style>
 
@@ -111,12 +110,6 @@
 	});
 </script>
 
-<script type="text/javascript" id="sourcecode">
-  $(function()
-  {
-    $('.scroll-pane').jScrollPane();
-  });
-</script>
 
 <style type="text/css" id="page-css">
   .scroll-pane{

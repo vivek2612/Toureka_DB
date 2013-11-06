@@ -227,6 +227,7 @@ class @Gmaps4RailsGoogle extends Gmaps4Rails
   openInfoWindow : (currentMap, infoWindow, marker) ->
     return ->
       # Close the latest selected marker before opening the current one.
+      
       currentMap.visibleInfoWindow.close() if currentMap.visibleInfoWindow != null
       infoWindow.open(currentMap.serviceObject, marker)
       currentMap.visibleInfoWindow = infoWindow

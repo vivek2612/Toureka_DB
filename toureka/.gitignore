@@ -16,3 +16,5 @@
 
 #Ignoring database.yml
 /config/database.yml
+
+/app/users/*fuse*
