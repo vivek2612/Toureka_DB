@@ -226,13 +226,13 @@ class @Gmaps4RailsGoogle extends Gmaps4Rails
         google.maps.event.addListener(marker_container.serviceObject, 'click', @openInfoWindow(currentMap, marker_container.infowindow, marker_container.serviceObject))
 
   openInfoWindow : (currentMap, infoWindow, marker) ->
-    return ->
-      console.log marker
     # return ->
-    #   # Close the latest selected marker before opening the current one.
-    #   currentMap.visibleInfoWindow.close() if currentMap.visibleInfoWindow != null
-    #   infoWindow.open(currentMap.serviceObject, marker)
-    #   currentMap.visibleInfoWindow = infoWindow
+    #   console.log marker
+    return ->
+      # Close the latest selected marker before opening the current one.
+      currentMap.visibleInfoWindow.close() if currentMap.visibleInfoWindow != null
+      infoWindow.open(currentMap.serviceObject, marker)
+      currentMap.visibleInfoWindow = infoWindow
 
   #////////////////////////////////////////////////////
   #/////////////////        KML      //////////////////

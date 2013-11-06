@@ -5,39 +5,17 @@
 			<div class="span3">
 				<div class="scroll-pane">
 					<div class="well sidebar-nav">
-						<ol class="nav nav-list ">
-							<li class="nav-header"><font size="4">Hotels</font></li>
-							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
-							<li class="nav-header"><font size="4">Hotels</font></li>
-							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
-							<li class="nav-header"><font size="4">Hotels</font></li>
-							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
-							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
-						</ol>
+							<ul id="markers_list"></ul>
+						
 					</div>
 				</div>
 			</div>
 			<div class="span9" >
 				<div id="mapWalaContainer" >
 					<div class="mapOnly">
-						<%= gmaps4rails(@json1) %>
+					<%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %>
+						
 					</div>
-				</div>
-				<div id="popoverContent" >
-				<pre>
-						Name:
-						Address:
-						Category:
-						City:
-				</pre>
 				</div>
 			</div>
 		</div>

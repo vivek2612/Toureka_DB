@@ -30,6 +30,6 @@ class TouristSpot < ActiveRecord::Base
   #   "#{name}"
   # end
   def gmaps4rails_sidebar
-    "#{name}"
+    "<span class='foo'>#{name}</span>"
   end
 end 
