@@ -1,6 +1,6 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
-    <div class="container">
+    <div class="container-fluid">
       <%= link_to "Toureka", '#', id: "logo" %>
       <nav>
         <ul class="nav pull-right">
@@ -13,16 +13,20 @@
     </div>
   </div>
 </header>
-
-<div class="searchBox">
-    <%= form_for(:session, url: sessions_path) do |f| %>
-      <%= f.label :city %>
-      <%= f.text_field :city %><br>
-      <%= f.submit "Search", class: "btn btn-large btn-primary" %>
-</div><br><br><br><br>
-<div align="right">
-      <%= f.submit "TouristSpot", id: 'touristSpotTab', class: "btn btn-large btn-primary" %>
-      <%= f.submit "Hotels", id: 'hotelTab' ,class: "btn btn-large btn-primary" %>
-      <%= f.submit "Entry Points", id: 'epTab' , class: "btn btn-large btn-primary" %>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <%= form_for(:session, url: sessions_path) do |f| %>
+        <%= f.label :city %>
+        <%= f.text_field :city %><br>
+        <%= f.submit "Search", class: "btn btn-large btn-primary" %>
+    </div>
+    <br><br><br><br>
+    <div class="span9" align="right">
+        <%= f.submit "TouristSpot", id: 'touristSpotTab', class: "btn btn-large btn-primary" %>
+        <%= f.submit "Hotels", id: 'hotelTab' ,class: "btn btn-large btn-primary" %>
+        <%= f.submit "Entry Points", id: 'epTab' , class: "btn btn-large btn-primary" %>
+    </div>
+  </div>
 </div>
 <% end %>

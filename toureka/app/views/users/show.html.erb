@@ -1,7 +1,15 @@
 
 <%= render 'layouts/header2' %>
 <br>
-<div id="mapWalaContainer" align="right"><%= gmaps4rails(@json1) %></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+		</div>
+		<div class="span9" align="right">
+			<div id="mapWalaContainer" ><%= gmaps4rails(@json1) %></div>
+		</div>
+	</div>
+</div>
 <script>
 
 	$(document).ready(function() {
