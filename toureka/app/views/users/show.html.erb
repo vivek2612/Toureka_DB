@@ -5,65 +5,58 @@
 			<div class="span3">
 				<div class="scroll-pane">
 					<div class="well sidebar-nav">
-						<ol class=" nav nav-list ">
-							<li>
-								<div class="listData">
-								</div>
-							</li>
-						</ol>
+							<ul id="markers_list"></ul>
+						
 					</div>
 				</div>
 			</div>
 			<div class="span9" >
 				<div id="mapWalaContainer" >
 					<div class="mapOnly">
-						<%= gmaps4rails(@json1) %>
+					<%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %>
+						
 					</div>
-				</div>
-				<div id="popoverContent" >
-				<pre>
-						Name:
-						Address:
-						Category:
-						City:
-				</pre>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<script>
 
-		$(document).ready(function() {
-			Gmaps.map.callback = function() {
-				for (var i = 0; i <  this.markers.length; ++i) {
-					google.maps.event.addListener(
-						Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
-							return function() {
-								var id = Gmaps.map.markers[i].id;
-								(function(_str) {
-									$.ajax({'type': 'GET','dataType': 'json', 'url': '/users/'+ <%=@user.id%> + '/show_closer_to'})
-									.done(function(data) {
-										processData(data, id);
-									});
-								}(id)); 
-							}
-						})(i));
-				}
-			};
-			function processData(data, id) {
-				console.log(data, id);
-			}  
-			$('#touristSpotTab').click(function (event) {
-				markers = <%=raw(@json1)%>
-				Gmaps.map.replaceMarkers(markers);
-				for( var l=0;l<markers.length;l++){
-					console.log(markers[l]);	
-					$(".listData")[0].innerHTML+=markers[l].title;
-					$(".listData")[0].innerHTML+="<br>"
-				}
-				
-				
+<script>
+
+	$(document).ready(function() {
+
+		Gmaps.map.callback = function() {
+			// Gmaps.map.map_options.center_latitude
+			// Gmaps.map.map_options.auto_zoom = false;
+			// Gmaps.map.adjustMapToBounds();
+		  if (Gmaps.map.visibleInfoWindow !== null) {
+				Gmaps.map.visibleInfoWindow.close();
+			}
+
+		  for (var i = 0; i <  this.markers.length; ++i) {
+		    google.maps.event.addListener(
+		     Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
+		        return function() {
+		            var id = Gmaps.map.markers[i].id;
+								    (function(_str) {
+								        $.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'})
+								         .done(function(data) {
+								            processData(data, id);
+								         });
+								    }(id)); 
+		        }
+		    })(i));
+		  }
+		 };
+
+		function processData(data, id) {
+		  console.log("hello");
+		  console.log(data, id);
+		  Gmaps.map.addMarkers(data,false)
+		}  
+		$('#touristSpotTab').click(function (event) {
+		  markers = <%=raw(@json1)%>
+			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
 		});
@@ -109,7 +102,6 @@
 		$("#popoverContent").toggle();
 	});
 </script>
-
 
 <style type="text/css" id="page-css">
   .scroll-pane{

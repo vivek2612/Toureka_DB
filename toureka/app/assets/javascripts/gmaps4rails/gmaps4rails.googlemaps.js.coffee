@@ -207,6 +207,7 @@ class @Gmaps4RailsGoogle extends Gmaps4Rails
 
   #// creates infowindows
   createInfoWindow : (marker_container) ->
+    # console.log marker_container
     if typeof(@jsTemplate) == "function" or marker_container.description?
       marker_container.description = @jsTemplate(marker_container) if typeof(@jsTemplate) == "function"
       if @markers_conf.custom_infowindow_class != null
@@ -225,6 +226,8 @@ class @Gmaps4RailsGoogle extends Gmaps4Rails
         google.maps.event.addListener(marker_container.serviceObject, 'click', @openInfoWindow(currentMap, marker_container.infowindow, marker_container.serviceObject))
 
   openInfoWindow : (currentMap, infoWindow, marker) ->
+    # return ->
+    #   console.log marker
     return ->
       # Close the latest selected marker before opening the current one.
       
