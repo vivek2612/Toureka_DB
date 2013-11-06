@@ -1,56 +1,127 @@
-
-<%= render 'layouts/header2' %>
-<br>
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span3">
-		</div>
-		<div class="span9" align="right">
-			<div id="mapWalaContainer" ><%= gmaps4rails(@json1) %></div>
+	<%= render 'layouts/header2' %>
+	<br>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="scroll-pane">
+					<div class="well sidebar-nav">
+						<ol class="nav nav-list ">
+							<li class="nav-header"><font size="4">Hotels</font></li>
+							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
+							<li class="nav-header"><font size="4">Hotels</font></li>
+							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
+							<li class="nav-header"><font size="4">Hotels</font></li>
+							<li class="popoverId"><a href="#"><font size="4">Mayur Hotel,Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Holiday Inn, Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Star Residency, Jaipur</font></a></li>
+							<li class="popoverId"><a href="#"><font size="4">Hotel Taj, Jaipur</font></a></li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<div class="span9" >
+				<div id="mapWalaContainer" >
+					<div class="mapOnly">
+						<%= gmaps4rails(@json1) %>
+					</div>
+				</div>
+				<div id="popoverContent" >
+				<pre>
+						Name:
+						Address:
+						Category:
+						City:
+				</pre>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
+	
+	<script>
+
+		$(document).ready(function() {
+			Gmaps.map.callback = function() {
+				for (var i = 0; i <  this.markers.length; ++i) {
+					google.maps.event.addListener(
+						Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
+							return function() {
+								var id = Gmaps.map.markers[i].id;
+								(function(_str) {
+									$.ajax({'type': 'GET','dataType': 'json', 'url': '/users/'+ <%=@user.id%> + '/show_closer_to'})
+									.done(function(data) {
+										processData(data, id);
+									});
+								}(id)); 
+							}
+						})(i));
+				}
+			};
+			function processData(data, id) {
+				console.log(data, id);
+			}  
+			$('#touristSpotTab').click(function (event) {
+				markers = <%=raw(@json1)%>
+				Gmaps.map.replaceMarkers(markers)
+
+		  event.preventDefault(); // Prevent link from following its href
+		});
+
+			$('#hotelTab').click(function (event) {
+				markers = <%=raw(@json2)%>
+				Gmaps.map.replaceMarkers(markers)
+
+		  event.preventDefault(); // Prevent link from following its href
+		});
+
+			$('#epTab').click(function (event) {
+				markers = <%=raw(@json3)%>
+				Gmaps.map.replaceMarkers(markers)
+		  event.preventDefault(); // Prevent link from following its href
+		});
+		});
+</script>
+
+
+
+<style type="text/css">
+	#popoverContent{
+		width: 250px;
+		height: 480px;
+		position:absolute;
+		z-index: 3;
+		margin-left : 660px;
+		display:block;
+	}
+	.mapOnly{
+		z-index: 1;
+		position:absolute;
+	}
+
+</style>
+
 <script>
+	$('.popoverId').click(function(){
+		$("#popoverContent").toggle();
+	});
+</script>
 
-	$(document).ready(function() {
-
-		Gmaps.map.callback = function() {
-		  for (var i = 0; i <  this.markers.length; ++i) {
-		    google.maps.event.addListener(
-		     Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
-		        return function() {
-		            var id = Gmaps.map.markers[i].id;
-								    (function(_str) {
-								        $.ajax({'type': 'GET','dataType': 'json', 'url': '/users/'+ <%=@user.id%> + '/show_closer_to'})
-								         .done(function(data) {
-								            processData(data, id);
-								         });
-								    }(id)); 
-		        }
-		    })(i));
-		  }
-		 };
-		function processData(data, id) {
-		  console.log(data, id);
-		}  
-		$('#touristSpotTab').click(function (event) {
-		  markers = <%=raw(@json1)%>
-			Gmaps.map.replaceMarkers(markers)
-
-		  event.preventDefault(); // Prevent link from following its href
-		});
-
-		$('#hotelTab').click(function (event) {
-			markers = <%=raw(@json2)%>
-			Gmaps.map.replaceMarkers(markers)
-		  
-		  event.preventDefault(); // Prevent link from following its href
-		});
-		
-		$('#epTab').click(function (event) {
-		  markers = <%=raw(@json3)%>
-			Gmaps.map.replaceMarkers(markers)
-		  event.preventDefault(); // Prevent link from following its href
-		});
+<script type="text/javascript" id="sourcecode">
+  $(function()
+  {
+    $('.scroll-pane').jScrollPane();
   });
 </script>
+
+<style type="text/css" id="page-css">
+  .scroll-pane{
+    width: 100%;
+    height: 450px;
+    overflow: auto;
+  }
+</style>
