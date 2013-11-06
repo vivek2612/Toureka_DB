@@ -16,7 +16,11 @@
    
   </head>
   <body>
-    <% if !flash[:notice].nil? %>
+    <div class="container-fluid">
+      <%= yield %>
+      <%= yield :scripts%>
+    </div>
+        <% if !flash[:notice].nil? %>
     <div class="row container">
         <div class="flash notice alert">
             <%= flash[:notice] %>
@@ -30,9 +34,5 @@
         </div>
     </div>
     <% end %>
-    <div class="container-fluid">
-      <%= yield %>
-      <%= yield :scripts%>
-    </div>
   </body>
 </html>
