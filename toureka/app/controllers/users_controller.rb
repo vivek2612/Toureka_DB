@@ -29,7 +29,7 @@ class UsersController < ApplicationController
       @entryPoints = EntryPoint.all
 
       @json1 = TouristSpot.all.to_gmaps4rails do |touristSpot, marker|
-        marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
+        # marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
         marker.picture({:picture => "../../assets/marker.png",
           :width => 32,
           :height => 32})
@@ -69,21 +69,24 @@ class UsersController < ApplicationController
   end
 
   def show_closer_to
-    @ltsCloserTo =  LocalTransportStand.where('id in (select local_transport_stand_id from closer_tos where tourist_spot_id=404)').all.to_gmaps4rails do |localTransportStand, marker|
-      marker.infowindow render_to_string(:partial => "/localTransportStand/infowindow", :locals => { :localTransportStand => localTransportStand})
+    tid = params[:tid]
+    # puts params[:controller].keys
+    # puts "id in (select local_transport_stand_id from closer_tos where tourist_spot_id=#{id})"
+    @ltsCloserTo =  LocalTransportStand.where("id in (select local_transport_stand_id from closer_tos where tourist_spot_id=#{tid})").all.to_gmaps4rails do |localTransportStand, marker|
+      # marker.infowindow render_to_string(:partial => "/localTransportStand/infowindow", :locals => { :localTransportStand => localTransportStand})
       marker.picture({:picture => "../../assets/" +localTransportStand.localTransport + ".png",
         :width => 32,
         :height => 32})
       marker.title "#{localTransportStand.name}"
-      marker.json({ :id => entryPoint.id, :type => 'child'})
-
-
-      respond_to do |format|
-        format.html
-        format.json { render :json => @ltsCloserTo }
-      end    
+      marker.json({ :id => localTransportStand.id, :type => 'child'})
     end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @ltsCloserTo }
+    end    
   end
+  
 
   def writer_district
     @user = User.find(params[:id])

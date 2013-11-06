@@ -18,7 +18,7 @@ class LocalTransportStand < ActiveRecord::Base
   def gmaps4rails_address
     '#{id}'
   end
-  def gmaps4rails_infowindow
-    "<h1>#{name}</h1>"
-  end  
+  # def gmaps4rails_infowindow
+  #   "<h1>#{name}</h1>"
+  # end  
 end

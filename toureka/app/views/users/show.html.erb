@@ -2,18 +2,27 @@
 <%= render 'layouts/header2' %>
 <br>
 <div id="mapWalaContainer" align="right"><%= gmaps4rails(@json1) %></div>
+<ul id="markers_list"> <%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %></ul>
+
 <script>
 
 	$(document).ready(function() {
 
 		Gmaps.map.callback = function() {
+			// Gmaps.map.map_options.center_latitude
+			// Gmaps.map.map_options.auto_zoom = false;
+			// Gmaps.map.adjustMapToBounds();
+		  if (Gmaps.map.visibleInfoWindow !== null) {
+				Gmaps.map.visibleInfoWindow.close();
+			}
+
 		  for (var i = 0; i <  this.markers.length; ++i) {
 		    google.maps.event.addListener(
 		     Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
 		        return function() {
 		            var id = Gmaps.map.markers[i].id;
 								    (function(_str) {
-								        $.ajax({'type': 'GET','dataType': 'json', 'url': '/users/'+ <%=@user.id%> + '/show_closer_to'})
+								        $.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'})
 								         .done(function(data) {
 								            processData(data, id);
 								         });
@@ -22,8 +31,11 @@
 		    })(i));
 		  }
 		 };
+
 		function processData(data, id) {
+		  console.log("hello");
 		  console.log(data, id);
+		  Gmaps.map.addMarkers(data,false)
 		}  
 		$('#touristSpotTab').click(function (event) {
 		  markers = <%=raw(@json1)%>

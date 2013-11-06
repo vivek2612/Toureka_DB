@@ -26,7 +26,10 @@ class TouristSpot < ActiveRecord::Base
   def gmaps4rails_address
     '#{id}'
   end
-  def gmaps4rails_infowindow
-    "<h1>#{name}</h1>"
+  # def gmaps4rails_infowindow
+  #   "#{name}"
+  # end
+  def gmaps4rails_sidebar
+    "#{name}"
   end
 end 
