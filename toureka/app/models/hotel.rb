@@ -21,4 +21,7 @@ class Hotel < ActiveRecord::Base
   def gmaps4rails_sidebar
     "#{name}"
   end  
+  def gmaps4rails_infowindow
+    "#{name}"
+  end
 end

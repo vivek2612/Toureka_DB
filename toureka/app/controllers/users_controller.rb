@@ -19,6 +19,8 @@ class UsersController < ApplicationController
   end
 
   def show
+    # @DistrictHash = Hash[District.all.map{|x| ["#{x.name}","#{x.name}, #{x.state.name}"]}]
+    @districtName = District.all.map{|x| {:value=>"#{x.name}",:label =>"#{x.name}, #{x.state.name}"}}
     @user = User.find(params[:id])
     if @user.role=="writer"
       @stateName = State.pluck(:name);  
@@ -34,20 +36,20 @@ class UsersController < ApplicationController
           :width => 32,
           :height => 32})
         marker.title "#{touristSpot.name}"
-        marker.json({ :id => touristSpot.id,:type => 'parent'})
+        marker.json({ :id => touristSpot.id,:type => 'parent',:type2 => 'touristSpot'})
       end
 
       @json2 = Hotel.all.to_gmaps4rails do |hotel, marker|
-        marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        # marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
         marker.picture({:picture => "../../assets/hotel.png",
           :width => 32,
           :height => 32})
         marker.title "#{hotel.name}"
-        marker.json({ :id => hotel.id, :type => 'parent'})
+        marker.json({ :id => hotel.id, :type => 'parent',:type2 => 'hotel'})
       end
 
       @json3 = EntryPoint.all.to_gmaps4rails do |entryPoint, marker|
-        marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
+        # marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
         mode = "airplane"
         if entryPoint.entryType==1
           mode="railway"
@@ -56,7 +58,7 @@ class UsersController < ApplicationController
           :width => 32,
           :height => 32})
         marker.title "#{entryPoint.name}"
-        marker.json({ :id => entryPoint.id, :type => 'parent'})
+        marker.json({ :id => entryPoint.id, :type => 'parent',:type2 => 'entryPoint'})
 
       end
 
@@ -67,6 +69,12 @@ class UsersController < ApplicationController
       # render 'show.html.erb'
     end
   end
+
+  def select_city
+    puts params.keys
+    render 'show'
+  end
+
 
   def show_closer_to
     tid = params[:tid]
@@ -87,6 +95,16 @@ class UsersController < ApplicationController
     end    
   end
   
+  def get_tourist_spot_info
+    tid = params[:tid]
+    @tsInfo = TouristSpot.find(tid)
+    @reviewInfo = @tsInfo.reviews
+    @Info = { :tsInfo => @tsInfo, :reviewInfo => @reviewInfo}
+    respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @Info }
+    end
+  end
 
   def writer_district
     @user = User.find(params[:id])
