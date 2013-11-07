@@ -16,7 +16,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3">
-      <%= form_for(:session, url: sessions_path) do |f| %>
+      <%= form_for(:session, url: {action: "select_city"},method: 'get') do |f| %>
         <%= f.label :city %>
         <%= f.text_field :city %><br>
         <%= f.submit "Search", class: "btn btn-large btn-primary" %>

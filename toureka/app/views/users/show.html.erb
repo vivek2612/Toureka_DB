@@ -24,7 +24,9 @@
 <script>
 
 	$(document).ready(function() {
-
+    $("#session_city").autocomplete({
+      source: <%= raw @districtName.to_json %>
+    });
 		Gmaps.map.callback = function() {
 			// Gmaps.map.map_options.center_latitude
 			// Gmaps.map.map_options.auto_zoom = false;
@@ -33,20 +35,20 @@
 				Gmaps.map.visibleInfoWindow.close();
 			}
 
-		  for (var i = 0; i <  this.markers.length; ++i) {
-		    google.maps.event.addListener(
-		     Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
-		        return function() {
-		            var id = Gmaps.map.markers[i].id;
-								    (function(_str) {
-								        $.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'})
-								         .done(function(data) {
-								            processData(data, id);
-								         });
-								    }(id)); 
-		        }
-		    })(i));
-		  }
+		  // for (var i = 0; i <  this.markers.length; ++i) {
+		  //   google.maps.event.addListener(
+		  //    Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
+		  //       return function() {
+		  //           var id = Gmaps.map.markers[i].id;
+				// 				    (function(_str) {
+				// 				        $.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'})
+				// 				         .done(function(data) {
+				// 				            processData(data, id);
+				// 				         });
+				// 				    }(id)); 
+		  //       }
+		  //   })(i));
+		  // }
 		 };
 
 		function processData(data, id) {
@@ -74,6 +76,25 @@
 		  event.preventDefault(); // Prevent link from following its href
 		});
 		});
+
+	function getMarkerClicked(marker) {
+		console.log(marker);
+		if(marker.type2 == "touristSpot"){
+			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
+	      	fillTouristSpotData(data);
+	    });
+		}
+		else if(marker.type2 == "hotel"){
+			console.log("fjdkfjls");
+		}
+		else{
+			console.log("hhhhhhhh");
+		}
+	}
+
+	function fillTouristSpotData (data) {
+		console.log(data);
+	}
 </script>
 
 
