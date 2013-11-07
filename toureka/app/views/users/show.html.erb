@@ -65,6 +65,7 @@
 			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
+		  showToggle(false);
 		});
 
 			$('#hotelTab').click(function (event) {
@@ -72,12 +73,14 @@
 				Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
+		  showToggle(false);
 		});
 
 			$('#epTab').click(function (event) {
 				markers = <%=raw(@json3)%>
 				Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
+		  showToggle(false);
 		});
 		});
 
