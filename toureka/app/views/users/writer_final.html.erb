@@ -114,7 +114,7 @@
 
 	$('#deleteHotel').click(function(){
 		HD=HD+1;
-		div6='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-large search-query" id="H" name="HNdame'+HD+'" placeholder="Name"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div6='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-large search-query" id="H" name="HdName'+HD+'" placeholder="Name"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.deleteHotel').prepend(div6); 
 		$("#H").autocomplete({
 			source: <%= raw @H %>

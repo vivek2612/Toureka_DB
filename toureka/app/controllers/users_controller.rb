@@ -171,6 +171,17 @@ class UsersController < ApplicationController
     @EP=EntryPoint.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name)
     @LTS = LocalTransportStand.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name);
     @H = Hotel.where(:districtName=>session[:districtName], :stateName=>session[:stateName]).pluck(:name);
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    puts session[:stateName]+","+session[:districtName]
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    puts @TS
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    puts @EP
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    puts @LTS
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    puts @H
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   end
 
 
