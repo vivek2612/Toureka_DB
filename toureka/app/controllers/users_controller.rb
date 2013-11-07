@@ -19,8 +19,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    # @DistrictHash = Hash[District.all.map{|x| ["#{x.name}","#{x.name}, #{x.state.name}"]}]
-    @districtName = District.all.map{|x| {:value=>"#{x.name}",:label =>"#{x.name}, #{x.state.name}"}}
+    @districtName = District.all.map{|x| "#{x.name}, #{x.state.name}"}
+    # @districtName = District.all.map{|x| {:value=>"#{x.name}",:label =>"#{x.name}, #{x.state.name}"}}
     @user = User.find(params[:id])
     if @user.role=="writer"
       @stateName = State.pluck(:name);  
@@ -71,13 +71,57 @@ class UsersController < ApplicationController
   end
 
   def select_city
-    puts params.keys
-    render 'show'
-  end
+    @districtName = District.all.map{|x| "#{x.name}, #{x.state.name}"}
+    # puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
+    # puts params.keys
+    # puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
+    @user = User.find(params[:id])
+    @touristSpots = TouristSpot.all
+    @hotels = Hotel.all
+    @entryPoints = EntryPoint.all
+    array = params[:session][:city].gsub(/\s+/, "").split(",")
+    state = array[1]
+    district = array[0]
 
 
-  def show_closer_to
-    tid = params[:tid]
+    @json1 = TouristSpot.where(:stateName => state , :districtName => district).to_gmaps4rails do |touristSpot, marker|
+        # marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
+        marker.picture({:picture => "../../assets/marker.png",
+          :width => 32,
+          :height => 32})
+        marker.title "#{touristSpot.name}"
+        marker.json({ :id => touristSpot.id,:type => 'parent',:type2 => 'touristSpot'})
+      end
+
+      @json2 = Hotel.where(:stateName => state , :districtName => district).to_gmaps4rails do |hotel, marker|
+        # marker.infowindow render_to_string(:partial => "/hotels/infowindow", :locals => { :hotel => hotel})
+        marker.picture({:picture => "../../assets/hotel.png",
+          :width => 32,
+          :height => 32})
+        marker.title "#{hotel.name}"
+        marker.json({ :id => hotel.id, :type => 'parent',:type2 => 'hotel'})
+      end
+
+      @json3 = EntryPoint.where(:stateName => state , :districtName => district).to_gmaps4rails do |entryPoint, marker|
+        # marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
+        mode = "airplane"
+        if entryPoint.entryType==1
+          mode="railway"
+        end
+        marker.picture({:picture => "../../assets/" + mode + ".png",
+          :width => 32,
+          :height => 32})
+        marker.title "#{entryPoint.name}"
+        marker.json({ :id => entryPoint.id, :type => 'parent',:type2 => 'entryPoint'})
+
+      end
+      puts params.keys
+      render 'show.html.erb'
+    end
+
+
+    def show_closer_to
+      tid = params[:tid]
     # puts params[:controller].keys
     # puts "id in (select local_transport_stand_id from closer_tos where tourist_spot_id=#{id})"
     @ltsCloserTo =  LocalTransportStand.where("id in (select local_transport_stand_id from closer_tos where tourist_spot_id=#{tid})").all.to_gmaps4rails do |localTransportStand, marker|
@@ -103,11 +147,11 @@ class UsersController < ApplicationController
     respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @Info }
+      end
     end
-  end
 
-  def writer_district
-    @user = User.find(params[:id])
+    def writer_district
+      @user = User.find(params[:id])
     if params[:SN1] # ADD NEW STATE
       if State.exists?(:name=>params[:SN1])
         flash[:notice] = "State already exists"

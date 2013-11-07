@@ -25,7 +25,7 @@
 
 	$(document).ready(function() {
     $("#session_city").autocomplete({
-      source: <%= raw @districtName.to_json %>
+      source: <%= raw @districtName %>
     });
 		Gmaps.map.callback = function() {
 			// Gmaps.map.map_options.center_latitude
