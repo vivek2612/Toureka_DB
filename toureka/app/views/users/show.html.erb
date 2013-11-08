@@ -26,8 +26,13 @@
 
 <script>
 	var tog=true;
-
+	var previousHighlightedMarker;
+	var TsImage2;
+	var TsImage1;
 	$(document).ready(function() {
+		Tsimage1 = { url: "../../assets/touristSpot.png", size: new google.maps.Size(32, 32)};
+		Tsimage2 = { url: "../../assets/touristSpot_h.png", size: new google.maps.Size(32, 32)};
+
     $("#session_city").autocomplete({
       source: <%= raw @districtName %>
     });
@@ -83,10 +88,19 @@
 		  showToggle(false);
 		});
 		});
-
+	
 	function getMarkerClicked(marker) {
 		// console.log(marker);
 		if(marker.type2 == "touristSpot"){
+			if(previousHighlightedMarker===undefined){
+				console.log("nothing selected")
+			}
+			else{
+				previousHighlightedMarker.serviceObject.setIcon(image1);
+			}
+			// $(marker.serviceObject.Ge.Xa.ma).attr("src", "/assets/airplane.png");
+			marker.serviceObject.setIcon(image2);
+			previousHighlightedMarker = marker;
 			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
 	      	fillTouristSpotData(data);
 	    });
