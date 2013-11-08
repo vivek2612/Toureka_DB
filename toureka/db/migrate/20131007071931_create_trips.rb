@@ -2,9 +2,8 @@ class CreateTrips < ActiveRecord::Migration
   def change
     create_table :trips do |t|
 		t.belongs_to :user
-		t.belongs_to :tourist_spot
-    	t.date  :startDate
-      	t.integer :dayNumber
+    	t.date  :start_date
+      	t.string :name
 
       	t.timestamps
     end

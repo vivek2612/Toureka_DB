@@ -44,12 +44,12 @@ CREATE TYPE category_type AS ENUM (
 
 
 --
--- Name: entry_point_type; Type: TYPE; Schema: public; Owner: -
+-- Name: entrypointtype; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE entry_point_type AS ENUM (
-    'airport',
-    'railway'
+CREATE TYPE entrypointtype AS ENUM (
+    'railway',
+    'airport'
 );
 
 
@@ -253,9 +253,9 @@ CREATE TABLE entry_points (
     name character varying(255) NOT NULL,
     "districtName" character varying(255) NOT NULL,
     "stateName" character varying(255) NOT NULL,
+    "entryPointType" entrypointtype,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    "entryType" entry_point_type,
     gmaps boolean
 );
 
@@ -456,6 +456,40 @@ ALTER SEQUENCE near_bies_id_seq OWNED BY near_bies.id;
 
 
 --
+-- Name: one_days; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE one_days (
+    id integer NOT NULL,
+    user_id integer,
+    tourist_spot_id integer,
+    start_date date NOT NULL,
+    day_number integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: one_days_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE one_days_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: one_days_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE one_days_id_seq OWNED BY one_days.id;
+
+
+--
 -- Name: reviews; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -610,9 +644,8 @@ ALTER SEQUENCE tourist_spots_id_seq OWNED BY tourist_spots.id;
 CREATE TABLE trips (
     id integer NOT NULL,
     user_id integer,
-    tourist_spot_id integer,
-    "startDate" date NOT NULL,
-    "dayNumber" integer NOT NULL,
+    start_date date NOT NULL,
+    name character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -752,6 +785,13 @@ ALTER TABLE ONLY near_bies ALTER COLUMN id SET DEFAULT nextval('near_bies_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY one_days ALTER COLUMN id SET DEFAULT nextval('one_days_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq'::regclass);
 
 
@@ -879,6 +919,14 @@ ALTER TABLE ONLY near_bies
 
 
 --
+-- Name: one_days_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY one_days
+    ADD CONSTRAINT one_days_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -969,10 +1017,10 @@ CREATE INDEX index_states_on_name ON states USING btree (name);
 
 
 --
--- Name: index_trips_on_user_id_and_startDate; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_trips_on_user_id_and_start_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX "index_trips_on_user_id_and_startDate" ON trips USING btree (user_id, "startDate");
+CREATE INDEX index_trips_on_user_id_and_start_date ON trips USING btree (user_id, start_date);
 
 
 --
@@ -1089,4 +1137,6 @@ INSERT INTO schema_migrations (version) VALUES ('20131019213839');
 
 INSERT INTO schema_migrations (version) VALUES ('20131019215403');
 
-INSERT INTO schema_migrations (version) VALUES ('20131026161329');
+INSERT INTO schema_migrations (version) VALUES ('20131108125604');
+
+INSERT INTO schema_migrations (version) VALUES ('20131108130344');

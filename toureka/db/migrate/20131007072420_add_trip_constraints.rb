@@ -1,7 +1,6 @@
 class AddTripConstraints < ActiveRecord::Migration
   def change
-  	change_column :trips, :dayNumber, :integer, :null => false
-  	change_column :trips, :startDate, :date, :null => false
-	add_index :trips, [:user_id, :startDate]
+  	change_column :trips, :start_date, :date, :null => false
+	add_index :trips, [:user_id, :start_date]
   end
 end
