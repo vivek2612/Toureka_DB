@@ -25,7 +25,7 @@
 	</div>
 
 <script>
-	var currentTrip = [[]] ;
+	var currentTrip = [] ;
       
 	var tog=true;
 	var previousHighlightedMarker;
@@ -38,6 +38,17 @@
     $("#session_city").autocomplete({
       source: <%= raw @districtName %>
     });
+
+    <% if !@tripTagData.nil? %> 
+	    var tripData = <%= raw @tripTagData%>;
+	    // filling already shortlisted data
+		    for (var i = 0; i <  tripData.length; i += 3){
+		    	currentTrip.push([tripData[i],tripData[i+1],tripData[i+2]]);
+					var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + tripData[i] +','+ tripData[i+1] + '>' + tripData[i+2] + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
+		      $("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;	
+		    }
+		 <% end %>
+	  ////////////////////////////////////////////////////
 		Gmaps.map.callback = function() {
 			// Gmaps.map.map_options.center_latitude
 			// Gmaps.map.map_options.auto_zoom = false;
@@ -62,11 +73,15 @@
 		  // }
 		 };
 
-		function processData(data, id) {
-		  console.log("hello");
-		  console.log(data, id);
-		  Gmaps.map.addMarkers(data,false)
-		}  
+		// function processData(data, id) {
+		//   console.log(data, id);
+		//   Gmaps.map.addMarkers(data,false)
+		// }  
+		$('#searchButton').click(function (event) {
+			$('#session_service').val(currentTrip);
+			console.log("ho gaya");
+		  showToggle(false);
+		});
 		$('#touristSpotTab').click(function (event) {
 		  markers = <%=raw(@json1)%>
 			Gmaps.map.replaceMarkers(markers)
@@ -94,10 +109,9 @@
 	function getMarkerClicked(marker) {
 		// console.log(marker);
 		if(marker.type2 == "touristSpot"){
-			console.log(marker);
-
-			currentTrip.concat([[marker.id,2]])
-			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well">' + marker.title + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
+			// console.log(marker);
+			currentTrip.push([marker.id,2,marker.title]);
+			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + marker.id +','+ 2 + '>' + marker.title + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
       $("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 			// for changing image////////////////////////
 			if(previousHighlightedMarker===undefined){
@@ -175,7 +189,16 @@
 
 	function deleteFunc(param){
 		$(param).parent().remove();
-		console.log($(param).prev());
+		[id,day]=$($(param).parent()).data()['idandday'].split(',');
+		console.log(currentTrip)
+		var tripData;
+		for (var i = 0; i <  currentTrip.length; ++i){
+			tripData = currentTrip[i]
+			if (tripData[0]==id & tripData[1]==day){
+				currentTrip.splice(i,1);
+			}
+		}
+		console.log(currentTrip)
 	};
 </script>
 
