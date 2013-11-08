@@ -78,7 +78,7 @@
 
 	$('#addEntryPoint').click(function(){
 		EntryPointCount= EntryPointCount+1;
-		div1='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="EPname'+EntryPointCount+'" placeholder="Name"><input type="text" class="input-medium search-query" name="EPLat'+EntryPointCount+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="EPLong'+EntryPointCount+'" placeholder="Longitude"><input type="text" class="input-medium search-query" name="EPType'+EntryPointCount+'" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div1='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="EPname'+EntryPointCount+'" placeholder="Name"><input type="text" class="input-medium search-query" name="EPLat'+EntryPointCount+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="EPLong'+EntryPointCount+'" placeholder="Longitude"><select class="btn btn-default dropdown-toggle" name="EPType'+EntryPointCount+'" placeholder="Type"><option value="airport">airport</option><option value="railway">railway</option></select><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.addEntryPoint').prepend(div1);                         
 	});
 
@@ -93,7 +93,7 @@
 
 	$('#addTouristSpot').click(function(){
 		TS=TS+1;
-		div3='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-small search-query" name="TSName'+TS+'" placeholder="Name"><input type="text" class="input-small search-query" name="TSLat'+TS+'" placeholder="Latitude"><input type="text" class="input-small search-query" name="TSLong'+TS+'" placeholder="Longitude"><input type="text" class="input-small search-query" name="TSDesc'+TS+'" placeholder="Discription"><input type="text" class="input-small search-query" name="TSCat'+TS+'" placeholder="Category"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div3='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-small search-query" name="TSName'+TS+'" placeholder="Name"><input type="text" class="input-small search-query" name="TSLat'+TS+'" placeholder="Latitude"><input type="text" class="input-small search-query" name="TSLong'+TS+'" placeholder="Longitude"><input type="text" class="input-small search-query" name="TSDesc'+TS+'" placeholder="Discription"><select type="text" class="btn btn-default dropdown-toggle" name="TSCat'+TS+'" placeholder="Category"><option value="Art Gallery">Art Gallery</option><option value="Historic Site">Historic Site</option><option value="Museum">Museum</option><option value="Music Venue">Music Venue</option><option value="Performing Arts Venue">Performing Arts Venue</option><option value="Zoo">Zoo</option><option value="Beach">Beach</option><option value="Plaza">Plaza</option><option value="Religious/Spiritual">Religious/Spiritual</option><option value="National Parks">National Parks</option></select><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.addTouristSpot').prepend(div3);                         
 	});
 
@@ -123,7 +123,7 @@
 
 	$('#addTransportStand').click(function(){
 		LTS=LTS+1;
-		div7='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="LTSName'+LTS+'" placeholder="Name"><input type="text" class="input-medium search-query" name="LTSLat'+LTS+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="LTSLong'+LTS+'" placeholder="Longitude"><input type="text" class="input-medium search-query" name="LTSType'+LTS+'" placeholder="Type"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div7='<div style="background:#777777;margin-left:80px;padding-top:10px;display:"><input type="text" class="input-medium search-query" name="LTSName'+LTS+'" placeholder="Name"><input type="text" class="input-medium search-query" name="LTSLat'+LTS+'" placeholder="Latitude"><input type="text" class="input-medium search-query" name="LTSLong'+LTS+'" placeholder="Longitude"><select type="text" class="btn btn-default dropdown-toggle" name="LTSType'+LTS+'" placeholder="Type"><option value="bus">bus</option><option value="metro">metro</option></select><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.addTransportStand').prepend(div7);                         
 	});
 
