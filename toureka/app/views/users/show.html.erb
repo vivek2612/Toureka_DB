@@ -5,7 +5,7 @@
 			<div class="span3">
 				<div class="scroll-pane scroller1">
 					<div class="well sidebar-nav">
-							<ul id="markers_list"></ul>
+						<ul id="markers_list"></ul>
 						
 					</div>
 				</div>
@@ -13,36 +13,45 @@
 			<div class="span9" align="right" >
 				<div id="mapWalaContainer" >
 					<div class="mapOnly" >
-					<%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %>
+						<%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %>
 						
 					</div>
-					<div  id="popoverContent" class="well">
+					<div id="popoverContentNav">
+						
+					</div>
+					<div  id="popoverContentReviews" class="well">
 
-					</div>					
+					</div>
+					<div  id="popoverContentNeighbourhood" class="well">
+
+					</div>
+					<div  id="popoverContentDetails" class="well">
+
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<script>
-	var currentTrip = [[]] ;
-      
-	var tog=true;
-	var previousHighlightedMarker;
-	var tsimage2;
-	var tsimage1;
-	$(document).ready(function() {
-		tsimage2 = { url: "../../assets/airplane.png", size: new google.maps.Size(32, 32)};
-		tsimage1 = { url: "../../assets/marker.png", size: new google.maps.Size(32, 32)};
+	<script>
+		var currentTrip = [[]] ;
 
-    $("#session_city").autocomplete({
-      source: <%= raw @districtName %>
-    });
-		Gmaps.map.callback = function() {
+		var tog=true;
+		var previousHighlightedMarker;
+		var tsimage2;
+		var tsimage1;
+		$(document).ready(function() {
+			tsimage2 = { url: "../../assets/airplane.png", size: new google.maps.Size(32, 32)};
+			tsimage1 = { url: "../../assets/marker.png", size: new google.maps.Size(32, 32)};
+
+			$("#session_city").autocomplete({
+				source: <%= raw @districtName %>
+			});
+			Gmaps.map.callback = function() {
 			// Gmaps.map.map_options.center_latitude
 			// Gmaps.map.map_options.auto_zoom = false;
 			// Gmaps.map.adjustMapToBounds();
-		  if (Gmaps.map.visibleInfoWindow !== null) {
+			if (Gmaps.map.visibleInfoWindow !== null) {
 				Gmaps.map.visibleInfoWindow.close();
 			}
 
@@ -60,36 +69,36 @@
 		  //       }
 		  //   })(i));
 		  // }
-		 };
+		};
 
 		function processData(data, id) {
-		  console.log("hello");
-		  console.log(data, id);
-		  Gmaps.map.addMarkers(data,false)
+			console.log("hello");
+			console.log(data, id);
+			Gmaps.map.addMarkers(data,false)
 		}  
 		$('#touristSpotTab').click(function (event) {
-		  markers = <%=raw(@json1)%>
+			markers = <%=raw(@json1)%>
 			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
 		  showToggle(false);
 		});
 
-			$('#hotelTab').click(function (event) {
-				markers = <%=raw(@json2)%>
-				Gmaps.map.replaceMarkers(markers)
+		$('#hotelTab').click(function (event) {
+			markers = <%=raw(@json2)%>
+			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
 		  showToggle(false);
 		});
 
-			$('#epTab').click(function (event) {
-				markers = <%=raw(@json3)%>
-				Gmaps.map.replaceMarkers(markers)
+		$('#epTab').click(function (event) {
+			markers = <%=raw(@json3)%>
+			Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
 		  showToggle(false);
 		});
-		});
+	});
 	
 	function getMarkerClicked(marker) {
 		// console.log(marker);
@@ -98,7 +107,7 @@
 
 			currentTrip.concat([[marker.id,2]])
 			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well">' + marker.title + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
-      $("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
+			$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 			// for changing image////////////////////////
 			if(previousHighlightedMarker===undefined){
 				console.log("nothing selected")
@@ -111,20 +120,20 @@
 			previousHighlightedMarker = marker;
 			//////////////////////////////////////////
 			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
-	      	fillTouristSpotData(data);
-	    });
+				fillTouristSpotData(data);
+			});
 		}
 		else if(marker.type2 == "hotel"){
 			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_hotel_info'}).done(function(data) {
-	      	fillHotelData(data);
+				fillHotelData(data);
 			});
 		}
 		else{			
 			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_entry_point_info'}).done(function(data) {
-	      	fillEntryPointData(data);
-	      	});
-	  	}
-	
+				fillEntryPointData(data);
+			});
+		}
+
 	}
 
 	function fillTouristSpotData (data) {
@@ -134,9 +143,37 @@
 		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
 		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
 		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
-		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";
+		"<h5>"+"Description: "+data.tsInfo.description+"</h5>"+
+		"<a class='btn btn-primary' onclick=''>Add to current Trip</a>";
 		console.log(data.reviewInfo);
-		$("#popoverContent")[0].innerHTML=innerHTMLcontent0;
+		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent0;
+		var innerHTMLcontent1=
+		'<a class="btn btn-primary" onclick="">Show Nearby TouristSpots</a><a class="btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><a class="btn btn-primary" onclick="">Show Nearby TransportStands</a>'
+		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<h5>"+data.tsInfo.name+"</h5>"+
+		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
+		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
+		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
+		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
+		$("#popoverContentNeighbourhood")[0].innerHTML=innerHTMLcontent1;
+		var innerHTMLcontent2=
+		'Reviews'
+		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<h5>"+data.tsInfo.name+"</h5>"+
+		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
+		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
+		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
+		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
+		$("#popoverContentReviews")[0].innerHTML=innerHTMLcontent2;
+		var innerHTMLcontent3=
+		'<ul><li><a onclick="showReviews()" href="#">Reviews</a></li><li><a onclick="showNeighbours()" href="#">Neighbour</a></li><li><a onclick="showDetails()" href="#">Details</a></li></ul>'
+		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<h5>"+data.tsInfo.name+"</h5>"+
+		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
+		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
+		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
+		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
+		$("#popoverContentNav")[0].innerHTML=innerHTMLcontent3;
 		showToggle(true);
 
 	}
@@ -166,11 +203,35 @@
 	function showToggle(bools){
 		if(!bools){
 			console.log("yo1");
-			$("#popoverContent")[0].style.display="none";
+			$("#popoverContentDetails")[0].style.display="none";
+			$("#popoverContentNeighbourhood")[0].style.display="none";
+			$("#popoverContentReviews")[0].style.display="none";
+			$("#popoverContentNav")[0].style.display="none";
 		}else{
 			console.log("yo2");
-			$("#popoverContent")[0].style.display="block";
+			$("#popoverContentDetails")[0].style.display="block";
+			$("#popoverContentNeighbourhood")[0].style.display="block";
+			$("#popoverContentReviews")[0].style.display="block";
+			$("#popoverContentNav")[0].style.display="block";
 		}
+	}
+
+	function showReviews(){
+		$('#popoverContentReviews').css("z-index", "5");
+		$('#popoverContentNeighbourhood').css("z-index", "4");
+		$('#popoverContentDetails').css("z-index", "3");
+	}
+
+	function showNeighbours(){
+		$('#popoverContentReviews').css("z-index", "4");
+		$('#popoverContentNeighbourhood').css("z-index", "5");
+		$('#popoverContentDetails').css("z-index", "3");
+	}
+
+	function showDetails(){
+		$('#popoverContentReviews').css("z-index", "3");
+		$('#popoverContentNeighbourhood').css("z-index", "4");
+		$('#popoverContentDetails').css("z-index", "5");
 	}
 
 	function deleteFunc(param){
@@ -180,15 +241,94 @@
 </script>
 
 
-
 <style type="text/css">
-	#popoverContent{	
+	#popoverContentNav{	
 		/*background-color: #aaaaaa;*/
-		opacity: 0.8;
+		/*opacity: 0.8;*/
+		width: 340px;
+		height: 200px;
+		position:absolute;
+		z-index: 10;
+		margin-left : 625px;
+		display:block;
+		text-align: left;
+		overflow-x:hidden;
+		overflow-y:auto;
+		display:none;
+
+	}
+	#popoverContentReviews{	
+		/*background-color: #aaaaaa;*/
+		padding-top: 40px;
+		/*opacity: 0.8;*/
 		width: 200px;
 		height: 200px;
 		position:absolute;
-		z-index: 3;
+		z-index: -1;
+		margin-left : 675px;
+		display:block;
+		text-align: left;
+		overflow-x:hidden;
+		overflow-y:auto;
+		padding-top: 10px;
+		display:none;
+
+	}
+
+	#popoverContentNeighbourhood a{	
+		/*background-color: #aaaaaa;*/
+		margin:2px;
+
+	}
+
+	#popoverContentNeighbourhood{	
+		/*background-color: #aaaaaa;*/
+		padding-top: 40px;
+		/*opacity: 0.8;*/
+		width: 200px;
+		height: 200px;
+		position:absolute;
+		z-index: -2;
+		margin-left : 675px;
+		display:block;
+		text-align: left;
+		overflow-x:hidden;
+		overflow-y:auto;
+		display:none;
+	}
+
+	#popoverContentNav ul
+	{
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		text-align: center;
+	}
+
+	#popoverContentNav ul li { display: inline; margin: 1px; }
+
+	#popoverContentNav ul li a
+	{
+		text-decoration: none;
+		padding: .2em 1em;
+		color: #fff;
+		background-color: #036;
+	}
+
+	#popoverContentNav ul li a:hover
+	{
+		color: #fff;
+		background-color: #369;
+	}
+
+	#popoverContentDetails{	
+		/*background-color: #aaaaaa;*/
+		padding-top: 40px;
+		/*opacity: 0.8;*/
+		width: 200px;
+		height: 200px;
+		position:absolute;
+		z-index: 1;
 		margin-left : 675px;
 		display:block;
 		text-align: left;
@@ -197,6 +337,7 @@
 		display:none;
 
 	}
+
 
 	#touristSpotTag{
 		opacity: 0.8;
@@ -226,14 +367,16 @@
 
 <script>
 	$('.popoverId').click(function(){
-		$("#popoverContent").toggle();
+		$("#popoverContentReviews").toggle();
+		$("#popoverContentNeighbourhood").toggle();
+		$("#popoverContentDetails").toggle();
 	});
 </script>
 
 <style type="text/css" id="page-css">
-  .scroller1{
-    width: 100%;
-    height: 450px;
-    overflow: auto;
-  }
+	.scroller1{
+		width: 100%;
+		height: 450px;
+		overflow: auto;
+	}
 </style>
