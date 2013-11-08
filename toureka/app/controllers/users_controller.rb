@@ -71,6 +71,7 @@ class UsersController < ApplicationController
   end
 
   def select_city
+    
     @districtName = District.all.map{|x| "#{x.name}, #{x.state.name}"}
     # puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
     # puts params.keys
@@ -83,6 +84,7 @@ class UsersController < ApplicationController
     state = array[1]
     district = array[0]
 
+    @tripTagData = params[:session][:service].split(',')
 
     @json1 = TouristSpot.where(:stateName => state , :districtName => district).to_gmaps4rails do |touristSpot, marker|
         # marker.infowindow render_to_string(:partial => "/touristSpots/infowindow", :locals => { :touristSpot => touristSpot})
