@@ -150,20 +150,20 @@ class UsersController < ApplicationController
       end
     end
 
-   def get_hotel_info
-    tid = params[:tid]
-    @hInfo = Hotel.find(tid)
-    @hDesc= @hInfo.description
-    @HInfo = { :hInfo => @hInfo, :hDesc => @hDesc}
-    respond_to do |format|
+    def get_hotel_info
+      tid = params[:tid]
+      @hInfo = Hotel.find(tid)
+      @hDesc= @hInfo.description
+      @HInfo = { :hInfo => @hInfo, :hDesc => @hDesc}
+      respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @HInfo }
       end
     end
 
     def get_entry_point_info
-    tid = params[:tid]
-    @epInfo = EntryPoint.find(tid)
+      tid = params[:tid]
+      @epInfo = EntryPoint.find(tid)
     # @epDesc= @epInfo.description
     # @EInfo = { :hInfo => @epInfo, :hDesc => @epDesc}
     respond_to do |format|
@@ -218,17 +218,26 @@ class UsersController < ApplicationController
 
   def writer_final
     @user = User.find(params[:id])
-    stateIdNow = State.where(:name=>session[:stateName])[0].id
+    state = State.where(:name=>session[:stateName])[0]
+    stateIdNow = state.id
+    topLeft = state.top_left_corner
+    bottomRight = state.bottom_right_corner
     if params[:DN1] # ADD NEW DISTRICT
       if District.exists?(:name=>params[:DN1], :state_id=>stateIdNow)
         flash[:notice] = "District already exists"
       else
-        d=District.create(:name=>params[:DN1], :state_id=>stateIdNow)
-        m1=MapPoint.create(:latitude=>params[:TLLat1], :longitude=>params[:TLLong1])
-        m2=MapPoint.create(:latitude=>params[:BRLat1], :longitude=>params[:BRLong1])
-        DistrictBoundedBy.create(:district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
+        if(params[:TLLat1]-topLeft.latitude)*(params[:BRLat1]-bottomRight.latitude) <= 0 and
+          (params[:TLLong1]-topLeft.longitude)*(params[:BRLong1]- bottomRight.longitude) <= 0
+          flash[:error] = "District must lie inside the parent state, check the latitude and longitude"
+          redirect_to "/users/#{@user.id}/writer_district"
+        else
+          d=District.create(:name=>params[:DN1], :state_id=>stateIdNow)
+          m1=MapPoint.create(:latitude=>params[:TLLat1], :longitude=>params[:TLLong1])
+          m2=MapPoint.create(:latitude=>params[:BRLat1], :longitude=>params[:BRLong1])
+          DistrictBoundedBy.create(:district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
+          session[:districtName]=params[:DN1]
+        end
       end
-      session[:districtName]=params[:DN1]
     elsif params[:DN2] # ADD TO EXISTING STATE
       unless District.exists?(:name=>params[:DN2], :state_id=>stateIdNow)
         flash[:error] = "district didn't already exist !Get its location info Add a new district"
@@ -243,10 +252,17 @@ class UsersController < ApplicationController
         if !dbb.nil?
           dbb.destroy
         end
-        m1=MapPoint.create(:latitude=>params[:TLLat3], :longitude=>params[:TLLong3])
-        m2=MapPoint.create(:latitude=>params[:BRLat3], :longitude=>params[:BRLong3])
-        DistrictBoundedBy.create(:district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
-        session[:districtName]=params[:DN3]
+        if(params[:TLLat1]-topLeft.latitude)*(params[:BRLat1]-bottomRight.latitude) > 0 and
+          (params[:TLLong1]-topLeft.longitude)*(params[:BRLong1]- bottomRight.longitude) > 0
+          flash[:error] = "District must lie inside the parent state, check the latitude and longitude"
+          redirect_to "/users/#{@user.id}/writer_district"
+        else
+          d=District.create(:name=>params[:DN1], :state_id=>stateIdNow)
+          m1=MapPoint.create(:latitude=>params[:TLLat1], :longitude=>params[:TLLong1])
+          m2=MapPoint.create(:latitude=>params[:BRLat1], :longitude=>params[:BRLong1])
+          DistrictBoundedBy.create(:district_id=>d.id, :top_left_corner_id=>m1.id, :bottom_right_corner_id=>m2.id)
+          session[:districtName]=params[:DN3]
+        end
       else
         flash[:error] = "district didn't already exist !Get its location info Add a new district"
         @districtName = District.where(:state_id=>stateIdNow).map{|x| x.name};
@@ -272,6 +288,12 @@ class UsersController < ApplicationController
 
 
   def writer_done
+    state = State.where(:name=>session[:stateName])[0]
+    stateIdNow = state.id
+    district = District.where(:name=>session[:districtName], :state_id=>stateIdNow)[0]
+    topLeft = district.top_left_corner
+    bottomRight = district.bottom_right_corner
+
     keys = params.keys
     tskeys = keys.select{|x| x[0]=='T'}
     tsdkeys = tskeys.select{|x| x[2]=='d'}
@@ -294,8 +316,8 @@ class UsersController < ApplicationController
     i = 0
     while i < tskeys.size do
       name = params[tskeys[i]]
-      lat = params[tskeys[i+1]]
-      long = params[tskeys[i+2]]
+      lat = params[tskeys[i+1]].to_f
+      long = params[tskeys[i+2]].to_f
       desc = params[tskeys[i+3]]
       cat = params[tskeys[i+4]]
       if(TouristSpot.exists?(:name=>name, :category=>cat))
@@ -306,29 +328,36 @@ class UsersController < ApplicationController
           return
         end
       else
-        t = TouristSpot.new
-        puts "fucked"
-        puts cat
-        puts "fucked"
-        t.name=name
-        t.category=cat
-        t.latitude=lat
-        t.longitude=long
-        t.description=desc
-        t.stateName = session[:stateName]
-        t.districtName = session[:districtName]
-        if !t.valid?
-          puts t.name
-          puts t.category
-          puts t.latitude
-          puts t.longitude
-          puts t.description
-          puts "NOT VALID"
-          flash[:error]="Invalid attributes of TouristSpot 2 #{name}"
+        if  (topLeft.latitude-lat)*(bottomRight.latitude-lat) <= 0 and
+          (topLeft.longitude-long)*(bottomRight.longitude-long) <= 0
+          t = TouristSpot.new
+          puts "fucked"
+          puts cat
+          puts "fucked"
+          t.name=name
+          t.category=cat
+          t.latitude=lat
+          t.longitude=long
+          t.description=desc
+          t.stateName = session[:stateName]
+          t.districtName = session[:districtName]
+          if !t.valid?
+            puts t.name
+            puts t.category
+            puts t.latitude
+            puts t.longitude
+            puts t.description
+            puts "NOT VALID"
+            flash[:error]="Invalid attributes of TouristSpot 2 #{name}"
+            redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
+            return
+          else
+            t.save
+          end
+        else
+          flash[:error]="TouristSpot 1 #{name} does not lie inside the district, check latitude and longitude"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
-        else
-          t.save
         end
       end
       i+=5
@@ -352,8 +381,8 @@ class UsersController < ApplicationController
     i = 0
     while i < hkeys.size do
       name = params[hkeys[i]]
-      lat = params[hkeys[i+1]]
-      long = params[hkeys[i+2]]
+      lat = params[hkeys[i+1]].to_f
+      long = params[hkeys[i+2]].to_f
       desc = params[hkeys[i+3]]
       if(Hotel.exists?(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = Hotel.where(:name=>name, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
@@ -363,19 +392,26 @@ class UsersController < ApplicationController
           return
         end
       else
-        t = Hotel.new
-        t.name=name
-        t.latitude=lat
-        t.longitude=long
-        t.description=desc
-        t.stateName = session[:stateName]
-        t.districtName = session[:districtName]
-        if !t.valid?
-          flash[:error]="Invalid attributes of Hotel 2 #{name}"
+        if  (topLeft.latitude-lat)*(bottomRight.latitude-lat) <= 0 and
+          (topLeft.longitude-long)*(bottomRight.longitude-long) <= 0
+          t = Hotel.new
+          t.name=name
+          t.latitude=lat
+          t.longitude=long
+          t.description=desc
+          t.stateName = session[:stateName]
+          t.districtName = session[:districtName]
+          if !t.valid?
+            flash[:error]="Invalid attributes of Hotel 2 #{name}"
+            redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
+            return
+          else
+            t.save
+          end
+        else
+          flash[:error]="Hotel 1 #{name} does not lie inside the district, check latitude and longitude"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
-        else
-          t.save
         end
       end
       i+=4
@@ -398,8 +434,8 @@ class UsersController < ApplicationController
     i = 0
     while i < epkeys.size do
       name = params[epkeys[i]]
-      lat = params[epkeys[i+1]]
-      long = params[epkeys[i+2]]
+      lat = params[epkeys[i+1]].to_f
+      long = params[epkeys[i+2]].to_f
       type = params[epkeys[i+3]]
       if(EntryPoint.exists?(:name=>name, :entryType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = EntryPoint.where(:name=>name, :entryType=>type, :stateName=>session[:stateName], :districtName=>session[:districtName])
@@ -409,19 +445,26 @@ class UsersController < ApplicationController
           return
         end
       else
-        t = EntryPoint.new
-        t.name=name
-        t.latitude=lat
-        t.longitude=long
-        t.entryType=type
-        t.stateName = session[:stateName]
-        t.districtName = session[:districtName]
-        if !t.valid?
-          flash[:error]="Invalid attributes of EntryPoint 2 #{name}"
+        if  (topLeft.latitude-lat)*(bottomRight.latitude-lat) <= 0 and
+          (topLeft.longitude-long)*(bottomRight.longitude-long) <= 0
+          t = EntryPoint.new
+          t.name=name
+          t.latitude=lat
+          t.longitude=long
+          t.entryType=type
+          t.stateName = session[:stateName]
+          t.districtName = session[:districtName]
+          if !t.valid?
+            flash[:error]="Invalid attributes of EntryPoint 2 #{name}"
+            redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
+            return
+          else
+            t.save
+          end
+        else
+          flash[:error]="EntryPoint 1 #{name} does not lie inside the district, check latitude and longitude"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
-        else
-          t.save
         end
       end
       i+=4
@@ -445,8 +488,8 @@ class UsersController < ApplicationController
     i = 0
     while i < ltskeys.size do
       name = params[ltskeys[i]]
-      lat = params[ltskeys[i+1]]
-      long = params[ltskeys[i+2]]
+      lat = params[ltskeys[i+1]].to_f
+      long = params[ltskeys[i+2]].to_f
       type = params[ltskeys[i+3]]
       if(LocalTransportStand.exists?(:name=>name, :localTransport=>type, :stateName=>session[:stateName], :districtName=>session[:districtName]))
         t = LocalTransportStand.where(:name=>name, :localTransport=>type, :stateName=>session[:stateName], :districtName=>session[:districtName])[0]
@@ -456,20 +499,27 @@ class UsersController < ApplicationController
           return
         end
       else
-        t = LocalTransportStand.new
-        t.name=name
-        t.latitude=lat
-        t.longitude=long
-        t.localTransport=type
-        t.stateName = session[:stateName]
-        t.districtName = session[:districtName]
-        if !t.valid?
-          flash[:error]="Invalid attributes of LTS2 #{name}"
+        if  (topLeft.latitude-lat)*(bottomRight.latitude-lat) <= 0 and
+          (topLeft.longitude-long)*(bottomRight.longitude-long) <= 0
+          t = LocalTransportStand.new
+          t.name=name
+          t.latitude=lat
+          t.longitude=long
+          t.localTransport=type
+          t.stateName = session[:stateName]
+          t.districtName = session[:districtName]
+          if !t.valid?
+            flash[:error]="Invalid attributes of LTS2 #{name}"
+            redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
+            return
+          else
+            t.save
+          end
+        else
+          flash[:error]="LocalTransportStand 1 #{name} does not lie inside the district, check latitude and longitude"
           redirect_to "/users/#{@user.id}/writer_final", :DN2 => session[:districtName]
           return
-        else
-          t.save
-        end
+        end 
       end
       i+=4
     end
