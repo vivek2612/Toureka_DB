@@ -22,14 +22,15 @@
         <%= f.submit "Search", class: "btn btn-large btn-primary" %>
     </div>
     <br><br><br>
-    <div  class="span9" style="background-color:grey;height:40px">
-      <%= f.submit "save", id: 'saveButton', class: "btn " , style: "float:right;margin:5px" %>
+    <div id="currentTrip" class="span9" style="background-color:grey;height:80px;overflow-y:auto">
     </div>
     <br>
+    
     <div class="span9" align="left">
         <%= f.submit "TouristSpot", id: 'touristSpotTab', class: "btn btn-large" %>
         <%= f.submit "Hotels", id: 'hotelTab' ,class: "btn btn-large " %>
         <%= f.submit "Entry Points", id: 'epTab' , class: "btn btn-large" %>
+        <%= f.submit "save", id: 'saveButton', class: "btn " , style: "float:right;margin:5px" %>
     </div>
   </div>
 </div>

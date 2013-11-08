@@ -1,5 +1,5 @@
 	<%= render 'layouts/header2' %>
-	
+	<br>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span3">
@@ -25,13 +25,15 @@
 	</div>
 
 <script>
+	var currentTrip = [[]] ;
+      
 	var tog=true;
 	var previousHighlightedMarker;
-	var TsImage2;
-	var TsImage1;
+	var tsimage2;
+	var tsimage1;
 	$(document).ready(function() {
-		Tsimage1 = { url: "../../assets/touristSpot.png", size: new google.maps.Size(32, 32)};
-		Tsimage2 = { url: "../../assets/touristSpot_h.png", size: new google.maps.Size(32, 32)};
+		tsimage2 = { url: "../../assets/airplane.png", size: new google.maps.Size(32, 32)};
+		tsimage1 = { url: "../../assets/marker.png", size: new google.maps.Size(32, 32)};
 
     $("#session_city").autocomplete({
       source: <%= raw @districtName %>
@@ -92,15 +94,22 @@
 	function getMarkerClicked(marker) {
 		// console.log(marker);
 		if(marker.type2 == "touristSpot"){
+			console.log(marker);
+
+			currentTrip.concat([[marker.id,2]])
+			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well">' + marker.title + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
+      $("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
+			// for changing image////////////////////////
 			if(previousHighlightedMarker===undefined){
 				console.log("nothing selected")
 			}
 			else{
-				previousHighlightedMarker.serviceObject.setIcon(image1);
+				previousHighlightedMarker.serviceObject.setIcon(tsimage1);
 			}
 			// $(marker.serviceObject.Ge.Xa.ma).attr("src", "/assets/airplane.png");
-			marker.serviceObject.setIcon(image2);
+			marker.serviceObject.setIcon(tsimage2);
 			previousHighlightedMarker = marker;
+			//////////////////////////////////////////
 			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
 	      	fillTouristSpotData(data);
 	    });
@@ -164,6 +173,10 @@
 		}
 	}
 
+	function deleteFunc(param){
+		$(param).parent().remove();
+		console.log($(param).prev());
+	};
 </script>
 
 
@@ -172,17 +185,34 @@
 	#popoverContent{	
 		/*background-color: #aaaaaa;*/
 		opacity: 0.8;
-		width: 300px;
-		height: 400px;
+		width: 200px;
+		height: 200px;
 		position:absolute;
 		z-index: 3;
-		margin-left : 575px;
+		margin-left : 675px;
 		display:block;
 		text-align: left;
-		overflow-x:visible;
+		overflow-x:hidden;
 		overflow-y:auto;
 		display:none;
 
+	}
+
+	#touristSpotTag{
+		opacity: 0.8;
+		z-index: 3;
+		display:inline-block;
+		text-align: left;
+		overflow-x:hidden;
+		overflow-y:auto;
+		margin: 3px;
+		padding: 7px;
+		min-height: 7px;		
+	}
+	.tag_text{
+		line-height: 4px;
+		font-size: 15px;
+		top: 0;
 	}
 	.mapOnly{	
 		z-index: 1;
