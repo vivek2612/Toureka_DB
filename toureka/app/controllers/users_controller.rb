@@ -150,6 +150,30 @@ class UsersController < ApplicationController
       end
     end
 
+   def get_hotel_info
+    tid = params[:tid]
+    @hInfo = Hotel.find(tid)
+    @hDesc= @hInfo.description
+    @HInfo = { :hInfo => @hInfo, :hDesc => @hDesc}
+    respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @HInfo }
+      end
+    end
+
+    def get_entry_point_info
+    tid = params[:tid]
+    @epInfo = EntryPoint.find(tid)
+    # @epDesc= @epInfo.description
+    # @EInfo = { :hInfo => @epInfo, :hDesc => @epDesc}
+    respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @epInfo }
+      end
+    end
+
+    
+
     def writer_district
       @user = User.find(params[:id])
     if params[:SN1] # ADD NEW STATE

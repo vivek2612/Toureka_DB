@@ -11,6 +11,8 @@ Toureka::Application.routes.draw do
       get 'writer_done'
       get 'show_closer_to'
       get 'get_tourist_spot_info'
+      get 'get_hotel_info'
+      get 'get_entry_point_info'
       get 'select_city'
     end
   end

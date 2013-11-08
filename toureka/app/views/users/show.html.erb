@@ -1,27 +1,31 @@
 	<%= render 'layouts/header2' %>
-	<br>
+	
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span3">
-				<div class="scroll-pane">
+				<div class="scroll-pane scroller1">
 					<div class="well sidebar-nav">
 							<ul id="markers_list"></ul>
 						
 					</div>
 				</div>
 			</div>
-			<div class="span9" >
+			<div class="span9" align="right" >
 				<div id="mapWalaContainer" >
-					<div class="mapOnly">
+					<div class="mapOnly" >
 					<%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %>
 						
 					</div>
+					<div  id="popoverContent" class="well">
+
+					</div>					
 				</div>
 			</div>
 		</div>
 	</div>
 
 <script>
+	var tog=true;
 
 	$(document).ready(function() {
     $("#session_city").autocomplete({
@@ -61,6 +65,7 @@
 			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
+		  showToggle(false);
 		});
 
 			$('#hotelTab').click(function (event) {
@@ -68,47 +73,104 @@
 				Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
+		  showToggle(false);
 		});
 
 			$('#epTab').click(function (event) {
 				markers = <%=raw(@json3)%>
 				Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
+		  showToggle(false);
 		});
 		});
 
 	function getMarkerClicked(marker) {
-		console.log(marker);
+		// console.log(marker);
 		if(marker.type2 == "touristSpot"){
 			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
 	      	fillTouristSpotData(data);
 	    });
 		}
 		else if(marker.type2 == "hotel"){
-			console.log("fjdkfjls");
+			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_hotel_info'}).done(function(data) {
+	      	fillHotelData(data);
+			});
 		}
-		else{
-			console.log("hhhhhhhh");
-		}
+		else{			
+			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_entry_point_info'}).done(function(data) {
+	      	fillEntryPointData(data);
+	      	});
+	  	}
+	
 	}
 
 	function fillTouristSpotData (data) {
-		console.log(data);
+		var innerHTMLcontent0=
+		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<h5>"+data.tsInfo.name+"</h5>"+
+		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
+		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
+		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
+		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";
+		console.log(data.reviewInfo);
+		$("#popoverContent")[0].innerHTML=innerHTMLcontent0;
+		showToggle(true);
+
 	}
+
+	function fillHotelData(data) {
+		console.log(data);
+		var innerHTMLcontent1=
+		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<H5>"+data.hInfo.name+"</H5>"+
+		"<H5>"+data.hInfo.districtName+", "+data.hInfo.stateName+"</H5>"+			
+		"<H5>"+"Description: "+data.hInfo.description+"</H5>";		
+		$("#popoverContent")[0].innerHTML=innerHTMLcontent1;
+		showToggle(true);		
+	}
+
+	function fillEntryPointData(data) {
+		console.log(data);
+		var innerHTMLcontent2=
+		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<h5>"+data.name+"</h5>"+
+		"<h5>"+"Type: "+data.entryType+"</h5>"+
+		"<h5>"+data.districtName+", "+data.stateName+"</h5>";					
+		$("#popoverContent")[0].innerHTML=innerHTMLcontent2;
+		showToggle(true);	
+	}
+
+	function showToggle(bools){
+		if(!bools){
+			console.log("yo1");
+			$("#popoverContent")[0].style.display="none";
+		}else{
+			console.log("yo2");
+			$("#popoverContent")[0].style.display="block";
+		}
+	}
+
 </script>
 
 
 
 <style type="text/css">
-	#popoverContent{
-		width: 250px;
-		height: 480px;
+	#popoverContent{	
+		/*background-color: #aaaaaa;*/
+		opacity: 0.8;
+		width: 300px;
+		height: 400px;
 		position:absolute;
 		z-index: 3;
-		margin-left : 660px;
+		margin-left : 575px;
 		display:block;
+		text-align: left;
+		overflow-x:visible;
+		overflow-y:auto;
+		display:none;
+
 	}
-	.mapOnly{
+	.mapOnly{	
 		z-index: 1;
 		position:absolute;
 	}
@@ -125,7 +187,7 @@
 </script>
 
 <style type="text/css" id="page-css">
-  .scroll-pane{
+  .scroller1{
     width: 100%;
     height: 450px;
     overflow: auto;
