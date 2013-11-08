@@ -7,7 +7,7 @@ class CreateEntryPoints < ActiveRecord::Migration
       t.string :name
       t.string :districtName
       t.string :stateName
-      t.column :entryPointType, "entryPointType"
+      t.column :entryType, "entryPointType"
       t.timestamps
     end
   end

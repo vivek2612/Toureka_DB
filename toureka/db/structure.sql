@@ -253,7 +253,7 @@ CREATE TABLE entry_points (
     name character varying(255) NOT NULL,
     "districtName" character varying(255) NOT NULL,
     "stateName" character varying(255) NOT NULL,
-    "entryPointType" entrypointtype,
+    "entryType" entrypointtype,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     gmaps boolean
