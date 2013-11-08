@@ -8,7 +8,9 @@ class TouristSpot < ActiveRecord::Base
   has_many :closer_tos
   has_many :local_transport_stands, through: :closer_tos
 
-  has_many :reviews
+  has_many :one_days, :dependent => :destroy
+
+  has_many :reviews, :dependent => :destroy
 
   has_many :buddies
   has_many :friends, :through => :buddies

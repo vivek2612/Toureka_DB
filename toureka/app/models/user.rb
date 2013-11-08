@@ -2,8 +2,8 @@ class User < ActiveRecord::Base
   attr_accessible :password, :role, :username, :password_confirmation, :password_salt, :password_hash
   attr_accessor :password
   has_many :trips , :dependent => :destroy
-
-  has_many :reviews
+  has_many :one_days, :dependent => :destroy
+  has_many :reviews, :dependent => :destroy
 
   before_save :encrypt_password
   validates_confirmation_of :password
