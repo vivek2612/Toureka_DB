@@ -2,9 +2,9 @@
 	<br>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span3">
+			<div class="span3 well">
 				<div class="scroll-pane scroller1">
-					<div class="well sidebar-nav">
+					<div class="sidebar-nav">
 						<ul id="markers_list"></ul>
 						
 					</div>
@@ -25,10 +25,64 @@
 				</div>
 			</div>
 		</div>
+
+<!-- Modal - 1-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Name the Trip : </h4>
+      </div>
+      <div class="modal-body">
+        
+			<input id="tripName" type="text" placeholder="Trip Name"><br>
+			<input id="tripDate" type="text" placeholder="dd-mm-yyyy"><br>
+			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveIt" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal - 2-->
+<div class="modal fade"id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Enter Day Number : </h4>
+      </div>
+      <div class="modal-body">
+        
+			<input id="dayNumber" type="text" placeholder="Day Number"><br>			
+			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveIt" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 	</div>
 
 
 	<script>
+
+		// var modalTrig=false;
+		// $("#modal_trigger").bind("click",function(modalTrig){
+		// 	if( (modalTrig==false) ){console.log("modalTrig");}
+		// 	// console.log(modalTrig);
+		// alert("The paragraph was clicked.");
+		// });
+
 		var currentTrip = [] ;
 		
 		var tog=true;
@@ -48,7 +102,7 @@
 	    // filling already shortlisted data
 	    for (var i = 0; i <  tripData.length; i += 3){
 	    	currentTrip.push([tripData[i],tripData[i+1],tripData[i+2]]);
-	    	var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + tripData[i] +','+ tripData[i+1] + '>' + tripData[i+2] + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
+	    	var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + tripData[i] +','+ tripData[i+1] + '>' + tripData[i+2] + '-' + 'Day-2' + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
 	    	$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;	
 	    }
 	    <% end %>
@@ -95,7 +149,7 @@
 	function getMarkerClicked(marker) {
 		if(marker.type2 == "touristSpot"){
 			currentTrip.push([marker.id,2,marker.title]);
-			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + marker.id +','+ 2 + '>' + marker.title + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
+			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + marker.id +','+ 2 + '>' + marker.title + '-' + 'Day-2' + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
 			$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 			// for changing image////////////////////////
 			if(previousHighlightedMarker===undefined){
@@ -133,12 +187,17 @@
 		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
 		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
 		"<h5>"+"Description: "+data.tsInfo.description+"</h5>"+
-		"<a class='btn btn-primary' onclick=''>Add to current Trip</a>";
-
+		"<a  data-toggle='modal' data-target='#myModal2'  class='btn btn-primary' onclick=''>Add to current Trip</a>";
+		console.log(data.reviewInfo);
 		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent0;
 		var innerHTMLcontent1=
-		'<a class="btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><a class="btn btn-primary" onclick="getNearbyHotels(this)">Show Nearby Hotel/Motel</a><a class="btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>'
-		
+		'<a class="nearButtons btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><a class="nearButtons btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><a class="nearButtons btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>'		
+		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<h5>"+data.tsInfo.name+"</h5>"+
+		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
+		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
+		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
+		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
 		$("#popoverContentNeighbourhood")[0].innerHTML=innerHTMLcontent1;
 		var innerHTMLcontent2;
 		innerHTMLcontent2=
@@ -258,8 +317,8 @@
 	} 
 	function deleteFunc(param){
 		$(param).parent().remove();
-		[id,day]=$($(param).parent()).data()['idandday'].split(',');
-		console.log(currentTrip)
+		[id,day]=$($(param).parent()).data().idandday.split(',');
+		// console.log($(param));
 		var tripData;
 		for (var i = 0; i <  currentTrip.length; ++i){
 			tripData = currentTrip[i]
@@ -289,6 +348,16 @@
 	}
 	
 
+	.nearButtons{
+		background-image:none;
+		background-color:grey;
+		color:white;			
+	}
+	.nearButtons:hover{
+			background-image:none;
+			background-color:#aaaaaa;
+		}
+
 	#popoverContentNav{	
 		width: 245pxpx;
 		height: 25px;
@@ -308,7 +377,8 @@
 	}
 
 	#popoverContentNeighbourhood a{	
-		margin:2px;
+		/*background-color: #aaaaaa;*/
+		margin:8px;
 	}
 
 	#popoverContentNeighbourhood{	
@@ -357,11 +427,11 @@
 		min-height: 7px;		
 		color: black;
 	}
-	.tag_text{
+	/*.tag_text{
 		line-height: 4px;
 		font-size: 15px;
 		top: 0;
-	}
+	}*/
 	.mapOnly{	
 		z-index: 1;
 		position:absolute;
@@ -387,7 +457,7 @@
 <style type="text/css" id="page-css">
 	.scroller1{
 		width: 100%;
-		height: 450px;
-		overflow: auto;
+		height: 450px;		
+		overflow:auto;
 	}
 </style>
