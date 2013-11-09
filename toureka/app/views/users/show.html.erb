@@ -17,10 +17,18 @@
 						
 					</div>
 					<!-- <div class="popover"> -->
-						<div id="popoverContentNav"></div>
-						<div id="popoverContentReviews" class="well popTab"></div>
-						<div id="popoverContentNeighbourhood" class="well popTab" data-id=""></div>
-						<div id="popoverContentDetails" class="well popTab" ></div>
+						<div id="popoverNav_ts" class="popOverNav"></div>
+						<div id="popoverDetails_ts" class="well popTab" ></div>
+						<div id="popoverNeighbours_ts" class="well popTab" data-id=""></div>
+						<div id="popoverReviews_ts" class="well popTab"></div>
+						
+						<div id="popoverNav_hotel" class="popOverNav"></div>
+						<div id="popoverDetails_hotel" class="well popTab" ></div>
+						<div id="popoverNeighbours_hotel" class="well popTab" ></div>
+
+						<div id="popoverNav_ep" class="popOverNav"></div>
+						<div id="popoverDetails_ep" class="well popTab" ></div>
+						<div id="popoverNeighbours_ep" class="well popTab" ></div>
 					<!-- </div> -->
 				</div>
 			</div>
@@ -129,9 +137,6 @@
 	    <% end %>
 	  ////////////////////////////////////////////////////
 	  Gmaps.map.callback = function() {
-			// Gmaps.map.map_options.center_latitude
-			// Gmaps.map.map_options.auto_zoom = false;
-			// Gmaps.map.adjustMapToBounds();
 			if (Gmaps.map.visibleInfoWindow !== null) {
 				Gmaps.map.visibleInfoWindow.close();
 			}
@@ -141,14 +146,16 @@
 		$('#searchButton').click(function (event) {
 			$('#session_service').val(currentTrip);
 			console.log("ho gaya");
-			showToggle(false);
+			toggle_ts(false);
 		});
 		$('#touristSpotTab').click(function (event) {
 			markers = <%=raw(@json1)%>
 			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
-		  showToggle(false);
+		  toggle_ts(false);
+		  toggle_hotel(false);
+		  toggle_ep(false);
 		});
 
 		$('#hotelTab').click(function (event) {
@@ -156,15 +163,20 @@
 			Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
-		  showToggle(false);
+		  toggle_ts(false);
+		  toggle_hotel(false);
+		  toggle_ep(false);
 		});
 
 		$('#epTab').click(function (event) {
 			markers = <%=raw(@json3)%>
 			Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
-		  showToggle(false);
+		  toggle_ts(false);
+		  toggle_hotel(false);
+		  toggle_ep(false);
 		});
+
 	});
 	
 	function getMarkerClicked(marker) {
@@ -198,9 +210,9 @@
 	}
 
 	function fillTouristSpotData (data) {
-		$("#popoverContentNeighbourhood").data({id: data.tsInfo.id});
+		$("#popoverNeighbours_ts").data({id: data.tsInfo.id});
 		var innerHTMLcontent0=
-		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<a onclick='toggle_ts(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
 		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
 		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
@@ -208,96 +220,161 @@
 		"<h5>"+"Description: "+data.tsInfo.description+"</h5>"+
 		"<a  data-toggle='modal' data-target='#myModal2'  class='btn btn-primary' onclick=''>Add to current Trip</a>";
 		console.log(data.reviewAndUserInfo);
-		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent0;
+		$("#popoverDetails_ts")[0].innerHTML=innerHTMLcontent0;
 		var innerHTMLcontent1=
+		"<a onclick='toggle_ts(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		'<div><a class="nearButtons btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><div class="nearbyList"><ul></ul></div></div><div><a class="nearButtons btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><div class="nearbyList"><ul></ul></div></div><div><a class="nearButtons btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a><div class="nearbyList"><ul></ul></div></div>'		
-		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
-		"<h5>"+data.tsInfo.name+"</h5>"+
-		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
-		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
-		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
-		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
-		$("#popoverContentNeighbourhood")[0].innerHTML=innerHTMLcontent1;
+
+		$("#popoverNeighbours_ts")[0].innerHTML=innerHTMLcontent1;
 		var innerHTMLcontent2;
 		innerHTMLcontent2=
-		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"
+		"<a onclick='toggle_ts(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"
 		for(var x=0;x<data.reviewAndUserInfo.length;x++){
 			innerHTMLcontent2+="<h5>By: "+data.reviewAndUserInfo[x].username;
 			innerHTMLcontent2+=", Rating:"+data.reviewAndUserInfo[x].rating;
 			innerHTMLcontent2+="<br>"+"<i>"+data.reviewAndUserInfo[x].review+"</i>";
 			innerHTMLcontent2+="<br></h5><hr>";
 		}
-		innerHTMLcontent2 += '<a class="btn btn-primary" onclick="" data-target="#myModal3" data-toggle="modal">Add Review and Rate</a>'
-		$("#popoverContentReviews")[0].innerHTML=innerHTMLcontent2;
+
+		$("#popoverReviews_ts")[0].innerHTML=innerHTMLcontent2;
 		var innerHTMLcontent3=
-		'<ul><li><a class="innerTab" onclick="showDetails()" href="#">Details</a></li><li><a class="innerTab" onclick="showNeighbours()" href="#">Neighbour</a></li><li><a class="innerTab" onclick="showReviews()" href="#">Reviews</a></li></ul>'
+		'<ul><li><a class="innerTab" onclick="showDetails_ts()" href="#">Details</a></li><li><a class="innerTab" onclick="showNeighbours_ts()" href="#">Neighbour</a></li><li><a class="innerTab" onclick="showReviews_ts()" href="#">Reviews</a></li></ul>'
 		
-		$("#popoverContentNav")[0].innerHTML=innerHTMLcontent3;
-		showToggle(true);
+		$("#popoverNav_ts")[0].innerHTML=innerHTMLcontent3;
+		toggle_ts(true);
 	}
 
 	function fillHotelData(data) {
 		console.log(data);
 		var innerHTMLcontent1=
-		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		"<a onclick='toggle_hotel(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<H5>"+data.hInfo.name+"</H5>"+
 		"<H5>"+data.hInfo.districtName+", "+data.hInfo.stateName+"</H5>"+			
 		"<H5>"+"Description: "+data.hInfo.description+"</H5>";		
-		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent1;
-		showToggle(true);		
+		$("#popoverDetails_hotel")[0].innerHTML=innerHTMLcontent1;
+
+		var innerHTMLcontent2=
+		"<a onclick='toggle_hotel(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		'<br><a class="nearButtons btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><br><br><a class="nearButtons btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>';
+
+		$("#popoverNeighbours_hotel")[0].innerHTML=innerHTMLcontent2;
+
+		var innerHTMLcontent3='<ul><li><a class="innerTab" onclick="showDetails_hotel()" href="#">Details</a></li><li><a class="innerTab" onclick="showNeighbours_hotel()" href="#">Neighbour</a></li></ul>';
+		
+		$("#popoverNav_hotel")[0].innerHTML=innerHTMLcontent3;
+
+		toggle_hotel(true);		
 	}
 
 	function fillEntryPointData(data) {
-		var tabs=
-		'<ul><li><a class="innerTab" onclick="showDetails_ep()" href="#">Details</a></li><li><a  class="innerTab" onclick="showNeighbours_ep()" href="#">Neighbour</a></li></ul>'
-		$("#popoverContentNav")[0].innerHTML=tabs;
 		console.log(data);
-		var innerHTMLcontent2=
-		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		var innerHTMLcontent1=
+		"<a onclick='toggle_ep(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.name+"</h5>"+
 		"<h5>"+"Type: "+data.entryType+"</h5>"+
-		"<h5>"+data.districtName+", "+data.stateName+"</h5>";					
+		"<h5>"+data.districtName+", "+data.stateName+"</h5>";		
+		$("#popoverDetails_ep")[0].innerHTML=innerHTMLcontent1;
+
+		var innerHTMLcontent2=
+		"<a onclick='toggle_ep(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
+		'<br><a class="nearButtons btn btn-primary" onclick="">Show Nearby Hotels</a>';
+
+		$("#popoverNeighbours_ep")[0].innerHTML=innerHTMLcontent2;
+
+		var innerHTMLcontent3='<ul><li><a class="innerTab" onclick="showDetails_ep()" href="#">Details</a></li><li><a class="innerTab" onclick="showNeighbours_ep()" href="#">Neighbour</a></li></ul>';
 		
-		showToggle(true);	
+		$("#popoverNav_ep")[0].innerHTML=innerHTMLcontent3;
+
+		toggle_ep(true);		
+		
 	}
 
-	function showToggle(bools){
+	function toggle_ts(bools){
 		if(!bools){
-			$("#popoverContentDetails")[0].style.display="none";
-			$("#popoverContentNeighbourhood")[0].style.display="none";
-			$("#popoverContentReviews")[0].style.display="none";
-			$("#popoverContentNav")[0].style.display="none";
+			$("#popoverDetails_ts")[0].style.display="none";
+			$("#popoverNeighbours_ts")[0].style.display="none";
+			$("#popoverReviews_ts")[0].style.display="none";
+			$("#popoverNav_ts")[0].style.display="none";
 		}else{
-			$("#popoverContentDetails")[0].style.display="block";
-			$("#popoverContentNeighbourhood")[0].style.display="block";
-			$("#popoverContentReviews")[0].style.display="block";
-			$("#popoverContentNav")[0].style.display="block";
+			toggle_hotel(false);
+			toggle_ep(false);
+			$("#popoverDetails_ts")[0].style.display="block";
+			$("#popoverNeighbours_ts")[0].style.display="block";
+			$("#popoverReviews_ts")[0].style.display="block";
+			$("#popoverNav_ts")[0].style.display="block";
+		}
+	}
+	function toggle_hotel(bool){
+		if(bool){
+			toggle_ts(false);
+			toggle_ep(false);
+			$("#popoverNav_hotel")[0].style.display="block";
+			$("#popoverDetails_hotel")[0].style.display="block";
+			$("#popoverNeighbours_hotel")[0].style.display="block";
+		}
+		else{
+			$("#popoverNav_hotel")[0].style.display="none";
+			$("#popoverDetails_hotel")[0].style.display="none";
+			$("#popoverNeighbours_hotel")[0].style.display="none";
 		}
 	}
 
-	function showReviews(){
-		$('#popoverContentReviews').css("z-index", "5");
-		$('#popoverContentNeighbourhood').css("z-index", "4");
-		$('#popoverContentDetails').css("z-index", "3");
+	function toggle_ep(bool){
+		if(bool){
+			toggle_ts(false);
+			toggle_hotel(false);
+			$("#popoverNav_ep")[0].style.display="block";
+			$("#popoverDetails_ep")[0].style.display="block";
+			$("#popoverNeighbours_ep")[0].style.display="block";
+		}
+		else{
+			$("#popoverNav_ep")[0].style.display="none";
+			$("#popoverDetails_ep")[0].style.display="none";
+			$("#popoverNeighbours_ep")[0].style.display="none";
+		}
 	}
 
-	function showNeighbours(){
-		$('#popoverContentReviews').css("z-index", "4");
-		$('#popoverContentNeighbourhood').css("z-index", "5");
-		$('#popoverContentDetails').css("z-index", "3");
+
+	function showReviews_ts(){
+		$('#popoverReviews_ts').css("z-index", "5");
+		$('#popoverNeighbours_ts').css("z-index", "4");
+		$('#popoverDetails_ts').css("z-index", "3");
 	}
 
-	function showDetails(){
-		$('#popoverContentReviews').css("z-index", "3");
-		$('#popoverContentNeighbourhood').css("z-index", "4");
-		$('#popoverContentDetails').css("z-index", "5");
+	function showNeighbours_ts(){
+		$('#popoverReviews_ts').css("z-index", "4");
+		$('#popoverNeighbours_ts').css("z-index", "5");
+		$('#popoverDetails_ts').css("z-index", "3");
+	}
+
+	function showDetails_ts(){
+		$('#popoverReviews_ts').css("z-index", "3");
+		$('#popoverNeighbours_ts').css("z-index", "4");
+		$('#popoverDetails_ts').css("z-index", "5");
 	};
 
-	function showNeighbours_ep(){
-		$('#popoverContentReviews').css("z-index", "4");
-		$('#popoverContentNeighbourhood').css("z-index", "5");
-		$('#popoverContentDetails').css("z-index", "3");
+	function showDetails_hotel(){
+		$("#popoverDetails_hotel").css("z-index", "5");
+		$("#popoverNeighbours_hotel").css("z-index", "4");
 	}
+
+	function showNeighbours_hotel(){
+		$("#popoverDetails_hotel").css("z-index", "4");
+		$("#popoverNeighbours_hotel").css("z-index", "5");
+	}
+
+	function showDetails_ep(){
+		console.log("heyey");
+		$("#popoverDetails_ep").css("z-index", "5");
+		$("#popoverNeighbours_ep").css("z-index", "4");
+	}
+
+	function showNeighbours_ep(){
+		console.log("heyey");
+		$("#popoverDetails_ep").css("z-index", "4");
+		$("#popoverNeighbours_ep").css("z-index", "5");
+	}
+
 
 	function getNearbyTs(param){
 		console.log($(param).parent().data().id);
@@ -372,44 +449,28 @@
 		width: 200px;
 		height: 200px;
 		position:absolute;
-		z-index: -2;
+		
 		margin-left : 675px;
 		display:block;
 		text-align: left;
 		overflow-x:hidden;
 		overflow-y:auto;
 		display:none;
-	}
-	
+	}		
 
-	#popoverContentNav{	
-		width: 245pxpx;
+	.popOverNav{
+		width: 245px;
 		height: 25px;
 		position:absolute;
-		z-index: 10;
-		margin-left : 676px;
 		display:block;
 		text-align: left;
 		overflow-x:hidden;
 		overflow-y:auto;
 		display:none;
 		margin-top: 20px;
-
-	}
-	#popoverContentReviews{	
-		z-index: -1;
 	}
 
-	#popoverContentNeighbourhood a{	
-		/*background-color: #aaaaaa;*/
-		margin: 6px;
-	}
-
-	#popoverContentNeighbourhood{	
-		z-index: -2;
-	}
-
-	#popoverContentNav ul
+	.popOverNav ul
 	{
 		margin: 0;
 		padding: 0;
@@ -417,9 +478,9 @@
 		text-align: center;
 	}
 
-	#popoverContentNav ul li { display: inline; margin: 1px; }
+	.popOverNav ul li { display: inline; margin: 1px; }
 
-	#popoverContentNav ul li a
+	.popOverNav ul li a
 	{
 		text-decoration: none;
 		padding: .2em .8em;
@@ -427,15 +488,64 @@
 		background-color: #036;
 	}
 
-	#popoverContentNav ul li a:hover
+	.popOverNav ul li a:hover
 	{
 		color: #fff;
 		background-color: #369;
 	}
+	
+	#popoverNav_ts{	
+		z-index: 10;
+		margin-left : 676px;
+	}
 
-	#popoverContentDetails{	
+	#popoverDetails_ts{	
 		z-index: 1;
-		display:none;
+	}
+
+	#popoverReviews_ts{	
+		z-index: -1;
+	}
+
+	#popoverNeighbours_ts{	
+		z-index: -2;
+	}
+
+	#popoverNav_hotel{
+		z-index: 10;
+		margin-left : 676px;
+	}
+
+	#popoverDetails_hotel{
+		z-index: 1;
+	}
+
+	#popoverNeighbours_hotel{
+		z-index: -1;
+	}
+
+	#popoverNav_ep{
+		z-index: 10;
+		margin-left : 676px;
+	}
+
+	#popoverDetails_ep{
+		z-index: 1;
+	}
+
+
+	#popoverNeighbours_ep{
+		z-index: -1;
+	}
+
+	#popoverNeighbours_ts a{	
+		margin:8px;
+	}
+	#popoverNeighbours_hotel a{
+		margin:8px;
+	}
+	#popoverNeighbours_ep a{
+		margin:8px;
 	}
 
 
@@ -451,11 +561,6 @@
 		min-height: 7px;		
 		color: black;
 	}
-	/*.tag_text{
-		line-height: 4px;
-		font-size: 15px;
-		top: 0;
-	}*/
 	.mapOnly{	
 		z-index: 1;
 		position:absolute;
@@ -469,14 +574,6 @@
 	}
 
 </style>
-
-<script>
-	$('.popoverId').click(function(){
-		$("#popoverContentReviews").toggle();
-		$("#popoverContentNeighbourhood").toggle();
-		$("#popoverContentDetails").toggle();
-	});
-</script>
 
 <style type="text/css" id="page-css">
 	.scroller1{
