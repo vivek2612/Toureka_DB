@@ -85,8 +85,10 @@ CREATE TABLE buddies (
     id integer NOT NULL,
     friend_id integer,
     tourist_spot_id integer,
+    distance double precision,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT distancecheck4 CHECK ((distance >= (0)::double precision))
 );
 
 
