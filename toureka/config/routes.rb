@@ -10,6 +10,8 @@ Toureka::Application.routes.draw do
       get 'writer_final'
       get 'writer_done'
       get 'show_closer_to'
+      get 'show_buddies'
+      get 'show_nearby_hotels'
       get 'get_tourist_spot_info'
       get 'get_hotel_info'
       get 'get_entry_point_info'

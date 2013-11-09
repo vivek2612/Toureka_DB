@@ -16,18 +16,12 @@
 						<%= gmaps("markers" => {"data" => @json1, "options" => {"list_container" => "markers_list" } }) %>
 						
 					</div>
-					<div id="popoverContentNav">
-						
-					</div>
-					<div  id="popoverContentReviews" class="well">
-
-					</div>
-					<div  id="popoverContentNeighbourhood" class="well" data-id="">
-
-					</div>
-					<div  id="popoverContentDetails" class="well" >
-
-					</div>
+					<!-- <div class="popover"> -->
+						<div id="popoverContentNav"></div>
+						<div id="popoverContentReviews" class="well popTab"></div>
+						<div id="popoverContentNeighbourhood" class="well popTab" data-id=""></div>
+						<div id="popoverContentDetails" class="well popTab" ></div>
+					<!-- </div> -->
 				</div>
 			</div>
 		</div>
@@ -67,26 +61,8 @@
 				Gmaps.map.visibleInfoWindow.close();
 			}
 
-		  // for (var i = 0; i <  this.markers.length; ++i) {
-		  //   google.maps.event.addListener(
-		  //    Gmaps.map.markers[i].serviceObject, 'click', (function(i) {
-		  //       return function() {
-		  //           var id = Gmaps.map.markers[i].id;
-				// 				    (function(_str) {
-				// 				        $.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'})
-				// 				         .done(function(data) {
-				// 				            processData(data, id);
-				// 				         });
-				// 				    }(id)); 
-		  //       }
-		  //   })(i));
-		  // }
 		};
-
-		// function processData(data, id) {
-		//   console.log(data, id);
-		//   Gmaps.map.addMarkers(data,false)
-		// }  
+		
 		$('#searchButton').click(function (event) {
 			$('#session_service').val(currentTrip);
 			console.log("ho gaya");
@@ -117,9 +93,7 @@
 	});
 	
 	function getMarkerClicked(marker) {
-		// console.log(marker);
 		if(marker.type2 == "touristSpot"){
-			// console.log(marker);
 			currentTrip.push([marker.id,2,marker.title]);
 			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + marker.id +','+ 2 + '>' + marker.title + '-' + 'Day-2' + '<a class="tag_text" style="" onclick="deleteFunc(this)">×</a></div>'
 			$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
@@ -130,7 +104,6 @@
 			else{
 				previousHighlightedMarker.serviceObject.setIcon(tsimage1);
 			}
-			// $(marker.serviceObject.Ge.Xa.ma).attr("src", "/assets/airplane.png");
 			marker.serviceObject.setIcon(tsimage2);
 			previousHighlightedMarker = marker;
 			//////////////////////////////////////////
@@ -161,37 +134,27 @@
 		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
 		"<h5>"+"Description: "+data.tsInfo.description+"</h5>"+
 		"<a class='btn btn-primary' onclick=''>Add to current Trip</a>";
-		console.log(data.reviewInfo);
+
 		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent0;
 		var innerHTMLcontent1=
-		'<a class="btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><a class="btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><a class="btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>'
-		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
-		"<h5>"+data.tsInfo.name+"</h5>"+
-		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
-		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
-		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
-		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
+		'<a class="btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><a class="btn btn-primary" onclick="getNearbyHotels(this)">Show Nearby Hotel/Motel</a><a class="btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>'
+		
 		$("#popoverContentNeighbourhood")[0].innerHTML=innerHTMLcontent1;
-		var innerHTMLcontent2=
-		'Reviews'
-		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
-		"<h5>"+data.tsInfo.name+"</h5>"+
-		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
-		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
-		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
-		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
+		var innerHTMLcontent2;
+		innerHTMLcontent2=
+		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"
+		for(var x=0;x<data.reviewAndUserInfo.length;x++){
+			innerHTMLcontent2+="<h5>By: "+data.reviewAndUserInfo[x].username;
+			innerHTMLcontent2+=", Rating:"+data.reviewAndUserInfo[x].rating;
+			innerHTMLcontent2+="<br>"+"<i>"+data.reviewAndUserInfo[x].review+"</i>";
+			innerHTMLcontent2+="<br></h5><hr>";
+		}
 		$("#popoverContentReviews")[0].innerHTML=innerHTMLcontent2;
 		var innerHTMLcontent3=
-		'<ul><li><a class="innerTab" onclick="showReviews()" href="#">Reviews</a></li><li><a class="innerTab" onclick="showNeighbours()" href="#">Neighbour</a></li><li><a class="innerTab" onclick="showDetails()" href="#">Details</a></li></ul>'
-		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
-		"<h5>"+data.tsInfo.name+"</h5>"+
-		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
-		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
-		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
-		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
+		'<ul><li><a class="innerTab" onclick="showDetails()" href="#">Details</a></li><li><a class="innerTab" onclick="showNeighbours()" href="#">Neighbour</a></li><li><a class="innerTab" onclick="showReviews()" href="#">Reviews</a></li></ul>'
+		
 		$("#popoverContentNav")[0].innerHTML=innerHTMLcontent3;
 		showToggle(true);
-
 	}
 
 	function fillHotelData(data) {
@@ -201,30 +164,31 @@
 		"<H5>"+data.hInfo.name+"</H5>"+
 		"<H5>"+data.hInfo.districtName+", "+data.hInfo.stateName+"</H5>"+			
 		"<H5>"+"Description: "+data.hInfo.description+"</H5>";		
-		$("#popoverContent")[0].innerHTML=innerHTMLcontent1;
+		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent1;
 		showToggle(true);		
 	}
 
 	function fillEntryPointData(data) {
+		var tabs=
+		'<ul><li><a class="innerTab" onclick="showDetails_ep()" href="#">Details</a></li><li><a  class="innerTab" onclick="showNeighbours_ep()" href="#">Neighbour</a></li></ul>'
+		$("#popoverContentNav")[0].innerHTML=tabs;
 		console.log(data);
 		var innerHTMLcontent2=
 		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.name+"</h5>"+
 		"<h5>"+"Type: "+data.entryType+"</h5>"+
 		"<h5>"+data.districtName+", "+data.stateName+"</h5>";					
-		$("#popoverContent")[0].innerHTML=innerHTMLcontent2;
+		
 		showToggle(true);	
 	}
 
 	function showToggle(bools){
 		if(!bools){
-			console.log("yo1");
 			$("#popoverContentDetails")[0].style.display="none";
 			$("#popoverContentNeighbourhood")[0].style.display="none";
 			$("#popoverContentReviews")[0].style.display="none";
 			$("#popoverContentNav")[0].style.display="none";
 		}else{
-			console.log("yo2");
 			$("#popoverContentDetails")[0].style.display="block";
 			$("#popoverContentNeighbourhood")[0].style.display="block";
 			$("#popoverContentReviews")[0].style.display="block";
@@ -250,10 +214,26 @@
 		$('#popoverContentDetails').css("z-index", "5");
 	};
 
-	function getNearbyTs(param){
-		console.log(param);
-		// console.log("djfks");
+	function showNeighbours_ep(){
+		$('#popoverContentReviews').css("z-index", "4");
+		$('#popoverContentNeighbourhood').css("z-index", "5");
+		$('#popoverContentDetails').css("z-index", "3");
+	}
 
+	function getNearbyTs(param){
+		console.log($(param).parent().data().id);
+		id= $(param).parent().data().id;
+		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_buddies'}).done(function(data) {
+		    showNearByItems(data, id);
+		});
+	};
+
+	function getNearbyHotels(param){
+		console.log($(param).parent().data().id);
+		id= $(param).parent().data().id;
+		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_nearby_hotels'}).done(function(data) {
+		    showNearByItems(data, id);
+		});
 	};
 
 	function getNearbyLts(param){
@@ -263,6 +243,8 @@
 		    showNearByItems(data, id);
 		});
 	};
+
+
 
 	function showNearByItems(data, id) {
 	  console.log(data, id);
@@ -291,9 +273,23 @@
 
 
 <style type="text/css">
+
+	.popTab{
+		padding-top: 40px;
+		width: 200px;
+		height: 200px;
+		position:absolute;
+		z-index: -2;
+		margin-left : 675px;
+		display:block;
+		text-align: left;
+		overflow-x:hidden;
+		overflow-y:auto;
+		display:none;
+	}
+	
+
 	#popoverContentNav{	
-		/*background-color: #aaaaaa;*/
-		/*opacity: 0.8;*/
 		width: 245pxpx;
 		height: 25px;
 		position:absolute;
@@ -308,43 +304,15 @@
 
 	}
 	#popoverContentReviews{	
-		/*background-color: #aaaaaa;*/
-		padding-top: 40px;
-		/*opacity: 0.8;*/
-		width: 200px;
-		height: 200px;
-		position:absolute;
 		z-index: -1;
-		margin-left : 675px;
-		display:block;
-		text-align: left;
-		overflow-x:hidden;
-		overflow-y:auto;
-		padding-top: 10px;
-		display:none;
-
 	}
 
 	#popoverContentNeighbourhood a{	
-		/*background-color: #aaaaaa;*/
 		margin:2px;
-
 	}
 
 	#popoverContentNeighbourhood{	
-		/*background-color: #aaaaaa;*/
-		padding-top: 40px;
-		/*opacity: 0.8;*/
-		width: 200px;
-		height: 200px;
-		position:absolute;
 		z-index: -2;
-		margin-left : 675px;
-		display:block;
-		text-align: left;
-		overflow-x:hidden;
-		overflow-y:auto;
-		display:none;
 	}
 
 	#popoverContentNav ul
@@ -372,20 +340,8 @@
 	}
 
 	#popoverContentDetails{	
-		/*background-color: #aaaaaa;*/
-		padding-top: 40px;
-		/*opacity: 0.8;*/
-		width: 200px;
-		height: 200px;
-		position:absolute;
 		z-index: 1;
-		margin-left : 675px;
-		display:block;
-		text-align: left;
-		overflow-x:hidden;
-		overflow-y:auto;
 		display:none;
-
 	}
 
 
@@ -415,7 +371,7 @@
 	}
 
 	.innerTab{
-
+		
 	}
 
 </style>

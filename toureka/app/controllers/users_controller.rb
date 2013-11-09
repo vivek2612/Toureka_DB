@@ -141,11 +141,54 @@ class UsersController < ApplicationController
     end    
   end
   
+  def show_buddies
+    tid=params[:tid]
+    @tsCloserTo = TouristSpot.where("id in (select friend_id from buddies where tourist_spot_id=#{tid})").all.to_gmaps4rails do |touristSpot,marker|
+      marker.picture({
+        :picture => "../../assets/" + touristSpot.category+".png",
+        :width => 32,
+        :height => 32
+      })
+      marker.title "#{touristSpot.name}"
+      marker.json({:id => touristSpot.id, :type => 'child'})
+    end
+    respond_to do |format|
+        format.html
+        format.json{ render :json => @tsCloserTo}
+    end
+  end
+
+  def show_nearby_hotels
+    tid=params[:tid]
+    @hotelCloserTo = Hotel.where("id in (select hotel_id from in_proximity_ofs where tourist_spot_id=#{tid})").all.to_gmaps4rails do |hotel,marker|
+      marker.picture({
+        :picture => "../../assets/hotel.png",
+        :width => 32,
+        :height => 32
+      })
+      marker.title "#{hotel.name}"
+      marker.json({:id => hotel.id, :type => 'child'})
+    end
+    respond_to do |format|
+        format.html
+        format.json{ render :json => @hotelCloserTo}
+    end
+  end
+
+
   def get_tourist_spot_info
     tid = params[:tid]
     @tsInfo = TouristSpot.find(tid)
-    @reviewInfo = @tsInfo.reviews
-    @Info = { :tsInfo => @tsInfo, :reviewInfo => @reviewInfo}
+    reviewAndUserInfo = []
+    @tsInfo.reviews.each do |r|
+      reviewAndUser = {}
+      reviewAndUser[:username] = r.user.username
+      reviewAndUser[:review] = r.review
+      reviewAndUser[:rating] = r.rating
+      reviewAndUserInfo.append(reviewAndUser)
+      # puts reviewAndUserInfo
+    end
+    @Info = { :tsInfo => @tsInfo, :reviewAndUserInfo => reviewAndUserInfo}
     respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @Info }
