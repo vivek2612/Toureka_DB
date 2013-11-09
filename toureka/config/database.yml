@@ -8,5 +8,5 @@ development:
   encoding: unicode
   database: toureka
   pool: 5
-  username: vedratn 
-  password: truestory
+  username:  
+  password: 
