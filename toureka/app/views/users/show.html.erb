@@ -63,13 +63,34 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveIt" type="button" class="btn btn-primary">Save changes</button>
+        <button id="saveIt" type="button" onclick="addToCurrentTrip(this)" class="btn btn-primary">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<!-- Modal - 2-->
+<div class="modal fade"id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Rate and review Tourist spot </h4>
+      </div>
+      <div class="modal-body">
+      <h5> Enter your rating :</h5>  
+			<input id="userRating" type="text" placeholder="rate on scale of 10"><br>			
+			<h5> Enter your review :</h5>  
+			<input id="userReview" type="text" placeholder="Share your experience here !!"><br>			
+			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveIt" type="button" onclick="" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 	</div>
 
@@ -84,7 +105,7 @@
 		// });
 
 		var currentTrip = [] ;
-		
+		var selectedMarker;
 		var tog=true;
 		var previousHighlightedMarker;
 		var tsimage2;
@@ -147,10 +168,8 @@
 	});
 	
 	function getMarkerClicked(marker) {
+		selectedMarker = marker
 		if(marker.type2 == "touristSpot"){
-			currentTrip.push([marker.id,2,marker.title]);
-			var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + marker.id +','+ 2 + '>' + marker.title + '-' + 'Day-2' + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
-			$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 			// for changing image////////////////////////
 			if(previousHighlightedMarker===undefined){
 				console.log("nothing selected")
@@ -188,10 +207,10 @@
 		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
 		"<h5>"+"Description: "+data.tsInfo.description+"</h5>"+
 		"<a  data-toggle='modal' data-target='#myModal2'  class='btn btn-primary' onclick=''>Add to current Trip</a>";
-		console.log(data.reviewInfo);
+		console.log(data.reviewAndUserInfo);
 		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent0;
 		var innerHTMLcontent1=
-		'<a class="nearButtons btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><a class="nearButtons btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><a class="nearButtons btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>'		
+		'<div><a class="nearButtons btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><div class="nearbyList"><ul></ul></div></div><div><a class="nearButtons btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><div class="nearbyList"><ul></ul></div></div><div><a class="nearButtons btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a><div class="nearbyList"><ul></ul></div></div>'		
 		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
 		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
@@ -208,6 +227,7 @@
 			innerHTMLcontent2+="<br>"+"<i>"+data.reviewAndUserInfo[x].review+"</i>";
 			innerHTMLcontent2+="<br></h5><hr>";
 		}
+		innerHTMLcontent2 += '<a class="btn btn-primary" onclick="" data-target="#myModal3" data-toggle="modal">Add Review and Rate</a>'
 		$("#popoverContentReviews")[0].innerHTML=innerHTMLcontent2;
 		var innerHTMLcontent3=
 		'<ul><li><a class="innerTab" onclick="showDetails()" href="#">Details</a></li><li><a class="innerTab" onclick="showNeighbours()" href="#">Neighbour</a></li><li><a class="innerTab" onclick="showReviews()" href="#">Reviews</a></li></ul>'
@@ -281,32 +301,37 @@
 
 	function getNearbyTs(param){
 		console.log($(param).parent().data().id);
-		id= $(param).parent().data().id;
+		id= $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_buddies'}).done(function(data) {
-		    showNearByItems(data, id);
+		    showNearByItems(param,data, id);
 		});
 	};
 
 	function getNearbyHotels(param){
 		console.log($(param).parent().data().id);
-		id= $(param).parent().data().id;
+		id= $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_nearby_hotels'}).done(function(data) {
-		    showNearByItems(data, id);
+		    showNearByItems(param,data, id);
 		});
 	};
 
 	function getNearbyLts(param){
-		console.log($(param).parent().data().id);
-		id = $(param).parent().data().id;
+		console.log($(param));
+		id = $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'}).done(function(data) {
-		    showNearByItems(data, id);
+		    showNearByItems(param,data, id);
 		});
 	};
 
 
 
-	function showNearByItems(data, id) {
+	function showNearByItems(param,data, id) {
 	  console.log(data, id);
+	  var innerHTMLcontent = ""
+	  for (var i = 0; i <  data.length; ++i){
+	 		innerHTMLcontent += '<li>' + data[i].title + '-' + data[i].distance + '</li>'
+	  }
+	  $($(param).next().children())[0].innerHTML = innerHTMLcontent
 	  for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
 	  	if (Gmaps.map.markers[i].type == "child"){
 	  		console.log("ye hatana he")
@@ -328,6 +353,15 @@
 		}
 		console.log(currentTrip)
 	};
+
+
+	function addToCurrentTrip(param) {
+		var dayNumber = $('#dayNumber').val()
+		currentTrip.push([selectedMarker.id,dayNumber,selectedMarker.title]);
+		var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + selectedMarker.id +','+ dayNumber + '>' + selectedMarker.title + '-' + 'Day-' + dayNumber + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
+		$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
+		$($(param).prev()).trigger('click');
+	}
 </script>
 
 
@@ -347,16 +381,6 @@
 		display:none;
 	}
 	
-
-	.nearButtons{
-		background-image:none;
-		background-color:grey;
-		color:white;			
-	}
-	.nearButtons:hover{
-			background-image:none;
-			background-color:#aaaaaa;
-		}
 
 	#popoverContentNav{	
 		width: 245pxpx;
@@ -378,7 +402,7 @@
 
 	#popoverContentNeighbourhood a{	
 		/*background-color: #aaaaaa;*/
-		margin:8px;
+		margin: 6px;
 	}
 
 	#popoverContentNeighbourhood{	
