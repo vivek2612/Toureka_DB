@@ -22,10 +22,10 @@
 					<div  id="popoverContentReviews" class="well">
 
 					</div>
-					<div  id="popoverContentNeighbourhood" class="well">
+					<div  id="popoverContentNeighbourhood" class="well" data-id="">
 
 					</div>
-					<div  id="popoverContentDetails" class="well">
+					<div  id="popoverContentDetails" class="well" >
 
 					</div>
 				</div>
@@ -152,6 +152,7 @@
 	}
 
 	function fillTouristSpotData (data) {
+		$("#popoverContentNeighbourhood").data({id: data.tsInfo.id});
 		var innerHTMLcontent0=
 		"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
@@ -163,7 +164,7 @@
 		console.log(data.reviewInfo);
 		$("#popoverContentDetails")[0].innerHTML=innerHTMLcontent0;
 		var innerHTMLcontent1=
-		'<a class="btn btn-primary" onclick="">Show Nearby TouristSpots</a><a class="btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><a class="btn btn-primary" onclick="">Show Nearby TransportStands</a>'
+		'<a class="btn btn-primary" onclick="getNearbyTs(this)">Show Nearby TouristSpots</a><a class="btn btn-primary" onclick="">Show Nearby Hotel/Motel</a><a class="btn btn-primary" onclick="getNearbyLts(this)" >Show Nearby TransportStands</a>'
 		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
 		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
@@ -181,7 +182,7 @@
 		"<h5>"+"Description: "+data.tsInfo.description+"</h5>";*/
 		$("#popoverContentReviews")[0].innerHTML=innerHTMLcontent2;
 		var innerHTMLcontent3=
-		'<ul><li><a onclick="showReviews()" href="#">Reviews</a></li><li><a onclick="showNeighbours()" href="#">Neighbour</a></li><li><a onclick="showDetails()" href="#">Details</a></li></ul>'
+		'<ul><li><a class="innerTab" onclick="showReviews()" href="#">Reviews</a></li><li><a class="innerTab" onclick="showNeighbours()" href="#">Neighbour</a></li><li><a class="innerTab" onclick="showDetails()" href="#">Details</a></li></ul>'
 		/*"<a onclick='showToggle(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
 		"<h5>"+data.tsInfo.districtName+", "+data.tsInfo.stateName+"</h5>"+
@@ -247,8 +248,32 @@
 		$('#popoverContentReviews').css("z-index", "3");
 		$('#popoverContentNeighbourhood').css("z-index", "4");
 		$('#popoverContentDetails').css("z-index", "5");
-	}
+	};
 
+	function getNearbyTs(param){
+		console.log(param);
+		// console.log("djfks");
+
+	};
+
+	function getNearbyLts(param){
+		console.log($(param).parent().data().id);
+		id = $(param).parent().data().id;
+		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'}).done(function(data) {
+		    showNearByItems(data, id);
+		});
+	};
+
+	function showNearByItems(data, id) {
+	  console.log(data, id);
+	  for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
+	  	if (Gmaps.map.markers[i].type == "child"){
+	  		console.log("ye hatana he")
+	  		Gmaps.map.hideMarker(Gmaps.map.markers[i])
+	  	}
+	  }
+	  Gmaps.map.addMarkers(data,false)
+	} 
 	function deleteFunc(param){
 		$(param).parent().remove();
 		[id,day]=$($(param).parent()).data()['idandday'].split(',');
@@ -269,16 +294,17 @@
 	#popoverContentNav{	
 		/*background-color: #aaaaaa;*/
 		/*opacity: 0.8;*/
-		width: 340px;
-		height: 200px;
+		width: 245pxpx;
+		height: 25px;
 		position:absolute;
 		z-index: 10;
-		margin-left : 625px;
+		margin-left : 676px;
 		display:block;
 		text-align: left;
 		overflow-x:hidden;
 		overflow-y:auto;
 		display:none;
+		margin-top: 20px;
 
 	}
 	#popoverContentReviews{	
@@ -334,7 +360,7 @@
 	#popoverContentNav ul li a
 	{
 		text-decoration: none;
-		padding: .2em 1em;
+		padding: .2em .8em;
 		color: #fff;
 		background-color: #036;
 	}
@@ -373,6 +399,7 @@
 		margin: 3px;
 		padding: 7px;
 		min-height: 7px;		
+		color: black;
 	}
 	.tag_text{
 		line-height: 4px;
@@ -384,6 +411,10 @@
 		position:absolute;
 	}
 	.listData{
+
+	}
+
+	.innerTab{
 
 	}
 
