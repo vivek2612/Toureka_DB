@@ -2,14 +2,37 @@
 	<br>
 	<div class="container-fluid">
 		<div class="row-fluid">
+
+
 			<div class="span3 well">
-				<div class="scroll-pane scroller1">
-					<div class="sidebar-nav">
-						<ul id="markers_list"></ul>
-						
+
+				<ul id="myTab" class="nav nav-tabs">
+			        
+			        <li class="active"><a href="#list" data-toggle="tab">List</a></li>
+
+			        <li class=""><a href="#trips" data-toggle="tab">My Trips</a></li>
+			        
+		        </ul>
+
+		        <div id="myTabContent" class="tab-content ">					
+					
+					<div class="tab-pane active fade in" id="list">
+						<div class="scroll-pane">
+							<div class="sidebar-nav scroller1 active">
+								<ul class="active" id="markers_list"></ul>
+								
+							</div>
+						</div>
 					</div>
-				</div>
+
+					<div class="tab-pane fade active " id="trips">
+
+					</div>
+
+				</div>			
+
 			</div>
+
 			<div class="span9" align="right" >
 				<div id="mapWalaContainer" >
 					<div class="mapOnly" >
@@ -104,6 +127,7 @@
 
 
 	<script>
+
 
 		// var modalTrig=false;
 		// $("#modal_trigger").bind("click",function(modalTrig){
@@ -617,7 +641,7 @@
 <style type="text/css" id="page-css">
 	.scroller1{
 		width: 100%;
-		height: 450px;		
+		max-height: 400px;		
 		overflow:auto;
 	}
 </style>
