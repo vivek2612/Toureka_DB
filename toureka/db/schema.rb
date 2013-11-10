@@ -11,11 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131019215403) do
+ActiveRecord::Schema.define(:version => 20131108130344) do
 
   create_table "buddies", :force => true do |t|
     t.integer  "friend_id"
     t.integer  "tourist_spot_id"
+    t.float    "distance"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
@@ -63,9 +64,9 @@ ActiveRecord::Schema.define(:version => 20131019215403) do
     t.string   "name",         :null => false
     t.string   "districtName", :null => false
     t.string   "stateName",    :null => false
+    t.integer  "entryType"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.integer  "entryType"
     t.boolean  "gmaps"
   end
 
@@ -113,6 +114,15 @@ ActiveRecord::Schema.define(:version => 20131019215403) do
 
   add_index "near_bies", ["hotel_id", "local_transport_stand_id"], :name => "index_near_bies_on_hotel_id_and_local_transport_stand_id"
 
+  create_table "one_days", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "tourist_spot_id"
+    t.date     "start_date",      :null => false
+    t.integer  "day_number",      :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "reviews", :force => true do |t|
     t.integer  "user_id"
     t.integer  "tourist_spot_id"
@@ -143,14 +153,13 @@ ActiveRecord::Schema.define(:version => 20131019215403) do
 
   create_table "trips", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "tourist_spot_id"
-    t.date     "startDate",       :null => false
-    t.integer  "dayNumber",       :null => false
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.date     "start_date", :null => false
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
-  add_index "trips", ["user_id", "startDate"], :name => "index_trips_on_user_id_and_startDate"
+  add_index "trips", ["user_id", "start_date"], :name => "index_trips_on_user_id_and_start_date"
 
 # Could not dump table "users" because of following StandardError
 #   Unknown type 'role_type' for column 'role'

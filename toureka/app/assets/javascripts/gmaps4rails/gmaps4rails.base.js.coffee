@@ -324,7 +324,8 @@ class @Gmaps4Rails
 
   #//creates sidebar
   createSidebar : (marker_container) ->
-    if (@markers_conf.list_container)
+    # console.log(marker_container)
+    if (@markers_conf.list_container && marker_container.type=="parent")
       ul = document.getElementById(@markers_conf.list_container)
       li = document.createElement('li')
       aSel = document.createElement('a')
