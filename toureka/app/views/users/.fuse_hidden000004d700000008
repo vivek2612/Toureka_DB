@@ -268,7 +268,7 @@
 	}
 
 	function fillEntryPointData(data) {
-		$("#popoverNeighbours_ep").data({id: data.id});
+		$("#popoverNeighbours_ep").data({id: data.epInfo.id});
 		console.log(data);
 		var innerHTMLcontent1=
 		"<a onclick='toggle_ep(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+

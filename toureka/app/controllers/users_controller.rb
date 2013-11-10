@@ -137,6 +137,7 @@ class UsersController < ApplicationController
       format.json { render :json => @ltsCloserTo }
     end    
   end
+
   
   def show_buddies
     tid=params[:tid]
@@ -157,6 +158,7 @@ class UsersController < ApplicationController
 
   def show_nearby_hotels
     tid=params[:tid]
+    hotelCloserToDist = Hash[TouristSpot.find(tid).in_proximity_ofs.all.map{ |x| ["#{x.hotel.name}","#{x.distance}"]}]
     @hotelCloserTo = Hotel.where("id in (select hotel_id from in_proximity_ofs where tourist_spot_id=#{tid})").all.to_gmaps4rails do |hotel,marker|
       marker.picture({
         :picture => "../../assets/hotel.png",
@@ -164,7 +166,64 @@ class UsersController < ApplicationController
         :height => 32
       })
       marker.title "#{hotel.name}"
-      marker.json({:id => hotel.id, :type => 'child'})
+      marker.json({:id => hotel.id, :type => 'child',:distance => hotelCloserToDist[hotel.name]})
+    end
+    respond_to do |format|
+        format.html
+        format.json{ render :json => @hotelCloserTo}
+    end
+  end
+
+  # nearby_ts_hotel
+  def nearby_ts_hotel
+    tid=params[:tid]
+    tsCloserToDist = Hash[Hotel.find(tid).in_proximity_ofs.all.map{ |x| ["#{x.tourist_spot.name}","#{x.distance}"]}]
+    @tsCloserTo = TouristSpot.where("id in (select tourist_spot_id from in_proximity_ofs where hotel_id=#{tid})").all.to_gmaps4rails do |ts,marker|
+      marker.picture({
+        :picture => "../../assets"+ ts.category+".png",
+        :width => 32,
+        :height => 32
+      })
+      marker.title "#{ts.name}"
+      marker.json({:id => ts.id, :type => 'child',:distance => tsCloserToDist[ts.name]})
+    end
+    respond_to do |format|
+        format.html
+        format.json{ render :json => @tsCloserTo}
+    end
+  end
+
+  # nearby_lts_hotel
+  def nearby_lts_hotel
+    tid=params[:tid]
+    ltsCloserToDist = Hash[Hotel.find(tid).near_bies.all.map{ |x| ["#{x.local_transport_stand.name}","#{x.distance}"]}]
+    @ltsCloserTo = LocalTransportStand.where("id in (select local_transport_stand_id from near_bies where hotel_id=#{tid})").all.to_gmaps4rails do |lts,marker|
+      marker.picture({
+        :picture => "../../assets"+ lts.localTransport+".png",
+        :width => 32,
+        :height => 32
+      })
+      marker.title "#{lts.name}"
+      marker.json({:id => lts.id, :type => 'child',:distance => ltsCloserToDist[lts.name]})
+    end
+    respond_to do |format|
+        format.html
+        format.json{ render :json => @ltsCloserTo}
+    end
+  end
+
+  # nearby_hotel_ep
+  def nearby_hotel_ep
+    tid=params[:tid]
+    hotelCloserToDist = Hash[EntryPoint.find(tid).closest_hotels.all.map{ |x| ["#{x.hotel.name}","#{x.distance}"]}]
+    @hotelCloserTo = Hotel.where("id in (select hotel_id from closest_hotels where entry_point_id=#{tid})").all.to_gmaps4rails do |hotel,marker|
+      marker.picture({
+        :picture => "../../assets/hotel.png",
+        :width => 32,
+        :height => 32
+      })
+      marker.title "#{hotel.name}"
+      marker.json({:id => hotel.id, :type => 'child',:distance => hotelCloserToDist[hotel.name]})
     end
     respond_to do |format|
         format.html

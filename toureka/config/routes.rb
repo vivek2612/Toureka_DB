@@ -12,10 +12,14 @@ Toureka::Application.routes.draw do
       get 'show_closer_to'
       get 'show_buddies'
       get 'show_nearby_hotels'
+      get 'nearby_ts_hotel'
+      get 'nearby_lts_hotel'
+      get 'nearby_hotel_ep'
       get 'get_tourist_spot_info'
       get 'get_hotel_info'
       get 'get_entry_point_info'
       get 'select_city'
+
     end
   end
 

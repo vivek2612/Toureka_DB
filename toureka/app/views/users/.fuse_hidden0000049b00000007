@@ -245,7 +245,6 @@
 	}
 
 	function fillHotelData(data) {
-		$("#popoverNeighbours_hotel").data({id: data.hInfo.id});
 		console.log(data);
 		var innerHTMLcontent1=
 		"<a onclick='toggle_hotel(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
@@ -256,7 +255,7 @@
 
 		var innerHTMLcontent2=
 		"<a onclick='toggle_hotel(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
-		'<div><a class="nearButtons btn btn-primary" onclick="getNearbyTs_hotel(this)">Show Nearby TouristSpots</a><div class="nearbyList"></div></div><div><a class="nearButtons btn btn-primary" onclick="getNearbyLts_hotel(this)" >Show Nearby TransportStands</a><div class="nearbyList"></div></div>'
+		'<div><a class="nearButtons btn btn-primary" onclick="getNearbyLts(this)">Show Nearby TouristSpots</a><div class="nearbyList"></div></div><div><a class="nearButtons btn btn-primary" onclick="getNearbyLts_hotel(this)" >Show Nearby TransportStands</a><div class="nearbyList"></div></div>'
 
 		$("#popoverNeighbours_hotel")[0].innerHTML=innerHTMLcontent2;
 
@@ -268,7 +267,6 @@
 	}
 
 	function fillEntryPointData(data) {
-		$("#popoverNeighbours_ep").data({id: data.id});
 		console.log(data);
 		var innerHTMLcontent1=
 		"<a onclick='toggle_ep(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
@@ -279,7 +277,7 @@
 
 		var innerHTMLcontent2=
 		"<a onclick='toggle_ep(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
-		'<div><a class="nearButtons btn btn-primary" onclick="getNearbyhotel_ep(this)">Show Nearby Hotels</a><div class="nearbyList"></div></div>';
+		'<a class="nearButtons btn btn-primary" onclick="">Show Nearby Hotels</a>';
 
 		$("#popoverNeighbours_ep")[0].innerHTML=innerHTMLcontent2;
 
@@ -409,23 +407,7 @@
 		    showNearByItems(param,data, id);
 		});
 	};
-	// getNearbyLts_hotel
-	function getNearbyLts_hotel(param){
-		console.log($(param).parent().data().id);
-		id = $(param).parent().parent().data().id;
-		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/nearby_lts_hotel'}).done(function(data) {
-		    showNearByItems(param,data, id);
-		});
-	};
 
-	//getNearbyhotel_ep
-	function getNearbyhotel_ep(param){
-		console.log($(param).parent().data().id);
-		id = $(param).parent().parent().data().id;
-		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/nearby_hotel_ep'}).done(function(data) {
-		    showNearByItems(param,data, id);
-		});
-	};
 
 
 	function showNearByItems(param,data, id) {
