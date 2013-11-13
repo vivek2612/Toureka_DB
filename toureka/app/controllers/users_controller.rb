@@ -54,7 +54,7 @@ class UsersController < ApplicationController
         if entryPoint.entryType==1
           mode="railway"
         end
-        marker.picture({:picture => "../../assets/" + mode + ".png",
+        marker.picture({:picture => "../../assets/mark1.png",
           :width => 32,
           :height => 32})
         marker.title "#{entryPoint.name}"
@@ -110,9 +110,9 @@ class UsersController < ApplicationController
       # marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
       mode = "airplane"
       if entryPoint.entryType==1
-        mode="railway"
+        mode="train"
       end
-      marker.picture({:picture => "../../assets/" + mode + ".png",
+      marker.picture({:picture => "../../assets/mark1.png",
         :width => 32,
         :height => 32})
       marker.title "#{entryPoint.name}"
