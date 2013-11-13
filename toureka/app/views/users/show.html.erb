@@ -253,6 +253,7 @@
 
 	function fillTouristSpotData (data) {
 		$("#popoverNeighbours_ts").data({id: data.tsInfo.id});
+		console.log(data.tsInfo.id);
 		var innerHTMLcontent0=
 		"<a onclick='toggle_ts(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
