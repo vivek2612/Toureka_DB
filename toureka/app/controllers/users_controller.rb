@@ -180,6 +180,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def get_trip_data
+    @newTrip = Trip.where(:user_id => params[:id].to_i, :start_date => params[:date].strip)
+    if @newTrip.nil?
+      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      puts "SHIT NEWTRIP NULL HAI"
+    end
+    respond_to do |format|
+      format.html
+      format.json { render :json => @newTrip }
+    end
+  end
+
   def show_closer_to
     tid = params[:tid]
     ltsCloserToDist = Hash[TouristSpot.find(tid).closer_tos.all.map{ |x| ["#{x.local_transport_stand.name}","#{x.distance}"]}]

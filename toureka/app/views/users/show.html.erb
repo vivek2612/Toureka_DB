@@ -33,7 +33,7 @@
 							<% @trips.each do |trip| %>
 							<li>
 								<%=trip[:name]%> | <%=trip[:date]%>
-								<a  onclick="updateTrips(<%=trip[:date]%>)" class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a>
+								<a  onclick="updateTrips(this)" data-date="<%=trip[:date].to_s%>" class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a>
 							</li>
 							<% end %>
 							<%end%>
@@ -336,6 +336,7 @@
 	}
 
 	function updateTrips(param){
+		console.log(param);
 		newTrip = false;
 		$.ajax({type: 'GET',data:{'date': param}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_trip_data'}).done(function(data) {
 				updateCurrentTrips(data);
@@ -343,6 +344,7 @@
 	};
 
 	function updateCurrentTrips(param){
+		// console.log(param);
 		currentTrip = [];
 		for(var i = 0 ; i < param.length ; i++){
 			currentTrip.push([param[i][0],param[i][1],param[i][2]]);
@@ -552,20 +554,22 @@
 	};
 
 	function fillTripsTab(data){
-		console.log(data);
+		// console.log(data);
 		$("#tripsList").empty();
 		console.log(data.length);
 		// li.appendChild(document.createTextNode("Your list item text"));
 		for(var i = 0 ; i < data.length ; i++){
-			console.log(data[i].name + " | " + data[i].date);
-			$("#tripsList").append('<li>'+data[i].name + ' | ' + data[i].date+'</li>');
+
+			// console.log(data[i].name + " | " + data[i].date);
+			$("#tripsList")[0].innerHTML += '<li>'+data[i].name + ' | ' + data[i].date+'<a  onclick="updateTrips(this)" data-date=' + data[i].date+'class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a></li>';
 		}
 	};
 
 	function addToCurrentTrip(param) {
-		var dayNumber = $('#dayNumber').val()
+		console.log(param);
+		var dayNumber = $('#dayNumber').val();
 		currentTrip.push([selectedMarker.id,dayNumber,selectedMarker.title]);
-		var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + selectedMarker.id +','+ dayNumber + '>' + selectedMarker.title + '-' + 'Day-' + dayNumber + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
+		var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + selectedMarker.id +','+ dayNumber + '>' + selectedMarker.title + '-' + 'Day-' + dayNumber + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>';
 		$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 		$($(param).prev()).trigger('click');
 	};
