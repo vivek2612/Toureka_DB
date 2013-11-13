@@ -128,7 +128,6 @@
 
 	<script>
 
-
 		// var modalTrig=false;
 		// $("#modal_trigger").bind("click",function(modalTrig){
 		// 	if( (modalTrig==false) ){console.log("modalTrig");}
@@ -142,7 +141,14 @@
 		var previousHighlightedMarker;
 		var tsimage2;
 		var tsimage1;
+
 		$(document).ready(function() {
+			$('.modal').each(function(){
+				console.log(this);
+				$('body').append(this);	
+				$(this).css('display','none');								
+			});
+
 			tsimage2 = { url: "../../assets/airplane.png", size: new google.maps.Size(32, 32)};
 			tsimage1 = { url: "../../assets/marker.png", size: new google.maps.Size(32, 32)};
 
