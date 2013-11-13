@@ -27,13 +27,12 @@
 
 					<div class="tab-pane fade active " id="trips">
 						<ul class="active" id="tripsList">
-						<%puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"%>
 							<% unless @trips.nil?%>
 							<%puts "hurrey ! trips is not null"%>
 							<% @trips.each do |trip| %>
 							<li>
 								<%=trip[:name]%> | <%=trip[:date]%>
-								<a  onclick="updateTrips(this)" data-date="<%=trip[:date].to_s%>" class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a>
+								<a  onclick="updateTrips(this)" class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a>
 							</li>
 							<% end %>
 							<%end%>
@@ -336,7 +335,7 @@
 	}
 
 	function updateTrips(param){
-		console.log(param);
+		param = $($(param).parent())[0].innerHTML.trim().split('<')[0].trim().split('|')[1].trim();
 		newTrip = false;
 		$.ajax({type: 'GET',data:{'date': param}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_trip_data'}).done(function(data) {
 				updateCurrentTrips(data);
@@ -561,7 +560,7 @@
 		for(var i = 0 ; i < data.length ; i++){
 
 			// console.log(data[i].name + " | " + data[i].date);
-			$("#tripsList")[0].innerHTML += '<li>'+data[i].name + ' | ' + data[i].date+'<a  onclick="updateTrips(this)" data-date=' + data[i].date+'class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a></li>';
+			$("#tripsList")[0].innerHTML += '<li>'+data[i].name + ' | ' + data[i].date+'<a  onclick="updateTrips(this)"' +'class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a></li>';
 		}
 	};
 
