@@ -21,6 +21,7 @@ Toureka::Application.routes.draw do
       get 'select_city'
       get 'add_review'
       get 'add_trip'
+      get 'get_trip_data'
     end
   end
 

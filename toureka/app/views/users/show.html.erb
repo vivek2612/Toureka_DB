@@ -33,7 +33,7 @@
 							<% @trips.each do |trip| %>
 							<li>
 								<%=trip[:name]%> | <%=trip[:date]%>
-								
+								<a  onclick="updateTrips(this)" data-date="<%=trip[:date].to_s%>" class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a>
 							</li>
 							<% end %>
 							<%end%>
@@ -145,6 +145,7 @@
 		// 	// console.log(modalTrig);
 		// alert("The paragraph was clicked.");
 		// });
+	var newTrip = true;
 	var previouslySelectedNerby;
 	var currentTrip = [] ;
 	var selectedMarker;
@@ -282,6 +283,7 @@
 
 	function fillTouristSpotData (data) {
 		$("#popoverNeighbours_ts").data({id: data.tsInfo.id});
+		console.log(data.tsInfo.id);
 		var innerHTMLcontent0=
 		"<a onclick='toggle_ts(false)' class='close' style='position: absolute; top: 0; right: 6px;'>&times;</a>"+
 		"<h5>"+data.tsInfo.name+"</h5>"+
@@ -362,6 +364,27 @@
 		toggle_ep(true);		
 		
 	}
+
+	function updateTrips(param){
+		console.log(param);
+		newTrip = false;
+		$.ajax({type: 'GET',data:{'date': param}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_trip_data'}).done(function(data) {
+				updateCurrentTrips(data);
+			});
+	};
+
+	function updateCurrentTrips(param){
+		// console.log(param);
+		currentTrip = [];
+		for(var i = 0 ; i < param.length ; i++){
+			currentTrip.push([param[i][0],param[i][1],param[i][2]]);
+		}
+		$("#currentTrip")[0].innerHTML = '';
+		for(var i = 0 ; i < currentTrip.length ; i++){
+			$("#currentTrip")[0].innerHTML += '<div id="touristSpotTag" class="well" data-IdAndDay=' + currentTrip[i][0] +','+ currentTrip[i][1] + '>' + currentTrip[i][2] + '-' + 'Day-' + currentTrip[i][1] + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>';
+		}
+		// $($(param).prev()).trigger('click');
+	};
 
 	function toggle_ts(bools){
 		if(!bools){
@@ -552,7 +575,7 @@
 		var tripName = document.getElementById('tripName').value;;
 		var tripDate = document.getElementById('tripDate').value;;
 		// console.log(currentTrip);
-		$.ajax({type: 'GET',data:{'currentTrip': currentTrip, 'tripDate':tripDate, 'tripName':tripName}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/add_trip'}).done(function(data){
+		$.ajax({type: 'GET',data:{'currentTrip': currentTrip, 'tripDate':tripDate, 'tripName':tripName, 'bool':newTrip}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/add_trip'}).done(function(data){
 			fillTripsTab(data);
 		});
 		currentTrip = [];
@@ -561,20 +584,22 @@
 	};
 
 	function fillTripsTab(data){
-		console.log(data);
+		// console.log(data);
 		$("#tripsList").empty();
 		console.log(data.length);
 		// li.appendChild(document.createTextNode("Your list item text"));
 		for(var i = 0 ; i < data.length ; i++){
-			console.log(data[i].name + " | " + data[i].date);
-			$("#tripsList").append('<li>'+data[i].name + ' | ' + data[i].date+'</li>');
+
+			// console.log(data[i].name + " | " + data[i].date);
+			$("#tripsList")[0].innerHTML += '<li>'+data[i].name + ' | ' + data[i].date+'<a  onclick="updateTrips(this)" data-date=' + data[i].date+'class="btn btn-mini" href="#"><i class="icon-edit" ></i> edit </a></li>';
 		}
 	};
 
 	function addToCurrentTrip(param) {
-		var dayNumber = $('#dayNumber').val()
+		console.log(param);
+		var dayNumber = $('#dayNumber').val();
 		currentTrip.push([selectedMarker.id,dayNumber,selectedMarker.title]);
-		var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + selectedMarker.id +','+ dayNumber + '>' + selectedMarker.title + '-' + 'Day-' + dayNumber + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
+		var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + selectedMarker.id +','+ dayNumber + '>' + selectedMarker.title + '-' + 'Day-' + dayNumber + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>';
 		$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 		$($(param).prev()).trigger('click');
 	};
