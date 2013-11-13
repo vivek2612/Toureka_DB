@@ -71,7 +71,7 @@ class UsersController < ApplicationController
   end
 
   def select_city
-    
+
     @districtName = District.all.map{|x| "#{x.name}, #{x.state.name}"}
     # puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
     # puts params.keys
@@ -121,6 +121,61 @@ class UsersController < ApplicationController
     render 'show.html.erb'
   end
 
+  def add_review
+    puts params.keys
+    r = Review.new
+    r.user_id=params[:id].to_i
+    r.tourist_spot_id=params[:tid].to_i
+    r.review = params[:review].to_s
+    r.rating = params[:rating].to_f
+    if r.valid?
+      flash[:notice] = "review added along with rating"
+      r.save
+    else
+      flash[:error] = "rating must be between 1 and 10"
+    end
+    respond_to do |format|
+      format.html
+      format.json { render :nothing => true }
+    end
+  end
+
+  def add_trip
+    puts params.keys
+    t = Trip.new
+    t.user_id = params[:id].to_i
+    t.name = params[:tripName].to_s
+    t.start_date = params[:tripDate].strip()+" 00:00:00"
+    if t.valid?
+      flash[:notice] = "trip added"
+      t.save
+    else
+      flash[:error] = "rating must be between 1 and 10"
+      respond_to do |format|
+        format.html
+        format.json { render :nothing => true }
+      end
+      return
+    end
+    params[:currentTrip].each do |trip|
+      od = OneDay.new
+      od.user_id = params[:id].to_i
+      od.day_number = trip[1].to_i
+      od.tourist_spot_id = trip[0].to_i
+      od.start_date = t.start_date
+      if od.valid?
+        flash[:notice] = "trip added"
+        od.save
+      else
+        flash[:error] = "rating must be between 1 and 10"
+        break
+      end
+    end
+    respond_to do |format|
+      format.html
+      format.json { render :nothing => true }
+    end
+  end
 
   def show_closer_to
     tid = params[:tid]
@@ -146,13 +201,13 @@ class UsersController < ApplicationController
         :picture => "../../assets/" + touristSpot.category+".png",
         :width => 32,
         :height => 32
-      })
+        })
       marker.title "#{touristSpot.name}"
       marker.json({:id => touristSpot.id, :type => 'child'})
     end
     respond_to do |format|
-        format.html
-        format.json{ render :json => @tsCloserTo}
+      format.html
+      format.json{ render :json => @tsCloserTo}
     end
   end
 
@@ -164,13 +219,13 @@ class UsersController < ApplicationController
         :picture => "../../assets/hotel.png",
         :width => 32,
         :height => 32
-      })
+        })
       marker.title "#{hotel.name}"
       marker.json({:id => hotel.id, :type => 'child',:distance => hotelCloserToDist[hotel.name]})
     end
     respond_to do |format|
-        format.html
-        format.json{ render :json => @hotelCloserTo}
+      format.html
+      format.json{ render :json => @hotelCloserTo}
     end
   end
 
@@ -183,13 +238,13 @@ class UsersController < ApplicationController
         :picture => "../../assets"+ ts.category+".png",
         :width => 32,
         :height => 32
-      })
+        })
       marker.title "#{ts.name}"
       marker.json({:id => ts.id, :type => 'child',:distance => tsCloserToDist[ts.name]})
     end
     respond_to do |format|
-        format.html
-        format.json{ render :json => @tsCloserTo}
+      format.html
+      format.json{ render :json => @tsCloserTo}
     end
   end
 
@@ -202,13 +257,13 @@ class UsersController < ApplicationController
         :picture => "../../assets"+ lts.localTransport+".png",
         :width => 32,
         :height => 32
-      })
+        })
       marker.title "#{lts.name}"
       marker.json({:id => lts.id, :type => 'child',:distance => ltsCloserToDist[lts.name]})
     end
     respond_to do |format|
-        format.html
-        format.json{ render :json => @ltsCloserTo}
+      format.html
+      format.json{ render :json => @ltsCloserTo}
     end
   end
 
@@ -221,13 +276,13 @@ class UsersController < ApplicationController
         :picture => "../../assets/hotel.png",
         :width => 32,
         :height => 32
-      })
+        })
       marker.title "#{hotel.name}"
       marker.json({:id => hotel.id, :type => 'child',:distance => hotelCloserToDist[hotel.name]})
     end
     respond_to do |format|
-        format.html
-        format.json{ render :json => @hotelCloserTo}
+      format.html
+      format.json{ render :json => @hotelCloserTo}
     end
   end
 

@@ -52,7 +52,7 @@ class TouristSpot < ActiveRecord::Base
       end
     end
 
-    closest_hotels = self.closest_hotels.order("distance DESC")
+    closest_hotels = self.in_proximity_ofs.order("distance DESC")
     if(closest_hotels.size > 10)
       closest_hotels.first(closest_hotels.size - 10).destroy_all
     end
@@ -132,7 +132,9 @@ class TouristSpot < ActiveRecord::Base
 
     buddies = self.buddies.order("distance DESC")
     if(buddies.size > 10)
-      buddies.first(buddies.size - 10).destroy_all
+      buddies.first(buddies.size - 10).each do |x|
+        x.destroy
+      end
     end
 
     hotels = self.friends

@@ -19,7 +19,8 @@ Toureka::Application.routes.draw do
       get 'get_hotel_info'
       get 'get_entry_point_info'
       get 'select_city'
-
+      get 'add_review'
+      get 'add_trip'
     end
   end
 

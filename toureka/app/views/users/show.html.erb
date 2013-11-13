@@ -68,12 +68,12 @@
       <div class="modal-body">
         
 			<input id="tripName" type="text" placeholder="Trip Name"><br>
-			<input id="tripDate" type="text" placeholder="dd-mm-yyyy"><br>
+			<input id="tripDate" type="text" placeholder="yyyy-mm-dd"><br>
 			
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveIt" type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" id='closeTrips' class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveIt" type="button" class="btn btn-primary" onclick="addTrip()">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -116,8 +116,8 @@
 			
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveIt" type="button" onclick="" class="btn btn-primary">Save changes</button>
+        <button type="button" id="closeReview" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="saveIt" type="button"  onclick="addReview()" class="btn btn-primary">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -242,7 +242,7 @@
 		"<h5>"+"Category: "+data.tsInfo.category+"</h5>"+
 		"<h5>"+"Rating: "+data.tsInfo.rating+"</h5>"+
 		"<h5>"+"Description: "+data.tsInfo.description+"</h5>"+
-		"<a  data-toggle='modal' data-target='#myModal2'  class='btn btn-primary' onclick=''>Add to current Trip</a>";
+		"<a data-toggle='modal' data-target='#myModal2'  class='btn btn-primary' onclick=''>Add to current Trip</a>";
 		console.log(data.reviewAndUserInfo);
 		$("#popoverDetails_ts")[0].innerHTML=innerHTMLcontent0;
 		var innerHTMLcontent1=
@@ -259,6 +259,7 @@
 			innerHTMLcontent2+="<br>"+"<i>"+data.reviewAndUserInfo[x].review+"</i>";
 			innerHTMLcontent2+="<br></h5><hr>";
 		}
+		innerHTMLcontent2 += "<a  data-toggle='modal' data-target='#myModal3'  class='btn btn-primary' onclick=''>Add Review/Rate</a>";
 
 		$("#popoverReviews_ts")[0].innerHTML=innerHTMLcontent2;
 		var innerHTMLcontent3=
@@ -492,6 +493,23 @@
 		console.log(currentTrip)
 	};
 
+	function addReview(){
+		var review = document.getElementById('userReview').value;
+		var rating = document.getElementById('userRating').value;
+		console.log($("#popoverNeighbours_ts").data().id);
+		$.ajax({type: 'GET',data:{'review': review, 'rating': rating, 'tid':$("#popoverNeighbours_ts").data().id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/add_review'})
+		$('#closeReview').click();
+	};
+
+	function addTrip(){
+		var tripName = document.getElementById('tripName').value;;
+		var tripDate = document.getElementById('tripDate').value;;
+		// console.log(currentTrip);
+		$.ajax({type: 'GET',data:{'currentTrip': currentTrip, 'tripDate':tripDate, 'tripName':tripName}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/add_trip'})
+		currentTrip = [];
+		$('#closeTrips').click();
+		$("#currentTrip")[0].innerHTML = '';
+	}
 
 	function addToCurrentTrip(param) {
 		var dayNumber = $('#dayNumber').val()
