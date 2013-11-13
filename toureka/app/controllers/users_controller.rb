@@ -199,10 +199,8 @@ class UsersController < ApplicationController
   
   def show_buddies
     tid=params[:tid]
-    # tsCloserToDist = Hash[TouristSpot.find(tid).buddies.all.map{ |x| ["#{x.tourist_spot.name}","#{x.distance}"]}]
-    # @tsCloserTo = TouristSpot.where("id in (select friend_id from buddies where tourist_spot_id=#{tid})").all.to_gmaps4rails do |touristSpot,marker|
-    @tsCloserTo = TouristSpot.find(tid).buddies.all.to_gmaps4rails do |touristSpot,marker|
-
+    
+    @tsCloserTo = TouristSpot.where("id in (select friend_id from buddies where tourist_spot_id=#{tid})").all.to_gmaps4rails do |touristSpot,marker|
       marker.picture({
         :picture => "../../assets/" + touristSpot.category+".png",
         :width => 32,
