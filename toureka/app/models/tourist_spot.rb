@@ -126,6 +126,7 @@ class TouristSpot < ActiveRecord::Base
         nb=Buddy.new
         nb.tourist_spot = self
         nb.friend = hotel
+        nb.distance = d
         nb.save
       end
     end
