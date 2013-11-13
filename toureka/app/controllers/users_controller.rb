@@ -62,6 +62,8 @@ class UsersController < ApplicationController
 
       end
 
+      @trips = User.find(params[:id].to_i).trips.map{|x| {:name => x.name , :date => x.start_date}}
+
       respond_to do |format|
         format.html # index.html.erb
         format.json { render json: @touristSpots }
@@ -150,30 +152,30 @@ class UsersController < ApplicationController
       flash[:notice] = "trip added"
       t.save
     else
-      flash[:error] = "rating must be between 1 and 10"
+      flash[:error] = "invalid attributes, only one trip can start on one day"
       respond_to do |format|
         format.html
         format.json { render :nothing => true }
       end
       return
     end
-    params[:currentTrip].each do |trip|
+    params[:currentTrip].values.each do |trip|
       od = OneDay.new
       od.user_id = params[:id].to_i
       od.day_number = trip[1].to_i
       od.tourist_spot_id = trip[0].to_i
       od.start_date = t.start_date
       if od.valid?
-        flash[:notice] = "trip added"
         od.save
       else
-        flash[:error] = "rating must be between 1 and 10"
+        flash[:error] = "Some attribute is not valid in some OneDay"
         break
       end
     end
+    @data = User.find(params[:id].to_i).trips.map{|x| {:name => x.name, :date =>x.start_date}}
     respond_to do |format|
       format.html
-      format.json { render :nothing => true }
+      format.json { render :json => @data }
     end
   end
 

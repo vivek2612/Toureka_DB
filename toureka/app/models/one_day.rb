@@ -7,6 +7,6 @@ class OneDay < ActiveRecord::Base
 
   validates_presence_of :day_number, :start_date
   validates :day_number, :numericality => { :greater_than => 0 , :allow_nil => true}
-  validates :day_number, :uniqueness => {:scope => :user_id}
+  
 
 end

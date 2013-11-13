@@ -7,14 +7,14 @@
 			<div class="span3 well">
 
 				<ul id="myTab" class="nav nav-tabs">
-			        
-			        <li class="active"><a href="#list" data-toggle="tab">List</a></li>
 
-			        <li class=""><a href="#trips" data-toggle="tab">My Trips</a></li>
-			        
-		        </ul>
+					<li class="active"><a href="#list" data-toggle="tab">List</a></li>
 
-		        <div id="myTabContent" class="tab-content ">					
+					<li class=""><a href="#trips" data-toggle="tab">My Trips</a></li>
+
+				</ul>
+
+				<div id="myTabContent" class="tab-content ">					
 					
 					<div class="tab-pane active fade in" id="list">
 						<div class="scroll-pane">
@@ -26,7 +26,11 @@
 					</div>
 
 					<div class="tab-pane fade active " id="trips">
-
+						<ul class="active" id="tripsList">
+							<% @trips.each do |trip| %>
+							<li><%=trip[:name]%> | <%=trip[:date]%></li>
+							<% end %>
+						</ul>
 					</div>
 
 				</div>			
@@ -40,88 +44,88 @@
 						
 					</div>
 					<!-- <div class="popover"> -->
-						<div id="popoverNav_ts" class="popOverNav"></div>
-						<div id="popoverDetails_ts" class="well popTab" ></div>
-						<div id="popoverNeighbours_ts" class="well popTab" data-id=""></div>
-						<div id="popoverReviews_ts" class="well popTab"></div>
-						
-						<div id="popoverNav_hotel" class="popOverNav"></div>
-						<div id="popoverDetails_hotel" class="well popTab" ></div>
-						<div id="popoverNeighbours_hotel" class="well popTab" ></div>
+					<div id="popoverNav_ts" class="popOverNav"></div>
+					<div id="popoverDetails_ts" class="well popTab" ></div>
+					<div id="popoverNeighbours_ts" class="well popTab" data-id=""></div>
+					<div id="popoverReviews_ts" class="well popTab"></div>
 
-						<div id="popoverNav_ep" class="popOverNav"></div>
-						<div id="popoverDetails_ep" class="well popTab" ></div>
-						<div id="popoverNeighbours_ep" class="well popTab" ></div>
+					<div id="popoverNav_hotel" class="popOverNav"></div>
+					<div id="popoverDetails_hotel" class="well popTab" ></div>
+					<div id="popoverNeighbours_hotel" class="well popTab" ></div>
+
+					<div id="popoverNav_ep" class="popOverNav"></div>
+					<div id="popoverDetails_ep" class="well popTab" ></div>
+					<div id="popoverNeighbours_ep" class="well popTab" ></div>
 					<!-- </div> -->
 				</div>
 			</div>
 		</div>
 
-<!-- Modal - 1-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Name the Trip : </h4>
-      </div>
-      <div class="modal-body">
-        
-			<input id="tripName" type="text" placeholder="Trip Name"><br>
-			<input id="tripDate" type="text" placeholder="yyyy-mm-dd"><br>
-			
-      </div>
-      <div class="modal-footer">
-        <button type="button" id='closeTrips' class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveIt" type="button" class="btn btn-primary" onclick="addTrip()">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		<!-- Modal - 1-->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Name the Trip : </h4>
+					</div>
+					<div class="modal-body">
 
-<!-- Modal - 2-->
-<div class="modal fade"id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Enter Day Number : </h4>
-      </div>
-      <div class="modal-body">
-        
-			<input id="dayNumber" type="text" placeholder="Day Number"><br>			
-			
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveIt" type="button" onclick="addToCurrentTrip(this)" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+						<input id="tripName" type="text" placeholder="Trip Name"><br>
+						<input id="tripDate" type="text" placeholder="yyyy-mm-dd"><br>
 
-<!-- Modal - 2-->
-<div class="modal fade"id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Rate and review Tourist spot </h4>
-      </div>
-      <div class="modal-body">
-      <h5> Enter your rating :</h5>  
-			<input id="userRating" type="text" placeholder="rate on scale of 10"><br>			
-			<h5> Enter your review :</h5>  
-			<input id="userReview" type="text" placeholder="Share your experience here !!"><br>			
-			
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="closeReview" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="saveIt" type="button"  onclick="addReview()" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" id='closeTrips' class="btn btn-default" data-dismiss="modal">Close</button>
+						<button id="saveIt" type="button" class="btn btn-primary" onclick="addTrip()">Save changes</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Modal - 2-->
+		<div class="modal fade"id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Enter Day Number : </h4>
+					</div>
+					<div class="modal-body">
+
+						<input id="dayNumber" type="text" placeholder="Day Number"><br>			
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button id="saveIt" type="button" onclick="addToCurrentTrip(this)" class="btn btn-primary">Save changes</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Modal - 2-->
+		<div class="modal fade"id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Rate and review Tourist spot </h4>
+					</div>
+					<div class="modal-body">
+						<h5> Enter your rating :</h5>  
+						<input id="userRating" type="text" placeholder="rate on scale of 10"><br>			
+						<h5> Enter your review :</h5>  
+						<input id="userReview" type="text" placeholder="Share your experience here !!"><br>			
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="closeReview" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button id="saveIt" type="button"  onclick="addReview()" class="btn btn-primary">Save changes</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
 	</div>
 
@@ -134,30 +138,30 @@
 		// 	// console.log(modalTrig);
 		// alert("The paragraph was clicked.");
 		// });
-		var previouslySelectedNerby;
-		var currentTrip = [] ;
-		var selectedMarker;
-		var tog=true;
-		var previousHighlightedMarker;
-		var tsimage2;
-		var tsimage1;
+	var previouslySelectedNerby;
+	var currentTrip = [] ;
+	var selectedMarker;
+	var tog=true;
+	var previousHighlightedMarker;
+	var tsimage2;
+	var tsimage1;
 
-		$(document).ready(function() {
-			$('.modal').each(function(){
-				console.log(this);
-				$('body').append(this);	
-				$(this).css('display','none');								
-			});
+	$(document).ready(function() {
+		$('.modal').each(function(){
+			console.log(this);
+			$('body').append(this);	
+			$(this).css('display','none');								
+		});
 
-			tsimage2 = { url: "../../assets/airplane.png", size: new google.maps.Size(32, 32)};
-			tsimage1 = { url: "../../assets/marker.png", size: new google.maps.Size(32, 32)};
+		tsimage2 = { url: "../../assets/airplane.png", size: new google.maps.Size(32, 32)};
+		tsimage1 = { url: "../../assets/marker.png", size: new google.maps.Size(32, 32)};
 
-			$("#session_city").autocomplete({
-				source: <%= raw @districtName %>
-			});
+		$("#session_city").autocomplete({
+			source: <%= raw @districtName %>
+		});
 
-			<% if !@tripTagData.nil? %> 
-			var tripData = <%= raw @tripTagData%>;
+		<% if !@tripTagData.nil? %> 
+		var tripData = <%= raw @tripTagData%>;
 	    // filling already shortlisted data
 	    for (var i = 0; i <  tripData.length; i += 3){
 	    	currentTrip.push([tripData[i],tripData[i+1],tripData[i+2]]);
@@ -167,30 +171,20 @@
 	    <% end %>
 	  ////////////////////////////////////////////////////
 	  Gmaps.map.callback = function() {
-			if (Gmaps.map.visibleInfoWindow !== null) {
-				Gmaps.map.visibleInfoWindow.close();
-			}
+	  	if (Gmaps.map.visibleInfoWindow !== null) {
+	  		Gmaps.map.visibleInfoWindow.close();
+	  	}
 
-		};
-		
-		$('#searchButton').click(function (event) {
-			$('#session_service').val(currentTrip);
-			console.log("ho gaya");
-			toggle_ts(false);
-		});
-		$('#touristSpotTab').click(function (event) {
-			markers = <%=raw(@json1)%>
-			Gmaps.map.replaceMarkers(markers)
+	  };
 
-		  event.preventDefault(); // Prevent link from following its href
-		  toggle_ts(false);
-		  toggle_hotel(false);
-		  toggle_ep(false);
-		});
-
-		$('#hotelTab').click(function (event) {
-			markers = <%=raw(@json2)%>
-			Gmaps.map.replaceMarkers(markers)
+	  $('#searchButton').click(function (event) {
+	  	$('#session_service').val(currentTrip);
+	  	console.log("ho gaya");
+	  	toggle_ts(false);
+	  });
+	  $('#touristSpotTab').click(function (event) {
+	  	markers = <%=raw(@json1)%>
+	  	Gmaps.map.replaceMarkers(markers)
 
 		  event.preventDefault(); // Prevent link from following its href
 		  toggle_ts(false);
@@ -198,9 +192,19 @@
 		  toggle_ep(false);
 		});
 
-		$('#epTab').click(function (event) {
-			markers = <%=raw(@json3)%>
-			Gmaps.map.replaceMarkers(markers)
+	  $('#hotelTab').click(function (event) {
+	  	markers = <%=raw(@json2)%>
+	  	Gmaps.map.replaceMarkers(markers)
+
+		  event.preventDefault(); // Prevent link from following its href
+		  toggle_ts(false);
+		  toggle_hotel(false);
+		  toggle_ep(false);
+		});
+
+	  $('#epTab').click(function (event) {
+	  	markers = <%=raw(@json3)%>
+	  	Gmaps.map.replaceMarkers(markers)
 		  event.preventDefault(); // Prevent link from following its href
 		  toggle_ts(false);
 		  toggle_hotel(false);
@@ -413,7 +417,7 @@
 		console.log($(param).parent().data().id);
 		id= $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_buddies'}).done(function(data) {
-		    showNearByItems(param,data, id);
+			showNearByItems(param,data, id);
 		});
 	};
 
@@ -421,7 +425,7 @@
 		console.log($(param).parent().data().id);
 		id= $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_nearby_hotels'}).done(function(data) {
-		    showNearByItems(param,data, id);
+			showNearByItems(param,data, id);
 		});
 	};
 
@@ -429,7 +433,7 @@
 		console.log($(param));
 		id = $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/show_closer_to'}).done(function(data) {
-		    showNearByItems(param,data, id);
+			showNearByItems(param,data, id);
 		});
 	};
 
@@ -437,7 +441,7 @@
 		console.log($(param).parent().data().id);
 		id = $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/nearby_ts_hotel'}).done(function(data) {
-		    showNearByItems(param,data, id);
+			showNearByItems(param,data, id);
 		});
 	};
 	// getNearbyLts_hotel
@@ -445,7 +449,7 @@
 		console.log($(param).parent().data().id);
 		id = $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/nearby_lts_hotel'}).done(function(data) {
-		    showNearByItems(param,data, id);
+			showNearByItems(param,data, id);
 		});
 	};
 
@@ -454,36 +458,36 @@
 		console.log($(param).parent().data().id);
 		id = $(param).parent().parent().data().id;
 		$.ajax({type: 'GET',data:{'tid': id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/nearby_hotel_ep'}).done(function(data) {
-		    showNearByItems(param,data, id);
+			showNearByItems(param,data, id);
 		});
 	};
 
 
 	function showNearByItems(param,data, id) {
-	  console.log(previouslySelectedNerby); 
-	  console.log(data, id);
-	  var isParamEmpty = ($($(param).next().children())[0]==undefined)
-	  if($($(previouslySelectedNerby)).next().children()[0]!=undefined){
-	  	$($(previouslySelectedNerby)).next().children().remove();
-	  }
-	  for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
-	  	if (Gmaps.map.markers[i].type == "child"){
-	  		console.log("ye hatana he")
-	  		Gmaps.map.hideMarker(Gmaps.map.markers[i])
-	  	}
-	  }
-	  console.log(param);
-	  if(( isParamEmpty &&previouslySelectedNerby == param)||previouslySelectedNerby != param){
-	  	console.log(previouslySelectedNerby,param,previouslySelectedNerby==param,$($(param).next().children())[0]==undefined)
-		  var innerHTMLcontent = "<ul>"
-		  for (var i = 0; i <  data.length; ++i){
-		 		innerHTMLcontent += '<li>' + data[i].title + '-' + data[i].distance + 'km</li>'
-		  }
-		  innerHTMLcontent += "</ul>"
-		  $($(param).next())[0].innerHTML = innerHTMLcontent
-	  	Gmaps.map.addMarkers(data,false)
-	  	previouslySelectedNerby = param
-	  }
+		console.log(previouslySelectedNerby); 
+		console.log(data, id);
+		var isParamEmpty = ($($(param).next().children())[0]==undefined)
+		if($($(previouslySelectedNerby)).next().children()[0]!=undefined){
+			$($(previouslySelectedNerby)).next().children().remove();
+		}
+		for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
+			if (Gmaps.map.markers[i].type == "child"){
+				console.log("ye hatana he")
+				Gmaps.map.hideMarker(Gmaps.map.markers[i])
+			}
+		}
+		console.log(param);
+		if(( isParamEmpty &&previouslySelectedNerby == param)||previouslySelectedNerby != param){
+			console.log(previouslySelectedNerby,param,previouslySelectedNerby==param,$($(param).next().children())[0]==undefined)
+			var innerHTMLcontent = "<ul>"
+			for (var i = 0; i <  data.length; ++i){
+				innerHTMLcontent += '<li>' + data[i].title + '-' + data[i].distance + 'km</li>'
+			}
+			innerHTMLcontent += "</ul>"
+			$($(param).next())[0].innerHTML = innerHTMLcontent
+			Gmaps.map.addMarkers(data,false)
+			previouslySelectedNerby = param
+		}
 	} 
 	function deleteFunc(param){
 		$(param).parent().remove();
@@ -511,11 +515,24 @@
 		var tripName = document.getElementById('tripName').value;;
 		var tripDate = document.getElementById('tripDate').value;;
 		// console.log(currentTrip);
-		$.ajax({type: 'GET',data:{'currentTrip': currentTrip, 'tripDate':tripDate, 'tripName':tripName}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/add_trip'})
+		$.ajax({type: 'GET',data:{'currentTrip': currentTrip, 'tripDate':tripDate, 'tripName':tripName}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/add_trip'}).done(function(data){
+			fillTripsTab(data);
+		});
 		currentTrip = [];
 		$('#closeTrips').click();
 		$("#currentTrip")[0].innerHTML = '';
-	}
+	};
+
+	function fillTripsTab(data){
+		console.log(data);
+		$("#tripsList").empty();
+		console.log(data.length);
+		// li.appendChild(document.createTextNode("Your list item text"));
+		for(var i = 0 ; i < data.length ; i++){
+			console.log(data[i].name + " | " + data[i].date);
+			$("#tripsList").append('<li>'+data[i].name + ' | ' + data[i].date+'</li>');
+		}
+	};
 
 	function addToCurrentTrip(param) {
 		var dayNumber = $('#dayNumber').val()
@@ -523,7 +540,7 @@
 		var innerHTMLContentCurrentTrip = '<div id="touristSpotTag" class="well" data-IdAndDay=' + selectedMarker.id +','+ dayNumber + '>' + selectedMarker.title + '-' + 'Day-' + dayNumber + '<a onclick="deleteFunc(this)" class="sbtn-mini" href="#"><i class="icon-remove"></i></a></div>'
 		$("#currentTrip")[0].innerHTML += innerHTMLContentCurrentTrip;
 		$($(param).prev()).trigger('click');
-	}
+	};
 </script>
 
 
