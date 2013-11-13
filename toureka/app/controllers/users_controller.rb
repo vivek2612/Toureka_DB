@@ -119,6 +119,7 @@ class UsersController < ApplicationController
       marker.json({ :id => entryPoint.id, :type => 'parent',:type2 => 'entryPoint'})
 
     end
+    @trips = User.find(params[:id].to_i).trips.map{|x| {:name => x.name , :date => x.start_date}}
     puts params.keys
     render 'show.html.erb'
   end
