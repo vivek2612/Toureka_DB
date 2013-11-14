@@ -84,7 +84,7 @@
 
 	$('#deleteEntryPoint').click(function(){
 		EPD=EPD+1;
-		div2='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="EP" name="EPdName'+EPD+'" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Type" name="EPdType'+EPD+'"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div2='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="EP" name="EPdName'+EPD+'" placeholder="Name"><select class="btn btn-default dropdown-toggle" name="EPdType'+EPD+'" placeholder="Type"><option value="airport">airport</option><option value="railway">railway</option></select><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.deleteEntryPoint').prepend(div2);   
 		$("#EP").autocomplete({
 			source: <%= raw @EP %>
@@ -99,7 +99,7 @@
 
 	$('#deleteTouristSpot').click(function(){
 		TSD=TSD+1;
-		div4='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="TS" name="TSdName'+TSD+'" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Category" name="TSdCat'+TSD+'"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div4='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="TS" name="TSdName'+TSD+'" placeholder="Name"><select type="text" class="btn btn-default dropdown-toggle" name="TSdCat'+TSD+'" placeholder="Category"><option value="Art Gallery">Art Gallery</option><option value="Historic Site">Historic Site</option><option value="Museum">Museum</option><option value="Music Venue">Music Venue</option><option value="Performing Arts Venue">Performing Arts Venue</option><option value="Zoo">Zoo</option><option value="Beach">Beach</option><option value="Plaza">Plaza</option><option value="Religious/Spiritual">Religious/Spiritual</option><option value="National Parks">National Parks</option></select><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.deleteTouristSpot').prepend(div4);  
 		$("#TS").autocomplete({
 			source: <%= raw @TS %>
@@ -129,7 +129,7 @@
 
 	$('#deleteTransportStand').click(function(){
 		LTSD=LTSD+1;
-		div8='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="LTS" name="LTSdName'+LTSD+'" placeholder="Name"><input type="text" class="input-medium search-query" placeholder="Type" name="LTSdType'+LTSD+'"><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
+		div8='<div style="background:#777777;margin-left:300px;padding-top:10px;display:"><input type="text" class="input-medium search-query" id="LTS" name="LTSdName'+LTSD+'" placeholder="Name"><select type="text" class="btn btn-default dropdown-toggle" name="LTSdType'+LTSD+'" placeholder="Type"><option value="bus">bus</option><option value="metro">metro</option></select><a onclick="deleteFunc(this)" class="delete btn btn-mini" href="#"><i class="icon-remove"></i> delete</a></div>';
 		$('.deleteTransportStand').prepend(div8);   
 		$("#LTS").autocomplete({
 			source: <%= raw @LTS %>

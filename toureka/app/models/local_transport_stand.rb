@@ -2,10 +2,10 @@ class LocalTransportStand < ActiveRecord::Base
   acts_as_gmappable
   attr_accessible :districtName, :latitude, :longitude, :name, :stateName, :localTransport, :gmaps
 
-  has_many :near_bies
+  has_many :near_bies, dependent: :destroy
   has_many :hotels, through: :near_bies
 
-  has_many :closer_tos
+  has_many :closer_tos, dependent: :destroy
   has_many :tourist_spots, through: :closer_tos
 
   after_save :add_near_bies, :add_closer_tos
@@ -37,6 +37,7 @@ class LocalTransportStand < ActiveRecord::Base
         nb=NearBy.new
         nb.hotel = hotel
         nb.local_transport_stand = self
+        nb.distance =  d
         nb.save
       end
     end
@@ -76,6 +77,7 @@ class LocalTransportStand < ActiveRecord::Base
         nb=CloserTo.new
         nb.tourist_spot = hotel
         nb.local_transport_stand = self
+        nb.distance =  d
         nb.save
       end
     end
