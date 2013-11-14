@@ -3,13 +3,13 @@ class Hotel < ActiveRecord::Base
 
   attr_accessible :description, :districtName, :latitude, :longitude, :name, :stateName, :gmaps
 
-  has_many :near_bies
+  has_many :near_bies, dependent: :destroy
   has_many :local_transport_stands, through: :near_bies
 
-  has_many :in_proximity_ofs
+  has_many :in_proximity_ofs, dependent: :destroy
   has_many :tourist_spots, through: :in_proximity_ofs
 
-  has_many :closest_hotels
+  has_many :closest_hotels, dependent: :destroy
   has_many :entry_points, through: :closest_hotels
 
   after_save :add_near_bies, :add_closest_hotels, :add_in_proximity_ofs
@@ -34,6 +34,7 @@ class Hotel < ActiveRecord::Base
         nb=NearBy.new
         nb.hotel = self
         nb.local_transport_stand = hotel
+        nb.distance =  d
         nb.save
       end
     end
@@ -73,6 +74,7 @@ class Hotel < ActiveRecord::Base
         ch=ClosestHotel.new
         ch.hotel = self
         ch.entry_point = hotel
+        ch.distance =  d
         ch.save
       end
     end
@@ -112,6 +114,7 @@ class Hotel < ActiveRecord::Base
         ch=InProximityOf.new
         ch.hotel = self
         ch.tourist_spot = hotel
+        ch.distance =  d
         ch.save
       end
     end

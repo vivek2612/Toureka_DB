@@ -2,10 +2,10 @@ class TouristSpot < ActiveRecord::Base
   acts_as_gmappable
   attr_accessible :category, :description, :districtName, :latitude, :longitude, :name, :rating, :stateName, :gmaps
 
-  has_many :in_proximity_ofs
+  has_many :in_proximity_ofs, dependent: :destroy
   has_many :hotels, through: :in_proximity_ofs
 
-  has_many :closer_tos
+  has_many :closer_tos, dependent: :destroy
   has_many :local_transport_stands, through: :closer_tos
 
   has_many :one_days, :dependent => :destroy
@@ -14,7 +14,7 @@ class TouristSpot < ActiveRecord::Base
 
   after_save :add_in_proximity_ofs, :add_closer_tos, :add_buddies
 
-  has_many :buddies
+  has_many :buddies, dependent: :destroy
   has_many :friends, :through => :buddies
   has_many :inverse_buddies , :class_name => "Buddy" , :foreign_key => "friend_id"
   has_many :inverse_friends , :through => :inverse_buddies, :source => :tourist_spot 
@@ -48,6 +48,7 @@ class TouristSpot < ActiveRecord::Base
         ch=InProximityOf.new
         ch.hotel = hotel
         ch.tourist_spot = self
+        ch.distance =  d
         ch.save
       end
     end
@@ -87,6 +88,7 @@ class TouristSpot < ActiveRecord::Base
         nb=CloserTo.new
         nb.tourist_spot = self
         nb.local_transport_stand = hotel
+        nb.distance =  d
         nb.save
       end
     end

@@ -2,7 +2,7 @@ class EntryPoint < ActiveRecord::Base
 	acts_as_gmappable
   attr_accessible :districtName, :latitude, :longitude, :name, :stateName, :entryType, :gmaps
 
-  has_many :closest_hotels
+  has_many :closest_hotels, dependent: :destroy
   has_many :hotels , through: :closest_hotels
 
   after_save :add_closest_hotels
@@ -37,6 +37,7 @@ class EntryPoint < ActiveRecord::Base
         ch=ClosestHotel.new
         ch.hotel = hotel
         ch.entry_point = self
+        ch.distance =  d
         ch.save
       end
     end
