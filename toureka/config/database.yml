@@ -8,5 +8,5 @@ development:
   encoding: unicode
   database: tourekadb
   pool: 5
-  username:  vivek
-  password: a
+  username:  
+  password: 

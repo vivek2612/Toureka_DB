@@ -54,7 +54,7 @@ class UsersController < ApplicationController
         if entryPoint.entryType==1
           mode="railway"
         end
-        marker.picture({:picture => "../../assets/" + mode + ".png",
+        marker.picture({:picture => "../../assets/mark1.png",
           :width => 32,
           :height => 32})
         marker.title "#{entryPoint.name}"
@@ -110,9 +110,9 @@ class UsersController < ApplicationController
       # marker.infowindow render_to_string(:partial => "/entryPoints/infowindow", :locals => { :entryPoint => entryPoint})
       mode = "airplane"
       if entryPoint.entryType==1
-        mode="railway"
+        mode="train"
       end
-      marker.picture({:picture => "../../assets/" + mode + ".png",
+      marker.picture({:picture => "../../assets/mark1.png",
         :width => 32,
         :height => 32})
       marker.title "#{entryPoint.name}"
@@ -180,6 +180,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def get_trip_data
+
+    # puts "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+    # if insert  
+    @tripCheck = Trip.where(:user_id => params[:id].to_i, :start_date => params[:date].strip)
+    
+    if @tripCheck.nil?
+      puts "Trip is Data is null"
+    else
+      @tripInfo = OneDay.where(:user_id => params[:id].to_i, :start_date => params[:date].strip).map{|x| [x.tourist_spot_id,x.day_number,x.tourist_spot.name]}
+    end
+    respond_to do |format|
+      format.html
+      format.json { render :json => @tripInfo }
+    end
+  end
+
   def show_closer_to
     tid = params[:tid]
     ltsCloserToDist = Hash[TouristSpot.find(tid).closer_tos.all.map{ |x| ["#{x.local_transport_stand.name}","#{x.distance}"]}]
@@ -199,15 +216,20 @@ class UsersController < ApplicationController
   
   def show_buddies
     tid=params[:tid]
-    
-    @tsCloserTo = TouristSpot.where("id in (select friend_id from buddies where tourist_spot_id=#{tid})").all.to_gmaps4rails do |touristSpot,marker|
+
+    ltsCloserToDist = Hash[TouristSpot.find(tid).buddies.all.map{ |x| ["#{x.friend.name}","#{x.distance}"]}].merge(Hash[TouristSpot.find(tid).inverse_buddies.all.map{ |x| ["#{x.tourist_spot.name}","#{x.distance}"]}])
+
+    # tsCloserToDist = Hash[TouristSpot.find(tid).buddies.all.map{ |x| ["#{x.tourist_spot.name}","#{x.distance}"]}]
+    # @tsCloserTo = TouristSpot.where("id in (select friend_id from buddies where tourist_spot_id=#{tid})").all.to_gmaps4rails do |touristSpot,marker|
+    closerToTouristspots =  TouristSpot.find(tid).buddies.map{|x| x.friend} + TouristSpot.find(tid).inverse_buddies.map{|x| x.tourist_spot}
+    @tsCloserTo = closerToTouristspots.each.to_gmaps4rails do |touristSpot,marker|
       marker.picture({
-        :picture => "../../assets/" + touristSpot.category+".png",
+        :picture => "../../assets/marker.png",
         :width => 32,
         :height => 32
         })
       marker.title "#{touristSpot.name}"
-      marker.json({:id => touristSpot.id, :type => 'child'})
+      marker.json({:id => touristSpot.id, :type => 'child', :distance => ltsCloserToDist[touristSpot.name]})
     end
     respond_to do |format|
       format.html
@@ -239,7 +261,7 @@ class UsersController < ApplicationController
     tsCloserToDist = Hash[Hotel.find(tid).in_proximity_ofs.all.map{ |x| ["#{x.tourist_spot.name}","#{x.distance}"]}]
     @tsCloserTo = TouristSpot.where("id in (select tourist_spot_id from in_proximity_ofs where hotel_id=#{tid})").all.to_gmaps4rails do |ts,marker|
       marker.picture({
-        :picture => "../../assets"+ ts.category+".png",
+        :picture => "../../assets/marker.png",
         :width => 32,
         :height => 32
         })
