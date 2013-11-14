@@ -130,6 +130,8 @@ class UsersController < ApplicationController
     r.rating = params[:rating].to_f
     if r.valid?
       flash[:notice] = "review added along with rating"
+      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
+      puts "review will be addded"
       r.save
     else
       flash[:error] = "rating must be between 1 and 10"
