@@ -75,9 +75,6 @@ class UsersController < ApplicationController
   def select_city
 
     @districtName = District.all.map{|x| "#{x.name}, #{x.state.name}"}
-    # puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
-    # puts params.keys
-    # puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa"
     @user = User.find(params[:id])
     @touristSpots = TouristSpot.all
     @hotels = Hotel.all
@@ -224,7 +221,7 @@ class UsersController < ApplicationController
     closerToTouristspots =  TouristSpot.find(tid).buddies.map{|x| x.friend} + TouristSpot.find(tid).inverse_buddies.map{|x| x.tourist_spot}
     @tsCloserTo = closerToTouristspots.each.to_gmaps4rails do |touristSpot,marker|
       marker.picture({
-        :picture => "../../assets/marker.png",
+        :picture => "../../assets/buddyimage.png",
         :width => 32,
         :height => 32
         })
