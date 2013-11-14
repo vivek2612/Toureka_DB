@@ -175,7 +175,7 @@ class UsersController < ApplicationController
         end
       end
     else
-      t = Trip.where(:user_id => params[:id].to_i , :name => params[:tripName])
+      t = Trip.where(:user_id => params[:id].to_i , :name => params[:tripName])[0]
       unless t.nil?
         ods = OneDay.where(:user_id => params[:id].to_i , :start_date => t.start_date)
         unless ods.nil?
