@@ -181,14 +181,19 @@ class UsersController < ApplicationController
   end
 
   def get_trip_data
-    @newTrip = Trip.where(:user_id => params[:id].to_i, :start_date => params[:date].strip)
-    if @newTrip.nil?
-      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-      puts "SHIT NEWTRIP NULL HAI"
+
+    # puts "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+    # if insert  
+    @tripCheck = Trip.where(:user_id => params[:id].to_i, :start_date => params[:date].strip)
+    
+    if @tripCheck.nil?
+      puts "Trip is Data is null"
+    else
+      @tripInfo = OneDay.where(:user_id => params[:id].to_i, :start_date => params[:date].strip).map{|x| [x.tourist_spot_id,x.day_number,x.tourist_spot.name]}
     end
     respond_to do |format|
       format.html
-      format.json { render :json => @newTrip }
+      format.json { render :json => @tripInfo }
     end
   end
 
