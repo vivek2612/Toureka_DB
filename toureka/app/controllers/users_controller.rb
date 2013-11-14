@@ -368,6 +368,7 @@ class UsersController < ApplicationController
       unless State.exists?(:name=>params[:SN2])
         flash[:error] = "State didn't already exist ! Add a new state"
         redirect_to "/users/#{params[:id]}"
+        return
       else
         @stateName = State.where(:name=>params[:SN2])[0].name
         session[:stateName]=@stateName
@@ -389,7 +390,7 @@ class UsersController < ApplicationController
         redirect_to "/users/#{params[:id]}"
       end
     end
-    @districtName = District.where(:state_id=>State.where(:name=>session[:stateName])[0].id).pluck(:name);
+      @districtName = District.where(:state_id=>State.where(:name=>session[:stateName])[0].id).pluck(:name);
   end
 
 
@@ -407,6 +408,7 @@ class UsersController < ApplicationController
           (params[:TLLong1]-topLeft.longitude)*(params[:BRLong1]- bottomRight.longitude) <= 0
           flash[:error] = "District must lie inside the parent state, check the latitude and longitude"
           redirect_to "/users/#{@user.id}/writer_district"
+          return
         else
           d=District.create(:name=>params[:DN1], :state_id=>stateIdNow)
           m1=MapPoint.create(:latitude=>params[:TLLat1], :longitude=>params[:TLLong1])
@@ -419,6 +421,7 @@ class UsersController < ApplicationController
       unless District.exists?(:name=>params[:DN2], :state_id=>stateIdNow)
         flash[:error] = "district didn't already exist !Get its location info Add a new district"
         redirect_to "/users/#{@user.id}/writer_district"
+        return
       else
         session[:districtName]=params[:DN2]
       end
@@ -433,6 +436,7 @@ class UsersController < ApplicationController
           (params[:TLLong1]-topLeft.longitude)*(params[:BRLong1]- bottomRight.longitude) > 0
           flash[:error] = "District must lie inside the parent state, check the latitude and longitude"
           redirect_to "/users/#{@user.id}/writer_district"
+          return
         else
           d=District.create(:name=>params[:DN1], :state_id=>stateIdNow)
           m1=MapPoint.create(:latitude=>params[:TLLat1], :longitude=>params[:TLLong1])
