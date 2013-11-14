@@ -16,7 +16,7 @@ class TouristSpot < ActiveRecord::Base
 
   has_many :buddies, dependent: :destroy
   has_many :friends, :through => :buddies
-  has_many :inverse_buddies , :class_name => "Buddy" , :foreign_key => "friend_id"
+  has_many :inverse_buddies , :class_name => "Buddy" , :foreign_key => "friend_id", dependent: :destroy
   has_many :inverse_friends , :through => :inverse_buddies, :source => :tourist_spot 
   validates_presence_of :category
   validates_presence_of :districtName

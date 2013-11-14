@@ -145,32 +145,71 @@ class UsersController < ApplicationController
 
   def add_trip
     puts params.keys
-    t = Trip.new
-    t.user_id = params[:id].to_i
-    t.name = params[:tripName].to_s
-    t.start_date = params[:tripDate].strip()+" 00:00:00"
-    if t.valid?
-      flash[:notice] = "trip added"
-      t.save
-    else
-      flash[:error] = "invalid attributes, only one trip can start on one day"
-      respond_to do |format|
-        format.html
-        format.json { render :nothing => true }
-      end
-      return
-    end
-    params[:currentTrip].values.each do |trip|
-      od = OneDay.new
-      od.user_id = params[:id].to_i
-      od.day_number = trip[1].to_i
-      od.tourist_spot_id = trip[0].to_i
-      od.start_date = t.start_date
-      if od.valid?
-        od.save
+    if params[:bool].eql? "true"
+      t = Trip.new
+      t.user_id = params[:id].to_i
+      t.name = params[:tripName].to_s
+      t.start_date = params[:tripDate].strip()+" 00:00:00"
+      if t.valid?
+        flash[:notice] = "trip added"
+        t.save
       else
-        flash[:error] = "Some attribute is not valid in some OneDay"
-        break
+        flash[:error] = "invalid attributes, only one trip can start on one day"
+        respond_to do |format|
+          format.html
+          format.json { render :nothing => true }
+        end
+        return
+      end
+      params[:currentTrip].values.each do |trip|
+        od = OneDay.new
+        od.user_id = params[:id].to_i
+        od.day_number = trip[1].to_i
+        od.tourist_spot_id = trip[0].to_i
+        od.start_date = t.start_date
+        if od.valid?
+          od.save
+        else
+          flash[:error] = "Some attribute is not valid in some OneDay"
+          break
+        end
+      end
+    else
+      t = Trip.where(:user_id => params[:id].to_i , :name => params[:tripName])
+      unless t.nil?
+        ods = OneDay.where(:user_id => params[:id].to_i , :start_date => t.start_date)
+        unless ods.nil?
+          ods.destroy_all
+        end
+        t.destroy
+        t = Trip.new
+        t.user_id = params[:id].to_i
+        t.name = params[:tripName].to_s
+        t.start_date = params[:tripDate].strip()+" 00:00:00"
+        if t.valid?
+          flash[:notice] = "trip added"
+          t.save
+        else
+          flash[:error] = "invalid attributes, only one trip can start on one day"
+          respond_to do |format|
+            format.html
+            format.json { render :nothing => true }
+          end
+          return
+        end
+        params[:currentTrip].values.each do |trip|
+          od = OneDay.new
+          od.user_id = params[:id].to_i
+          od.day_number = trip[1].to_i
+          od.tourist_spot_id = trip[0].to_i
+          od.start_date = t.start_date
+          if od.valid?
+            od.save
+          else
+            flash[:error] = "Some attribute is not valid in some OneDay"
+            break
+          end
+        end
       end
     end
     @data = User.find(params[:id].to_i).trips.map{|x| {:name => x.name, :date =>x.start_date}}
