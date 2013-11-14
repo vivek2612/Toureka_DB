@@ -6,7 +6,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: toureka
+  database: tourekadb
   pool: 5
-  username:  vedratn
-  password: truestory
+  username:  
+  password: 
