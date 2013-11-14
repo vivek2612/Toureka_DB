@@ -236,48 +236,50 @@
 	function getMarkerClicked(marker) {
 		//console.log(marker);
 		selectedMarker = marker
-		if(marker.type2 == "touristSpot"){
-			// for changing image////////////////////////
-			if(previousHighlightedMarker===undefined){
-				console.log("nothing selected")
+		if(marker.type == "parent"){
+			if(marker.type2 == "touristSpot"){
+				// for changing image////////////////////////
+				if(previousHighlightedMarker===undefined){
+					console.log("nothing selected")
+				}
+				else{
+					previousHighlightedMarker.serviceObject.setIcon(touristSpot_image);
+				}
+				marker.serviceObject.setIcon(touristSpot_highlighted);
+				previousHighlightedMarker = marker;
+				//////////////////////////////////////////
+				$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
+					fillTouristSpotData(data);
+				});
 			}
-			else{
-				previousHighlightedMarker.serviceObject.setIcon(touristSpot_image);
+			else if(marker.type2 == "hotel"){
+				if(previousHighlightedMarker===undefined){
+					console.log("nothing selected")
+				}
+				else{
+					previousHighlightedMarker.serviceObject.setIcon(hotel_image);
+				}
+				marker.serviceObject.setIcon(hotel_highlighted);
+				previousHighlightedMarker = marker;
+				$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_hotel_info'}).done(function(data) {
+					fillHotelData(data);
+				});
 			}
-			marker.serviceObject.setIcon(touristSpot_highlighted);
-			previousHighlightedMarker = marker;
-			//////////////////////////////////////////
-			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_tourist_spot_info'}).done(function(data) {
-				fillTouristSpotData(data);
-			});
-		}
-		else if(marker.type2 == "hotel"){
-			if(previousHighlightedMarker===undefined){
-				console.log("nothing selected")
+			else{			
+				if(previousHighlightedMarker===undefined){
+					console.log("nothing selected")
+				}
+				else{
+					previousHighlightedMarker.serviceObject.setIcon(entryPoint_image);
+				}
+				marker.serviceObject.setIcon(entryPoint_highlighted);
+				previousHighlightedMarker = marker;
+				$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_entry_point_info'}).done(function(data) {
+					fillEntryPointData(data);
+				});
 			}
-			else{
-				previousHighlightedMarker.serviceObject.setIcon(hotel_image);
-			}
-			marker.serviceObject.setIcon(hotel_highlighted);
-			previousHighlightedMarker = marker;
-			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_hotel_info'}).done(function(data) {
-				fillHotelData(data);
-			});
-		}
-		else{			
-			if(previousHighlightedMarker===undefined){
-				console.log("nothing selected")
-			}
-			else{
-				previousHighlightedMarker.serviceObject.setIcon(entryPoint_image);
-			}
-			marker.serviceObject.setIcon(entryPoint_highlighted);
-			previousHighlightedMarker = marker;
-			$.ajax({type: 'GET',data:{'tid': marker.id}, dataType: 'json', url: '/users/'+ <%=@user.id%> + '/get_entry_point_info'}).done(function(data) {
-				fillEntryPointData(data);
-			});
-		}
 
+		}
 	}
 
 	function fillTouristSpotData (data) {

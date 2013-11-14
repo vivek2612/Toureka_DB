@@ -224,7 +224,7 @@ class UsersController < ApplicationController
     @tsCloserTo = closerToTouristspots.each.to_gmaps4rails do |touristSpot,marker|
 
       marker.picture({
-        :picture => "../../assets/" + touristSpot.category+".png",
+        :picture => "../../assets/marker.png",
         :width => 32,
         :height => 32
         })
@@ -261,7 +261,7 @@ class UsersController < ApplicationController
     tsCloserToDist = Hash[Hotel.find(tid).in_proximity_ofs.all.map{ |x| ["#{x.tourist_spot.name}","#{x.distance}"]}]
     @tsCloserTo = TouristSpot.where("id in (select tourist_spot_id from in_proximity_ofs where hotel_id=#{tid})").all.to_gmaps4rails do |ts,marker|
       marker.picture({
-        :picture => "../../assets"+ ts.category+".png",
+        :picture => "../../assets/marker.png",
         :width => 32,
         :height => 32
         })
